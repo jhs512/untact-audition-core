@@ -63,7 +63,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/usr/pd/doJoin")
 			.excludePathPatterns("/usr/ap/doLogin")
 			.excludePathPatterns("/usr/ap/doJoin")
-			.excludePathPatterns("/usr/article/list")
+			.excludePathPatterns("/usr/recruit/write")
 			.excludePathPatterns("/usr/article/detail")
 			.excludePathPatterns("/usr/reply/list")
 			.excludePathPatterns("/usr/member/findLoginId")
@@ -72,6 +72,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/usr/member/doFindLoginPw")
 			.excludePathPatterns("/usr/file/test*")
 			.excludePathPatterns("/usr/file/doTest*")
+			.excludePathPatterns("/common/**")
 			.excludePathPatterns("/test/**")
 			.excludePathPatterns("/error");
 		 

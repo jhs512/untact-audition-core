@@ -56,4 +56,10 @@ public class UsrPdController {
 		
 		return new ResultData("S-1", "회원가입성공", "id" , id );
 	}
+	
+	@RequestMapping("/usr/pd/doLogin")
+	@ResponseBody
+	public ResultData doLogin(@RequestParam Map<String,Object> param) {
+		return new ResultData("S-1","로그인 성공");
+	}
 }

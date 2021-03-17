@@ -94,10 +94,10 @@ public class GenFileService {
 		if (targetDir.exists() == false) {
 			targetDir.mkdirs();
 		}
-
+		
+		
 		String targetFileName = newGenFileId + "." + fileExt;
-		String targetFilePath = targetDirPath + "/" + targetFileName;
-
+		String targetFilePath = targetDir.getAbsolutePath() + "/" + targetFileName;
 		// 파일 생성(업로드된 파일을 지정된 경로롤 옮김)
 		try {
 			multipartFile.transferTo(new File(targetFilePath));
