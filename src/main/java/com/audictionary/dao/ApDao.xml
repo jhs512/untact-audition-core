@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.audictionary.dao.ApDao">
+	<insert id="doJoin" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO ap 
+		SET regDate = NOW(), 
+		updateDate = NOW(),
+		loginId = #{loginId},
+		loginPw = #{loginPw},
+		`name` = #{name},
+		engName = #{engName},
+		nickName = #{nickName},
+		gender = #{gender},
+		regNumber = #{regNumber},
+		address = #{address},
+		email = #{email},
+		cellPhoneNo = #{cellPhoneNo}
+	</insert>
+	
+	<select id="getApByLoginId">
+		SELECT *
+		FROM ap
+		WHERE loginId = #{loginId}
+	</select>
+	
+	<update id="doModify">
+		UPDATE `ap`
+		<set>
+			<if test="loginPw != null || name != null || engName != null || nickname != null || gender != null || regNumber != null || address != null || email != null || cellphoneNo != null">
+			updateDate = NOW(),
+			</if>
+			<if test="loginPw != null">
+			loginPw = #{loginPw},
+			</if>
+			<if test="name != null">
+			`name` = #{name},
+			</if>
+			<if test="engName != null">
+			engName = #{engName},
+			</if>
+			<if test="nickname != null">
+			nickname = #{nickname},
+			</if>
+			<if test="gender != null">
+			gender = #{gender},
+			</if>
+			<if test="regNumber != null">
+			regNumber = #{regNumber},
+			</if>
+			<if test="address != null">
+			address = #{address},
+			</if>
+			<if test="email != null">
+			email = #{email},
+			</if>
+			<if test="cellphoneNo != null">
+			cellphoneNo = #{cellphoneNo},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
