@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.audictionary.dto.Member;
-import com.audictionary.service.MemberService;
+import com.audictionary.dto.Pd;
+import com.audictionary.service.PdService;
 
 @Component("beforeActionInterceptor") // 컴포넌트 이름 설정
 public class BeforeActionInterceptor implements HandlerInterceptor {
 	@Autowired
-	private MemberService memberService;
+	private PdService pdService;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -28,13 +28,13 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		boolean isLogined = false;
 		boolean isAdmin = false;
 		int loginedMemberId = 0;
-		Member loginedMember = null;
+		Pd loginedMember = null;
 
 		if (session.getAttribute("loginedMemberId") != null) {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			isLogined = true;
-			loginedMember = memberService.getMember(loginedMemberId);
-			isAdmin = memberService.isAdmin(loginedMemberId);
+			loginedMember = pdService.getMemberById(loginedMemberId);
+			isAdmin = pdService.isAdmin(loginedMemberId);
 		}
 
 		request.setAttribute("loginedMemberId", loginedMemberId);

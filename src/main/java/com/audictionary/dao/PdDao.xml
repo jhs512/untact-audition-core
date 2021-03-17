@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.audictionary.dao.PdDao">
+	<insert id="doJoin" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO pd SET
+		regDate = NOW(), updateDate = NOW(),
+		loginId = #{email},
+		loginPw = #{loginPw},
+		`name` = #{name},
+		gender = #{gender},
+		regNumber = #{regNumber},
+		address = #{address},
+		email = #{email},
+		cellPhoneNo = #{cellPhoneNo},
+		jobPosition = #{jobPosition},
+		<if test="corpName != null">
+		corpName = #{corpName},
+		</if>
+		<if test="corpType != null">
+		corpType = #{corpType},
+		</if>
+		authLevel = 2
+	</insert>
+	
+	<select id="getMemberById" resultType="Pd">
+		SELECT * FROM pd
+		WHERE id = #{id}
+	</select>
+	
+	<select id="isAdmin" resultType="Pd">
+		SELECT * FROM pd
+		WHERE id = #{id},
+		AND authLevel = 1
+	</select>
+</mapper>
