@@ -4,10 +4,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.PdService;
 import com.audictionary.util.Util;
@@ -17,7 +19,7 @@ public class UsrPdController {
 	@Autowired
 	private PdService pdService;
 	
-	@RequestMapping("usr/pd/doJoin")
+	@PostMapping("usr/pd/doJoin")
 	@ResponseBody
 	public ResultData doJoin(@RequestParam Map<String,Object> param) {
 	
@@ -57,9 +59,27 @@ public class UsrPdController {
 		return new ResultData("S-1", "회원가입성공", "id" , id );
 	}
 	
-	@RequestMapping("/usr/pd/doLogin")
+	@PostMapping("/usr/pd/doLogin")
 	@ResponseBody
 	public ResultData doLogin(@RequestParam Map<String,Object> param) {
-		return new ResultData("S-1","로그인 성공");
+		
+		if ( param.get("email") == null ) {
+			return new ResultData("F-1", "이메일을 입력해 주세요.");
+		}
+		if ( param.get("loginPw") == null ) {
+			return new ResultData("F-1", "비밀번호를 입력해 주세요.");
+		}
+		
+		Pd pd = pdService.getMemberByEmail(param);
+		
+		if( pd == null ) {
+			return new ResultData("F-1", "일치하는 회원이 없습니다.");	
+		}
+		
+		if ( !pd.getLoginPw().equals(param.get("loginPw"))) {
+			return new ResultData("F-1", "비밀번호가 맞지 않습니다.");	
+		}
+		
+		return new ResultData("S-1","로그인 성공", "authKey", pd.getAuthKey(), "pd", pd);
 	}
 }

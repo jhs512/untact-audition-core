@@ -31,4 +31,9 @@ public class PdService {
 			return false;
 		}
 	}
+
+	public Pd getMemberByEmail(Map<String, Object> param) {
+		return pdDao.getMemberByEmail(param);
+		
+	}
 }

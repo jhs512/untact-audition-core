@@ -22,7 +22,8 @@
 		<if test="corpType != null">
 		corpType = #{corpType},
 		</if>
-		authLevel = 2
+		authLevel = 2,
+		authKey = CONCAT("authKey1__", UUID(), "__", RAND())
 	</insert>
 	
 	<select id="getMemberById" resultType="Pd">
@@ -34,5 +35,10 @@
 		SELECT * FROM pd
 		WHERE id = #{id},
 		AND authLevel = 1
+	</select>
+	
+	<select id="getMemberByEmail" resultType="Pd">
+		SELECT * FROM pd
+		WHERE loginId = #{email}
 	</select>
 </mapper>

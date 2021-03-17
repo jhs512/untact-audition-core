@@ -24,5 +24,6 @@ public class Pd {
 	private String corpName;
 	private String corpType;
 	private String authLevel;
+	private String authKey;
 
 }
