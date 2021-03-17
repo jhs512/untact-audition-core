@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
-import com.audictionary.util.Util;
 
 @Controller
 public class UsrApController {
 	@Autowired
-	private ApService ApService;
+	private ApService apService;
 
 	@PostMapping("/usr/ap/doJoin")
 	@ResponseBody
@@ -58,11 +57,7 @@ public class UsrApController {
 			return new ResultData("F-1", "전화번로를 입력해 주세요.");
 		}
 
-		ApService.doJoin(param);
-
-		int id = Util.getAsInt(param.get("id"), 0);
-
-		return new ResultData("S-1", "회원가입성공", "id", id);
+		return apService.doJoin(param);
 	}
 	
 	@PostMapping("/usr/ap/getAuthKey")
@@ -72,7 +67,7 @@ public class UsrApController {
 			return new ResultData("F-1", "loginId를 입력해주세요.");
 		}
 
-		Ap existingAp = ApService.getApByLoginId(loginId);
+		Ap existingAp = apService.getApByLoginId(loginId);
 
 		if (existingAp == null) {
 			return new ResultData("F-2", "존재하지 않는 로그인아이디 입니다.", "loginId", loginId);
@@ -87,5 +82,17 @@ public class UsrApController {
 		}
 
 		return new ResultData("S-1", String.format("%s님 환영합니다.", existingAp.getNickName()), "authKey", existingAp.getAuthKey(), "member", existingAp);
+	}
+	
+	@PostMapping("/usr/ap/doModify")
+	@ResponseBody
+	public ResultData doModify(@RequestParam Map<String, Object> param, String loginedMemberId) {
+		
+		if ( param.isEmpty() ) {
+			return new ResultData("F-1", "수정할 정보를 입력해주세요.");
+		}
+		param.put("id", loginedMemberId);
+		
+		return apService.doModify(param);
 	}
 }
