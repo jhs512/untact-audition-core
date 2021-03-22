@@ -3,6 +3,7 @@ package com.audictionary.dao;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.audictionary.dto.Pd;
 
@@ -17,4 +18,13 @@ public interface PdDao {
 
 	Pd getMemberByEmail(Map<String, Object> param);
 
+	void doModify(Map<String, Object> param);
+
+	Pd getMemberByAuthKey(@Param("authKey") String authKey);
+
+	void doDeleteMemberById(int id);
+
+	Pd doFindLoginId(Map<String, Object> param);
+
+	void setTempPw(String email, String tempPw);
 }

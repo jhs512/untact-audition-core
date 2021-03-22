@@ -1,5 +1,7 @@
 package com.audictionary.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,18 +14,22 @@ public class Pd {
 	private int id;
 	private String regDate;
 	private String updateDate;
+	private String delDate;
+	private int delStatus;
 	private String loginId;
+	@JsonIgnore
 	private String loginPw;
 	private String name;
 	private String gender;
 	private String regNumber;
 	private String address;
 	private String email;
-	private String cellPhonoNe;
+	private String cellPhoneNo;
 	private String jobPosition;
 	private String corpName;
 	private String corpType;
 	private String authLevel;
+	@JsonIgnore
 	private String authKey;
 
 }

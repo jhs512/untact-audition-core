@@ -33,7 +33,7 @@
 	
 	<select id="isAdmin" resultType="Pd">
 		SELECT * FROM pd
-		WHERE id = #{id},
+		WHERE id = #{id}
 		AND authLevel = 1
 	</select>
 	
@@ -41,4 +41,60 @@
 		SELECT * FROM pd
 		WHERE loginId = #{email}
 	</select>
+	
+	<update id="doModify">
+		UPDATE pd
+			<set>
+				<if test="needToModify">
+					updateDate = NOW(),
+				</if>
+				<if test="name != null">
+					name = #{name},
+				</if>
+				<if test="loginPw != null and loginPw.length > 0">
+					loginPw = #{loginPw},
+				</if>
+				<if test="address != null">
+					address = #{address},
+				</if>
+				<if test="cellPhoneNo != null">
+					cellPhoneNo = #{cellPhoneNo},
+				</if>
+				<if test="jobPosition != null">
+					jobPosition = #{jobPosition},
+				</if>
+				<if test="corpName != null">
+					corpName = #{corpName},
+				</if>
+			</set>
+			WHERE id = #{id}
+	</update>
+	
+	<update id="doDeleteMemberById">
+		UPDATE pd
+		<set>
+			delDate = NOW(),
+			delStatus = 1
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMemberByAuthKey" resultType="Pd">
+		SELECT * FROM pd
+		WHERE authKey = #{authKey}
+	</select>
+	
+	<select id="doFindLoginId" resultType="Pd">
+		SELECT * FROM pd
+		WHERE `name` = #{name}
+		AND regNumber = #{regNumber}
+	</select>
+	
+	<update id="setTempPw">
+		UPDATE pd
+		<set>
+		loginPw = #{tempPw}
+		</set>
+		WHERE loginId = #{email}		
+	</update>
 </mapper>

@@ -8,6 +8,18 @@
 		INSERT INTO recruitment SET
 		regDate = NOW(), updateDate = NOW(),
 		title = #{title},
-		`body` = #{body}
+		`body` = #{body},
+		memberId = #{memberId},
+		boardId = #{boardId},
+		roleTypeCode = #{roleType},
+		roleId = 1,
+		location = #{location},
+		period = #{period},
+		deadline = #{deadline},
+		manager = #{manager}
 	</insert>
+	
+	<select id="getListForPrint" resultType="Recruit">
+		SELECT * FROM recruitment
+	</select>
 </mapper>

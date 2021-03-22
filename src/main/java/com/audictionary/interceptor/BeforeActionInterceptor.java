@@ -23,20 +23,39 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			throws Exception {
 
 		HttpSession session = request.getSession();
+		
+		int loginedMemberId = 0;
+		Pd loginedMember = null;
+		
+		String authKey = request.getParameter("authKey");
+		if (authKey != null && authKey.length() > 0) {
+			loginedMember = pdService.getMemberByAuthKey(authKey);
+
+			if (loginedMember == null) {
+				request.setAttribute("authKeyStatus", "invalid");
+			} else {
+				request.setAttribute("authKeyStatus", "valid");
+				loginedMemberId = loginedMember.getId();
+			}
+		} else {
+			request.setAttribute("authKeyStatus", "none");
+
+			if (session.getAttribute("loginedMemberId") != null) {
+				loginedMemberId = (int) session.getAttribute("loginedMemberId");
+				loginedMember = pdService.getMemberById(loginedMemberId);
+			}
+		}
 
 		// 로그인 여부에 관련된 정보를 request에 담는다.
 		boolean isLogined = false;
 		boolean isAdmin = false;
-		int loginedMemberId = 0;
-		Pd loginedMember = null;
-
-		if (session.getAttribute("loginedMemberId") != null) {
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		
+		if (loginedMember != null) {
 			isLogined = true;
-			loginedMember = pdService.getMemberById(loginedMemberId);
 			isAdmin = pdService.isAdmin(loginedMemberId);
 		}
-
+		System.out.println("검색용: "+ authKey);
+		System.out.println("검색용: "+ loginedMemberId);
 		request.setAttribute("loginedMemberId", loginedMemberId);
 		request.setAttribute("isLogined", isLogined);
 		request.setAttribute("isAdmin", isAdmin);

@@ -21,7 +21,7 @@ spring:
 mybatis:
   type-aliases-package: com.audictionary.dto
 custom:
-  genFileDirPath: ../audictionary-file
+  genFileDirPath: ../../vite_projects/audictionary_pd/gen
   logging:
     dir: log
     level: debug

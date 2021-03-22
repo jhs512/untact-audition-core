@@ -36,4 +36,25 @@ public class PdService {
 		return pdDao.getMemberByEmail(param);
 		
 	}
+
+	public void doModify(Map<String, Object> param) {
+		pdDao.doModify(param);
+	}
+
+	public Pd getMemberByAuthKey(String authKey) {
+		return pdDao.getMemberByAuthKey(authKey);
+	}
+
+	public void doDeleteMemberById(int id) {
+		pdDao.doDeleteMemberById(id);
+	}
+
+	public Pd doFindLoginId(Map<String, Object> param) {
+		return pdDao.doFindLoginId(param);
+	}
+
+	
+	public void setTempPw(String email, String tempPw) {
+		pdDao.setTempPw(email,tempPw);	
+	}
 }
