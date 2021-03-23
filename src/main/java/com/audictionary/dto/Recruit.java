@@ -18,10 +18,9 @@ public class Recruit extends EntityDto {
 	private int delStatus;
 	private int memberId;
 	private int boardId;
-	private String roleTypeCode;
-	private String roleId;
 	private String title;
 	private String body;
+	private String roleType;
 	private String location;
 	private String period;
 	private String deadline;

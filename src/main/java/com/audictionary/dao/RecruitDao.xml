@@ -11,6 +11,7 @@
 		`body` = #{body},
 		memberId = #{memberId},
 		boardId = #{boardId},
+		roleType = #{roleType},
 		location = #{location},
 		period = #{period},
 		deadline = #{deadline},
@@ -50,5 +51,11 @@
 	
 	<select id="getListForPrint" resultType="Recruit">
 		SELECT * FROM recruitment
+		WHERE delStatus != 1
+	</select>
+	
+	<select id="getRecruitById" resultType="Recruit">
+		SELECT * FROM recruitment
+		WHERE id = #{id}
 	</select>
 </mapper>

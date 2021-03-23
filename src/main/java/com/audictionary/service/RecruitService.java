@@ -49,4 +49,19 @@ public class RecruitService {
 		
 	}
 
+	public Recruit getRecruitById(int id) {
+		Recruit recruit = recruitDao.getRecruitById(id);
+		
+		List<GenFile> genFiles = genFileService.getGenFiles("recruit", id, "common", "attachment");
+		
+		if( !genFiles.isEmpty() ) {
+			recruit.getExtraNotNull().put("file__common__attachment", genFiles);	
+		}
+		
+		
+		
+		return recruit;
+		
+	}
+
 }
