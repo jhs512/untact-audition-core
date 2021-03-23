@@ -39,4 +39,14 @@ public class RecruitService {
 		return recruits;
 	}
 
+	public int doWriteArtwork(Map<String, Object> param) {
+		return recruitDao.doWriteArtwork(param);
+		
+	}
+
+	public int doWriteActingRole(Map<String, Object> param) {
+		return recruitDao.doWriteActingRole(param);
+		
+	}
+
 }

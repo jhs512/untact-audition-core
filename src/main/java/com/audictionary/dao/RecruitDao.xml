@@ -11,12 +11,41 @@
 		`body` = #{body},
 		memberId = #{memberId},
 		boardId = #{boardId},
-		roleTypeCode = #{roleType},
-		roleId = 1,
 		location = #{location},
 		period = #{period},
 		deadline = #{deadline},
 		manager = #{manager}
+	</insert>
+	
+	<insert id="doWriteArtwork" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO artwork SET
+		regDate = NOW(), updateDate = NOW(),
+		recruitmentId = #{newRecruitmentId},
+		`name` = #{artworkName},
+		genre = #{genre},
+		corp = #{corp},
+		director = #{director}
+		<if test="artworkEtc != null">
+			, etc = #{artworkEtc}
+		</if>
+	</insert>
+	
+	<insert id="doWriteActingRole" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO actingRole SET
+		regDate = NOW(), updateDate = NOW(),
+		recruitmentId = #{newRecruitmentId},
+		realName = #{roleRealName},
+		`name` = #{roleName},
+		pay = #{pay},
+		age = #{roleAge},
+		job = #{roleJob},
+		gender = #{roleGender},
+		scriptStatus = #{roleScript},
+		scenesCount = #{roleSceneCount},
+		shootingsCount = #{roleShootingCount}
+		<if test="actingRoleEtc != null">
+			, etc = #{actingRoleEtc}
+		</if>
 	</insert>
 	
 	<select id="getListForPrint" resultType="Recruit">

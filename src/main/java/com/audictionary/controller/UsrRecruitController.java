@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,7 +22,7 @@ public class UsrRecruitController {
 	@Autowired
 	private GenFileService genFileService;
 	
-	@RequestMapping("/usr/recruit/write")
+	@PostMapping("/usr/recruit/write")
 	@ResponseBody
 	public ResultData doWrite(@RequestParam Map<String,Object> param) {
 		
@@ -34,6 +33,28 @@ public class UsrRecruitController {
 		genFileService.changeInputFileRelIds(param, id);
 		
 		return new ResultData("S-1", "공고 등록 성공", "id", id);
+	}
+	
+	@PostMapping("/usr/recruit/writeArtwork")
+	@ResponseBody
+	public ResultData doWriteArtwork(@RequestParam Map<String,Object> param) {
+		
+		recruitService.doWriteArtwork(param);
+		
+		int id = Util.getAsInt(param.get("id"),0);
+		
+		return new ResultData("S-1", "작품 등록 성공", "id", id);
+	}
+	
+	@PostMapping("/usr/recruit/writeActingRole")
+	@ResponseBody
+	public ResultData doWriteActingRole(@RequestParam Map<String,Object> param) {
+		
+		recruitService.doWriteActingRole(param);
+		
+		int id = Util.getAsInt(param.get("id"),0);
+		
+		return new ResultData("S-1", "배역 등록 성공", "id", id);
 	}
 	
 	@PostMapping("/usr/recruit/list")

@@ -14,6 +14,10 @@ public interface RecruitDao {
 
 	List<Recruit> getListForPrint();
 
+	int doWriteArtwork(Map<String, Object> param);
+
+	int doWriteActingRole(Map<String, Object> param);
+
 	
 
 }

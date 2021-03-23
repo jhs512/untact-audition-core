@@ -30,7 +30,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		String authKey = request.getParameter("authKey");
 		if (authKey != null && authKey.length() > 0) {
 			loginedMember = pdService.getMemberByAuthKey(authKey);
-
+			
 			if (loginedMember == null) {
 				request.setAttribute("authKeyStatus", "invalid");
 			} else {
@@ -45,7 +45,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 				loginedMember = pdService.getMemberById(loginedMemberId);
 			}
 		}
-
+		
 		// 로그인 여부에 관련된 정보를 request에 담는다.
 		boolean isLogined = false;
 		boolean isAdmin = false;
@@ -54,8 +54,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 			isLogined = true;
 			isAdmin = pdService.isAdmin(loginedMemberId);
 		}
-		System.out.println("검색용: "+ authKey);
-		System.out.println("검색용: "+ loginedMemberId);
+		
 		request.setAttribute("loginedMemberId", loginedMemberId);
 		request.setAttribute("isLogined", isLogined);
 		request.setAttribute("isAdmin", isAdmin);
