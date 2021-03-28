@@ -67,18 +67,26 @@ public class UsrRecruitController {
 		return new ResultData("S-1", "배역 등록 성공", "id", id);
 	}
 	
-	@PostMapping("/usr/recruit/list")
+	@GetMapping("/usr/recruit/list")
 	@ResponseBody
-	public ResultData showList() {
+	public ResultData showList(@RequestParam int limit) {
 		
-		List<Recruit> recruits = recruitService.getListForPrint();
+		List<Recruit> recruits = recruitService.getListForPrint(limit);
 		
-		return new ResultData("S-1", "공고 리스트 출력", "recruits" , recruits);
+		boolean isAllLoaded = false;
+		
+		if( limit > recruits.size() ) {
+			isAllLoaded = true;
+		}
+		
+		return new ResultData("S-1", "공고 리스트 출력", "recruits" , recruits, "isAllLoaded", isAllLoaded);
 	}
 	
 	@GetMapping("/usr/recruit/detail")
 	@ResponseBody
 	public ResultData showDetail(@RequestParam int id) {
+		
+		
 		Recruit recruit = recruitService.getRecruitById(id);
 		
 		

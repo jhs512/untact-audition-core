@@ -52,10 +52,12 @@
 	<select id="getListForPrint" resultType="Recruit">
 		SELECT * FROM recruitment
 		WHERE delStatus != 1
+		LIMIT #{limit}
 	</select>
 	
 	<select id="getRecruitById" resultType="Recruit">
 		SELECT * FROM recruitment
 		WHERE id = #{id}
 	</select>
+	
 </mapper>

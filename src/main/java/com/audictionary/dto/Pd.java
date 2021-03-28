@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Pd {
+public class Pd extends EntityDto{
 	
 	private int id;
 	private String regDate;
@@ -29,6 +29,7 @@ public class Pd {
 	private String corpName;
 	private String corpType;
 	private String authLevel;
+	private String extra__thumbImg;
 	@JsonIgnore
 	private String authKey;
 

@@ -140,7 +140,7 @@ public class GenFileService {
 
 		// 삭제 시작
 		int deleteCount = 0;
-
+		System.out.println("검색:"+param.keySet());
 		for (String inputName : param.keySet()) {
 			String[] inputNameBits = inputName.split("__");
 

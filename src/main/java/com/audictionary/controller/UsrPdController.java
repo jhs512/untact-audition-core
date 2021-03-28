@@ -1,5 +1,6 @@
 package com.audictionary.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
+import com.audictionary.service.GenFileService;
 import com.audictionary.service.PdService;
 import com.audictionary.util.Util;
 
@@ -18,6 +21,8 @@ import com.audictionary.util.Util;
 public class UsrPdController {
 	@Autowired
 	private PdService pdService;
+	@Autowired
+	private GenFileService genFileService;
 
 	@PostMapping("usr/pd/doJoin")
 	@ResponseBody
@@ -72,13 +77,19 @@ public class UsrPdController {
 		Pd pd = pdService.getMemberByEmail(param);
 
 		if (pd == null) {
-			return new ResultData("F-1", "일치하는 회원이 없습니다.");
+			return new ResultData("F-2", "일치하는 회원이 없습니다.");
 		}
 
 		if (!pd.getLoginPw().equals(param.get("loginPw"))) {
-			return new ResultData("F-1", "비밀번호가 맞지 않습니다.");
+			return new ResultData("F-2", "비밀번호가 맞지 않습니다.");
 		}
 
+		if ( pd.getDelStatus() == 1 ) {
+			return new ResultData("F-3","탈퇴한 회원입니다.");
+		}
+		
+		pd = pdService.updateForPrint(pd);
+		
 		return new ResultData("S-1", "로그인 성공", "authKey", pd.getAuthKey(), "pd", pd);
 	}
 
@@ -101,8 +112,23 @@ public class UsrPdController {
 		
 		param.put("needToModify", needToModify);
 		param.put("id", loginedMemberId);
+		
 		pdService.doModify(param);
-
+		
+		pd = pdService.getMemberById(id);
+		
+		List<GenFile> genFiles = genFileService.getGenFiles("pd", id, "common", "attachment");
+		
+		if ( genFiles.size() > 0 ) {
+			GenFile genfile = genFiles.get(genFiles.size()-1);
+			String imgUrl = genfile.getForPrintUrl();
+			pd.setExtra__thumbImg(imgUrl);
+		}
+		
+		genFileService.changeInputFileRelIds(param, id);
+		
+		
+		
 		return new ResultData("S-1", "회원정보수정","authKey", pd.getAuthKey(), "pd", pd);
 	}
 	

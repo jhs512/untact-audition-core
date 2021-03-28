@@ -22,8 +22,10 @@ public class RecruitService {
 		return recruitDao.doWrite(param);	
 	}
 
-	public List<Recruit> getListForPrint() {
-		List<Recruit> recruits =  recruitDao.getListForPrint();
+	public List<Recruit> getListForPrint(int limit) {
+		
+		
+		List<Recruit> recruits =  recruitDao.getListForPrint(limit);
 		
 		List<Integer> recruitIds = recruits.stream().map(recruit -> recruit.getId()).collect(Collectors.toList());
 		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("recruit", recruitIds, "common", "attachment");
@@ -63,5 +65,6 @@ public class RecruitService {
 		return recruit;
 		
 	}
+
 
 }
