@@ -98,6 +98,13 @@ public class UsrPdController {
 	public ResultData doModify(@RequestParam Map<String, Object> param) {
 		String loginedMemberId = (String)param.get("loginedMemberId");
 		int id = Integer.parseInt(loginedMemberId);
+		
+		List<GenFile> genFiles = genFileService.getGenFiles("pd", id, "common", "attachment");
+		
+		if ( genFiles.size() > 0 ) {
+			genFileService.deleteGenFiles("pd", id);
+		}
+		
 		Pd pd = pdService.getMemberById(id);
 
 		boolean needToModify = false;
@@ -116,18 +123,6 @@ public class UsrPdController {
 		pdService.doModify(param);
 		
 		pd = pdService.getMemberById(id);
-		
-		List<GenFile> genFiles = genFileService.getGenFiles("pd", id, "common", "attachment");
-		
-		if ( genFiles.size() > 0 ) {
-			GenFile genfile = genFiles.get(genFiles.size()-1);
-			String imgUrl = genfile.getForPrintUrl();
-			pd.setExtra__thumbImg(imgUrl);
-		}
-		
-		genFileService.changeInputFileRelIds(param, id);
-		
-		
 		
 		return new ResultData("S-1", "회원정보수정","authKey", pd.getAuthKey(), "pd", pd);
 	}
