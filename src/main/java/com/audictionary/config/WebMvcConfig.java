@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -62,14 +63,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/usr/pd/doLogin")
 			.excludePathPatterns("/usr/pd/doJoin")
 			.excludePathPatterns("/usr/ap/getAuthKey")
+			.excludePathPatterns("/usr/pd/doFindLoginId")
+			.excludePathPatterns("/usr/pd/doFindLoginPw")
+			.excludePathPatterns("/usr/ap/doLogin")
 			.excludePathPatterns("/usr/ap/doJoin")
-			.excludePathPatterns("/usr/recruit/write")
-			.excludePathPatterns("/usr/article/detail")
-			.excludePathPatterns("/usr/reply/list")
-			.excludePathPatterns("/usr/member/findLoginId")
-			.excludePathPatterns("/usr/member/doFindLoginId")
-			.excludePathPatterns("/usr/member/findLoginPw")
-			.excludePathPatterns("/usr/member/doFindLoginPw")
+			.excludePathPatterns("/usr/recruit/list")
 			.excludePathPatterns("/usr/file/test*")
 			.excludePathPatterns("/usr/file/doTest*")
 			.excludePathPatterns("/common/**")
@@ -84,5 +82,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.addPathPatterns("/usr/member/doLogin")
 			.addPathPatterns("/usr/member/join")
 			.addPathPatterns("/usr/member/doJoin");
+	}
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/gen/**").addResourceLocations("file:///" + genFileDirPath + "/")
+				.setCachePeriod(20);
 	}
 }
