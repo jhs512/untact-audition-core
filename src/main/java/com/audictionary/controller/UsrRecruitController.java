@@ -3,6 +3,9 @@ package com.audictionary.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.audictionary.dto.ActingRole;
 import com.audictionary.dto.Artwork;
-import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ActingRoleService;
 import com.audictionary.service.ArtworkService;
+import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.RecruitService;
 import com.audictionary.util.Util;
@@ -31,6 +34,7 @@ public class UsrRecruitController {
 	private ArtworkService artworkService;
 	@Autowired
 	private ActingRoleService actingRoleService;
+	
 	
 	@PostMapping("/usr/recruit/write")
 	@ResponseBody

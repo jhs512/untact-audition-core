@@ -3,8 +3,11 @@ package com.audictionary.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
+import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.PdService;
 import com.audictionary.util.Util;
@@ -23,6 +27,8 @@ public class UsrPdController {
 	private PdService pdService;
 	@Autowired
 	private GenFileService genFileService;
+	@Autowired
+	private EmailService emailService;
 
 	@PostMapping("usr/pd/doJoin")
 	@ResponseBody
@@ -61,6 +67,21 @@ public class UsrPdController {
 		int id = Util.getAsInt(param.get("id"), 0);
 
 		return new ResultData("S-1", "회원가입성공", "id", id);
+	}
+	
+	@RequestMapping("/usr/pd/emailCert")
+	@ResponseBody
+	public ResultData doEmailCert(@RequestParam String email) throws MessagingException {
+		
+		emailService.sendMail(email);
+		return new ResultData("S-1" , "메일 발송");
+	}
+	
+	@GetMapping("/usr/pd/cert")
+	@ResponseBody
+	public ResultData doEmailCert2(@RequestParam String email) throws MessagingException {
+		
+		return new ResultData("S-1", "인증성공", "isCert" , true);
 	}
 
 	@PostMapping("/usr/pd/doLogin")
