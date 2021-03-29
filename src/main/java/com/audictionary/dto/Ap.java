@@ -17,11 +17,11 @@ public class Ap {
 	@JsonIgnore
 	private String loginPw;
 	private String name;
+	private String engName;
 	private String nickName;
 	private String gender;
 	private String regNumber;
 	private String address;
-	private String email;
 	private String cellPhonoNe;
 	private int feet;
 	private int weight;

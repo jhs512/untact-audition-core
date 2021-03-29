@@ -49,10 +49,6 @@ public class UsrApController {
 			return new ResultData("F-1", "주소를 입력해 주세요.");
 		}
 
-		if (param.get("email") == null) {
-			return new ResultData("F-1", "이메일을 입력해 주세요.");
-		}
-
 		if (param.get("cellPhoneNo") == null) {
 			return new ResultData("F-1", "전화번로를 입력해 주세요.");
 		}
@@ -80,6 +76,8 @@ public class UsrApController {
 		if (existingAp.getLoginPw().equals(loginPw) == false) {
 			return new ResultData("F-3", "비밀번호가 일치하지 않습니다.");
 		}
+		
+		System.out.println("출력용 existingAp.getName() : " + existingAp.getName() + "authKey : " + existingAp.getAuthKey() + "member : " + existingAp);
 
 		return new ResultData("S-1", String.format("%s님 환영합니다.", existingAp.getNickName()), "authKey", existingAp.getAuthKey(), "member", existingAp);
 	}

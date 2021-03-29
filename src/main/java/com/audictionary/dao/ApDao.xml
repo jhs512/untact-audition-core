@@ -12,15 +12,23 @@
 		loginPw = #{loginPw},
 		`name` = #{name},
 		engName = #{engName},
-		nickName = #{nickName},
 		gender = #{gender},
 		regNumber = #{regNumber},
 		address = #{address},
-		email = #{email},
-		cellPhoneNo = #{cellPhoneNo}
+		cellPhoneNo = #{cellPhoneNo},
+		nickName = #{nickName}, 
+        feet = #{feet}, 
+        weight = #{weight}, 
+        skinTone = #{skinTone}, 
+        eyelid = #{eyelid}, 
+        feature = #{feature}, 
+        filmgraphy = #{filmgraphy}, 
+        jobArea = #{jobArea}, 
+        corp = #{corp},
+		authKey = CONCAT("authKey1__", UUID(), "__", RAND()) 
 	</insert>
 	
-	<select id="getApByLoginId">
+	<select id="getApByLoginId" resultType="Ap">
 		SELECT *
 		FROM ap
 		WHERE loginId = #{loginId}
