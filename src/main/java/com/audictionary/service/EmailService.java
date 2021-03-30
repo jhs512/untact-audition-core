@@ -10,15 +10,19 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.audictionary.util.Util;
+
 
 
 @Service
 public class EmailService {
 	@Autowired
 	private JavaMailSender mailSender;
+	@Autowired
+	private AttrService attrService;
 	
 	@Async
-	public void sendMail(String email) throws MessagingException {
+	public void sendMailForCert(String email) throws MessagingException {
 		/* 간단한 텍스트로만 메일 보내기
 		SimpleMailMessage simpleMessage = new SimpleMailMessage();
 		simpleMessage.setFrom("cdbitmana@gmail.com"); // NAVER, DAUM, NATE일 경우 넣어줘야 함
@@ -34,7 +38,14 @@ public class EmailService {
 		 helper.setTo(email);
 		 helper.setFrom("cdbitmana@gmail.com");
 		 helper.setSubject("Audictionary 회원가입 인증메일입니다.");
-		 helper.setText("<a href=\"http://localhost:8100/usr/pd/cert?email="+email+"\">인증</a>", true);
+		 
+		 String emailCertKey = Util.getTempPassword(50);
+		 
+		 attrService.setValue("pd", 0, "emailCertKey", email, emailCertKey, null);
+		 
+		 StringBuilder str = new StringBuilder();
+		 str.append("<a href=\"http://localhost:8100/usr/pd/emailCert?email="+email+"&key="+emailCertKey+"\">인증</a>");
+		 helper.setText(str.toString(),true);
 		 mailSender.send(msg);
 	}
 }

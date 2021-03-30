@@ -55,8 +55,8 @@ public class PdService {
 		}
 	}
 
-	public Pd getMemberByEmail(Map<String, Object> param) {
-		return pdDao.getMemberByEmail(param);
+	public Pd getMemberByEmail(String email) {
+		return pdDao.getMemberByEmail(email);
 		
 	}
 

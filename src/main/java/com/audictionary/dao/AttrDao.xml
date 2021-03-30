@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.audictionary.dao.AttrDao">
+	<select id="get" resultType="Attr">
+		SELECT * FROM attr
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND typeCode = #{typeCode}
+		AND type2Code = #{type2Code}
+		AND (expireDate >= NOW() OR expireDate IS NULL)
+	</select>
+	
+	<select id="getValue" resultType="string">
+		SELECT `value` FROM attr
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND typeCode = #{typeCode}
+		AND type2Code = #{type2Code}
+		AND (expireDate >= NOW() OR expireDate IS NULL)
+	</select>
+	
+	<delete id="remove">
+		DELETE FROM attr
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND typeCode = #{typeCode}
+		AND type2Code = #{type2Code}
+	</delete>
+	
+	<insert id="setValue">
+		INSERT INTO attr SET
+		regDate = NOW() , updateDate = NOW(),
+		<if test="expireDate != null">
+			expireDate = #{expireDate},
+		</if>
+		relTypeCode = #{relTypeCode},
+		relId = #{relId},
+		typeCode = #{typeCode},
+		type2Code = #{type2Code},
+		`value` = #{value}
+	</insert> 
+</mapper>

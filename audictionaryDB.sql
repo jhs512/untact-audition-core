@@ -60,6 +60,18 @@ CREATE TABLE pd (
 	INDEX `name` (`name`)
 );
 
+CREATE TABLE attr(
+id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+regDate DATETIME NOT NULL,
+updateDate DATETIME NOT NULL,
+expireDate DATETIME,
+relTypeCode CHAR(50),
+relId INT(10) UNSIGNED,
+typeCode CHAR(50),
+type2Code CHAR(50),
+`value` CHAR(50)
+);
+select * from attr;
 # 보드 테이블 만들기
 CREATE TABLE board(
 id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,

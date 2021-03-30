@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
+import com.audictionary.service.AttrService;
 import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.PdService;
@@ -29,6 +30,8 @@ public class UsrPdController {
 	private GenFileService genFileService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private AttrService attrService;
 
 	@PostMapping("usr/pd/doJoin")
 	@ResponseBody
@@ -69,19 +72,42 @@ public class UsrPdController {
 		return new ResultData("S-1", "회원가입성공", "id", id);
 	}
 	
-	@RequestMapping("/usr/pd/emailCert")
+	@RequestMapping("/usr/pd/emailDupCheck")
+	@ResponseBody
+	public ResultData doEmailDupCheck(@RequestParam String email) throws MessagingException {
+		
+		Pd pd = pdService.getMemberByEmail(email);
+		
+		if( pd == null ) {
+			return new ResultData("S-1" , "메일 발송");	
+		}
+		else {
+			return new ResultData("F-1" , "이미 가입된 이메일입니다.");
+		}
+		
+	}
+	
+	@RequestMapping("/usr/pd/sendEmail")
 	@ResponseBody
 	public ResultData doEmailCert(@RequestParam String email) throws MessagingException {
 		
-		emailService.sendMail(email);
+		emailService.sendMailForCert(email);
 		return new ResultData("S-1" , "메일 발송");
+		
 	}
 	
-	@GetMapping("/usr/pd/cert")
+	@RequestMapping("/usr/pd/emailCert")
 	@ResponseBody
-	public ResultData doEmailCert2(@RequestParam String email) throws MessagingException {
+	public ResultData doEmailCert2(@RequestParam Map<String,Object> param) throws MessagingException {
+		String emailCertkey = attrService.getValue("pd", 0, "emailCertKey", (String)param.get("email"));
 		
-		return new ResultData("S-1", "인증성공", "isCert" , true);
+		if (!param.get("key").equals(emailCertkey)) {
+			return new ResultData("F-1", "인증실패");
+		}else {
+			attrService.remove("pd", 0, "emailCertKey", (String)param.get("email"));
+			return new ResultData("S-1", "인증성공", "isCert" , true);	
+		}
+		
 	}
 
 	@PostMapping("/usr/pd/doLogin")
@@ -95,7 +121,7 @@ public class UsrPdController {
 			return new ResultData("F-1", "비밀번호를 입력해 주세요.");
 		}
 
-		Pd pd = pdService.getMemberByEmail(param);
+		Pd pd = pdService.getMemberByEmail((String)param.get("email"));
 
 		if (pd == null) {
 			return new ResultData("F-2", "일치하는 회원이 없습니다.");
@@ -120,11 +146,12 @@ public class UsrPdController {
 		String loginedMemberId = (String)param.get("loginedMemberId");
 		int id = Integer.parseInt(loginedMemberId);
 		
-		List<GenFile> genFiles = genFileService.getGenFiles("pd", id, "common", "attachment");
 		
-		if ( genFiles.size() > 0 ) {
+		
+		if ( param.get("isFileUploaded").equals("true") ) {
 			genFileService.deleteGenFiles("pd", id);
 		}
+		
 		
 		Pd pd = pdService.getMemberById(id);
 
@@ -146,6 +173,15 @@ public class UsrPdController {
 		pd = pdService.getMemberById(id);
 		
 		return new ResultData("S-1", "회원정보수정","authKey", pd.getAuthKey(), "pd", pd);
+	}
+	
+	@PostMapping("/usr/pd/update")
+	@ResponseBody
+	public ResultData doUpdatePd(@RequestParam String loginedMemberId) {
+		int id = Integer.parseInt(loginedMemberId);
+		Pd pd = pdService.getMemberById(id);
+		
+		return new ResultData("S-1", "갱신", "pd", pd);
 	}
 	
 	@PostMapping("/usr/pd/doFindLoginId")
@@ -177,7 +213,7 @@ public class UsrPdController {
 			return new ResultData("F-1", "주민등록번호를 입력해 주세요.");
 		}
 		String email = (String)param.get("email");
-		Pd pd = pdService.getMemberByEmail(param);
+		Pd pd = pdService.getMemberByEmail(email);
 		
 		if ( pd == null ) {
 			return new ResultData("F-2" , "일치하는 회원이 없습니다.");

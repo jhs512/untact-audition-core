@@ -30,6 +30,7 @@ public class Pd extends EntityDto{
 	private String corpType;
 	private String authLevel;
 	private String extra__thumbImg;
+	private String extra__fileType;
 	@JsonIgnore
 	private String authKey;
 
