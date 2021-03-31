@@ -1,5 +1,6 @@
 package com.audictionary.controller;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.audictionary.dto.Attr;
+import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.AttrService;
@@ -158,26 +160,23 @@ public class UsrPdController {
 		String loginedMemberId = (String)param.get("loginedMemberId");
 		int id = Integer.parseInt(loginedMemberId);
 		
-		
-		
 		if ( param.get("isFileUploaded").equals("true") ) {
 			genFileService.deleteGenFiles("pd", id);
 		}
 		
-		
 		Pd pd = pdService.getMemberById(id);
 
-		boolean needToModify = false;
+		boolean isNeedToModify = false;
 
 		if (!pd.getName().equals(param.get("name")) || !pd.getAddress().equals(param.get("address"))
 				|| !pd.getLoginPw().equals(param.get("loginPw"))
 				|| !pd.getCellPhoneNo().equals(param.get("cellPhoneNo"))
 				|| !pd.getJobPosition().equals(param.get("jobPosition"))
 				|| !pd.getCorpName().equals(param.get("corpName"))) {
-			needToModify = true;
+			isNeedToModify = true;
 		}
 		
-		param.put("needToModify", needToModify);
+		param.put("isNeedToModify", isNeedToModify);
 		param.put("id", loginedMemberId);
 		
 		pdService.doModify(param);
@@ -252,4 +251,5 @@ public class UsrPdController {
 		
 		return new ResultData("S-1", "회원탈퇴성공");
 	}
+	
 }

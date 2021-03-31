@@ -15,11 +15,9 @@ public interface RecruitDao {
 
 	List<Recruit> getListForPrint(@Param("limit")int limit);
 
-	int doWriteArtwork(Map<String, Object> param);
-
-	int doWriteActingRole(Map<String, Object> param);
-
 	Recruit getRecruitById(@Param("id") int id);
+
+	void doModify(Map<String, Object> param);
 
 	
 

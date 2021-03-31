@@ -1,5 +1,7 @@
 package com.audictionary.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,14 @@ public class ActingRoleService {
 
 	public ActingRole getActingRoleByRecruitmentId(int recruitmentId) {
 		return actingRoleDao.getActingRoleByRecruitmentId(recruitmentId);
+	}
+
+	public int doWriteActingRole(Map<String, Object> param) {
+		return actingRoleDao.doWriteActingRole(param);	
+	}
+
+	public void doModify(Map<String, Object> param) {
+		actingRoleDao.doModify(param);
 	}
 
 }
