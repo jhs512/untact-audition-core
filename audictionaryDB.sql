@@ -35,7 +35,7 @@ CREATE TABLE ap (
 	INDEX `name` (`name` , jobArea, feature, gender, feet, weight)
 );
 
-# 제작자 테이블 생성
+# 제작자 테이블 생성pd
 CREATE TABLE pd (
 	id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	regDate DATETIME NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE pd (
 	loginPw VARCHAR(200) NOT NULL,
 	`name` CHAR(10) NOT NULL,
 	gender CHAR(2) NOT NULL, # 성별
-	regNumber CHAR(14) NOT NULL, # 주민등록번호
+	regNumber CHAR(100) NOT NULL, # 주민등록번호
 	address CHAR(30) NOT NULL,	# 주소
 	email CHAR(20) NOT NULL,  # 이메일
 	cellPhoneNo VARCHAR(15) NOT NULL,  # 전화번호
@@ -71,8 +71,8 @@ typeCode CHAR(50),
 type2Code CHAR(50),
 `value` CHAR(50)
 );
-select * from attr;
-# 보드 테이블 만들기
+
+#보드 테이블 만들기
 CREATE TABLE board(
 id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 regDate DATETIME NOT NULL,
@@ -113,7 +113,7 @@ roleType char(100) not null, # 배역타입
 title CHAR(100) NOT NULL, # 공고제목
 `body` LONGTEXT NOT NULL, # 공고내용
 location CHAR(10), # 촬영장소
-period CHAR(10), # 촬영기간
+`period` CHAR(10), # 촬영기간
 deadline DATETIME, # 모집기한날짜
 manager CHAR(10), # 담당자
 INDEX title (title)
@@ -144,8 +144,8 @@ CREATE TABLE actingRole (
     pay CHAR(50) NOT NULL, # 출연료
     age CHAR(50) NOT NULL, # 나이
     job CHAR(100) NOT NULL, # 직업
-    scriptStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, # 대사유무
     gender CHAR(5) NOT NULL, # 성별
+    scriptStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, # 대사유무
     scenesCount TINYINT(2) UNSIGNED NOT NULL DEFAULT 0, # 장면수
     shootingsCount TINYINT(2) UNSIGNED NOT NULL DEFAULT 0, # 촬영횟수
     `character` TEXT, # 배역 설명
@@ -183,5 +183,6 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
+
 
 
