@@ -1,19 +1,17 @@
 package com.audictionary.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.audictionary.dto.GenFile;
+import com.audictionary.dto.Attr;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.AttrService;
@@ -89,7 +87,7 @@ public class UsrPdController {
 	
 	@RequestMapping("/usr/pd/sendEmail")
 	@ResponseBody
-	public ResultData doEmailCert(@RequestParam String email) throws MessagingException {
+	public ResultData sendEmail(@RequestParam String email) throws MessagingException {
 		
 		emailService.sendMailForCert(email);
 		return new ResultData("S-1" , "메일 발송");
@@ -98,7 +96,7 @@ public class UsrPdController {
 	
 	@RequestMapping("/usr/pd/emailCert")
 	@ResponseBody
-	public ResultData doEmailCert2(@RequestParam Map<String,Object> param) throws MessagingException {
+	public ResultData doEmailCert(@RequestParam Map<String,Object> param) throws MessagingException {
 		String emailCertkey = attrService.getValue("pd", 0, "emailCertKey", (String)param.get("email"));
 		
 		if (!param.get("key").equals(emailCertkey)) {
@@ -106,6 +104,20 @@ public class UsrPdController {
 		}else {
 			attrService.remove("pd", 0, "emailCertKey", (String)param.get("email"));
 			return new ResultData("S-1", "인증성공", "isCert" , true);	
+		}
+		
+	}
+	
+	@RequestMapping("/usr/pd/isEmailCert")
+	@ResponseBody
+	public ResultData checkEmailCert(@RequestParam String email) throws MessagingException {
+		
+		Attr attr = attrService.get("pd", 0, "emailCertKey", email);
+		
+		if(attr == null) {
+			return new ResultData("S-1", "인증된 이메일입니다." , "emailCert", true);
+		}else {
+			return new ResultData("F-1", "인증되지 않은 이메일입니다." , "emailCert", false);
 		}
 		
 	}

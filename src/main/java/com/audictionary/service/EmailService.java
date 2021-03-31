@@ -44,7 +44,7 @@ public class EmailService {
 		 attrService.setValue("pd", 0, "emailCertKey", email, emailCertKey, null);
 		 
 		 StringBuilder str = new StringBuilder();
-		 str.append("<a href=\"http://localhost:8100/usr/pd/emailCert?email="+email+"&key="+emailCertKey+"\">인증</a>");
+		 str.append("<a href=\"http://172.30.1.15:8100/usr/pd/emailCert?email="+email+"&key="+emailCertKey+"\">인증</a>");
 		 helper.setText(str.toString(),true);
 		 mailSender.send(msg);
 	}

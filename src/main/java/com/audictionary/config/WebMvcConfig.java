@@ -64,6 +64,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/usr/pd/doJoin")
 			.excludePathPatterns("/usr/pd/sendEmail")
 			.excludePathPatterns("/usr/pd/emailCert")
+			.excludePathPatterns("/usr/pd/isEmailCert")
 			.excludePathPatterns("/usr/pd/emailDupCheck")
 			.excludePathPatterns("/usr/ap/getAuthKey")
 			.excludePathPatterns("/usr/pd/doFindLoginId")
