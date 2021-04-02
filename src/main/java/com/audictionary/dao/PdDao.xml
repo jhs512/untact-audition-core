@@ -45,25 +45,25 @@
 	<update id="doModify">
 		UPDATE pd
 			<set>
-				<if test="needToModify">
+				<if test="isNeedToModify">
 					updateDate = NOW(),
 				</if>
-				<if test="name != null">
+				<if test="name != null and name.length > 0">
 					name = #{name},
 				</if>
 				<if test="loginPw != null and loginPw.length > 0">
 					loginPw = #{loginPw},
 				</if>
-				<if test="address != null">
+				<if test="address != null and address.length > 0">
 					address = #{address},
 				</if>
-				<if test="cellPhoneNo != null">
+				<if test="cellPhoneNo != null and cellPhoneNo.length > 0">
 					cellPhoneNo = #{cellPhoneNo},
 				</if>
-				<if test="jobPosition != null">
+				<if test="jobPosition != null and jobPosition.length > 0">
 					jobPosition = #{jobPosition},
 				</if>
-				<if test="corpName != null">
+				<if test="corpName != null and corpName.length > 0">
 					corpName = #{corpName},
 				</if>
 			</set>

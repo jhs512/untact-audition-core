@@ -8,4 +8,68 @@
 		SELECT * FROM actingRole
 		WHERE recruitmentId = #{recruitmentId}
 	</select>
+	
+	<insert id="doWriteActingRole" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO actingRole SET
+		regDate = NOW(), updateDate = NOW(),
+		recruitmentId = #{recruitId},
+		realName = #{roleRealName},
+		`name` = #{roleName},
+		pay = #{pay},
+		age = #{roleAge},
+		job = #{roleJob},
+		gender = #{roleGender},
+		scriptStatus = #{roleScript},
+		scenesCount = #{roleSceneCount},
+		shootingsCount = #{roleShootingCount}
+		<if test="roleCharacter != null">
+			, `character` = #{roleCharacter}
+		</if>
+		<if test="actingRoleEtc != null">
+			, etc = #{actingRoleEtc}
+		</if>
+	</insert>
+	
+	<update id="doModify">
+		UPDATE actingRole
+		<set>
+			<if test="isNeedToModify">
+				updateDate = NOW()
+			</if>
+			<if test="roleRealName != null and roleRealName.length > 0">
+				, realName = #{roleRealName}
+			</if>
+			<if test="roleName != null and roleName.length > 0">
+				, `name` = #{roleName}
+			</if>
+			<if test="pay != null and pay.length > 0">
+				, pay = #{pay}
+			</if>
+			<if test="roleAge != null and roleAge.length > 0">
+				, age = #{roleAge}
+			</if>
+			<if test="roleGender != null and roleGender.length > 0">
+				, gender = #{roleGender}
+			</if>
+			<if test="roleJob != null and roleJob.length > 0">
+				, job = #{roleJob}
+			</if>
+			<if test="roleScript != null and roleScript.length > 0">
+				, scriptStatus = #{roleScript}
+			</if>
+			<if test="roleScenesCount != null and roleScenesCount.length > 0">
+				, scenesCount = #{roleScenesCount}
+			</if>
+			<if test="roleShootingsCount != null and roleShootingsCount.length > 0">
+				, shootingsCount = #{roleShootingsCount}
+			</if>
+			<if test="roleCharacter != null and roleCharacter.length > 0">
+				, `character` = #{roleCharacter}
+			</if>
+			<if test="actingRoleEtc != null and actingRoleEtc.length > 0">
+				, `etc` = #{actingRoleEtc}
+			</if>
+		</set>
+		WHERE recruitmentId = #{recruitmentId}
+	</update>
 </mapper>

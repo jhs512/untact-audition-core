@@ -3,6 +3,14 @@ server:
   port: 8024
 logging.level.org.springframework.batch: DEBUG 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cdbitmana@gmail.com
+    password: rrpspslufkqmnfsl
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
   servlet:
     multipart:
       max-file-size: 500MB

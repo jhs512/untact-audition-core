@@ -52,7 +52,7 @@ public class UsrApController {
 		if (param.get("cellPhoneNo") == null) {
 			return new ResultData("F-1", "전화번로를 입력해 주세요.");
 		}
-
+		
 		return apService.doJoin(param);
 	}
 	

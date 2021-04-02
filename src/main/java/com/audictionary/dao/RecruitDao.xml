@@ -18,36 +18,6 @@
 		manager = #{manager}
 	</insert>
 	
-	<insert id="doWriteArtwork" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO artwork SET
-		regDate = NOW(), updateDate = NOW(),
-		recruitmentId = #{newRecruitmentId},
-		`name` = #{artworkName},
-		genre = #{genre},
-		corp = #{corp},
-		director = #{director}
-		<if test="artworkEtc != null">
-			, etc = #{artworkEtc}
-		</if>
-	</insert>
-	
-	<insert id="doWriteActingRole" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO actingRole SET
-		regDate = NOW(), updateDate = NOW(),
-		recruitmentId = #{newRecruitmentId},
-		realName = #{roleRealName},
-		`name` = #{roleName},
-		pay = #{pay},
-		age = #{roleAge},
-		job = #{roleJob},
-		gender = #{roleGender},
-		scriptStatus = #{roleScript},
-		scenesCount = #{roleSceneCount},
-		shootingsCount = #{roleShootingCount}
-		<if test="actingRoleEtc != null">
-			, etc = #{actingRoleEtc}
-		</if>
-	</insert>
 	
 	<select id="getListForPrint" resultType="Recruit">
 		SELECT * FROM recruitment
@@ -59,5 +29,37 @@
 		SELECT * FROM recruitment
 		WHERE id = #{id}
 	</select>
+	
+	<update id="doModify">
+		UPDATE recruitment
+		<set>
+			<if test="isNeedToModify">
+				updateDate = NOW()
+			</if>
+			<if test="title != null and title.length > 0">
+				, title = #{title}
+			</if>
+			<if test="body != null and body.length > 0">
+				, `body` = #{body}
+			</if>
+			<if test="roleType != null and roleType.length > 0">
+				, `roleType` = #{roleType}
+			</if>
+			<if test="location != null and location.length > 0">
+				, `location` = #{location}
+			</if>
+			<if test="period != null and period.length > 0">
+				, `period` = #{period}
+			</if>
+			<if test="deadline != null and deadline.length > 0">
+				, `deadline` = #{deadline}
+			</if>
+			<if test="manager != null and manager.length > 0">
+				, `manager` = #{manager}
+			</if>
+		</set>
+		WHERE id = #{recruitmentId} 
+		AND memberId = #{memberId}
+	</update>
 	
 </mapper>

@@ -41,15 +41,7 @@ public class RecruitService {
 		return recruits;
 	}
 
-	public int doWriteArtwork(Map<String, Object> param) {
-		return recruitDao.doWriteArtwork(param);
-		
-	}
 
-	public int doWriteActingRole(Map<String, Object> param) {
-		return recruitDao.doWriteActingRole(param);
-		
-	}
 
 	public Recruit getRecruitById(int id) {
 		Recruit recruit = recruitDao.getRecruitById(id);
@@ -64,6 +56,10 @@ public class RecruitService {
 		
 		return recruit;
 		
+	}
+
+	public void doModify(Map<String, Object> param) {
+		recruitDao.doModify(param);
 	}
 
 

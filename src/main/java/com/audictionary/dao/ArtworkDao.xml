@@ -8,4 +8,45 @@
 		SELECT * FROM artwork
 		WHERE recruitmentId = #{recruitmentId}
 	</select>
+	
+	<insert id="doWriteArtwork" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO artwork SET
+		regDate = NOW(), updateDate = NOW()
+		, recruitmentId = #{recruitId}
+		, `name` = #{artworkName}
+		<if test="artworkEtc != null">
+		 , genre = #{genre}
+		</if>
+		, corp = #{corp}
+		, director = #{director}
+		<if test="artworkEtc != null">
+			, etc = #{artworkEtc}
+		</if>
+	</insert>
+	
+	
+	<update id="doModify">
+		UPDATE artwork
+		<set>
+			<if test="isNeedToModify">
+				regDate = NOW()
+			</if>
+			<if test="artworkName != null and artworkName.length > 0">
+				, `name` = #{artworkName}
+			</if>
+			<if test="genre != null and genre.length > 0">
+				, `genre` = #{genre}
+			</if>
+			<if test="corp != null and corp.length > 0">
+				, `corp` = #{corp}
+			</if>
+			<if test="director != null and director.length > 0">
+				, `director` = #{director}
+			</if>
+			<if test="artworkEtc != null and artworkEtc.length > 0">
+				, `etc` = #{artworkEtc}
+			</if>
+		</set>
+		WHERE recruitmentId = #{recruitmentId}
+	</update>
 </mapper>

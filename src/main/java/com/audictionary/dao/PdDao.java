@@ -16,7 +16,7 @@ public interface PdDao {
 
 	Pd isAdmin(int loginedMemberId);
 
-	Pd getMemberByEmail(Map<String, Object> param);
+	Pd getMemberByEmail(String email);
 
 	void doModify(Map<String, Object> param);
 
