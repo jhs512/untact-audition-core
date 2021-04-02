@@ -20,8 +20,8 @@
 		job = #{roleJob},
 		gender = #{roleGender},
 		scriptStatus = #{roleScript},
-		scenesCount = #{roleSceneCount},
-		shootingsCount = #{roleShootingCount}
+		scenesCount = #{roleScenesCount},
+		shootingsCount = #{roleShootingsCount}
 		<if test="roleCharacter != null">
 			, `character` = #{roleCharacter}
 		</if>

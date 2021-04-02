@@ -53,6 +53,7 @@ CREATE TABLE pd (
     jobPosition CHAR(10) NOT NULL, # 직급
 	corpName CHAR(10), # 회사이름
     corpType CHAR(10), # 회사타입
+    filmgraphy TEXT, # 커리어
     authLevel INT(10) UNSIGNED NOT NULL DEFAULT 2, # 회원관리등급 ( 1 = 관리자 , 2 = 제작자 )
     authKey CHAR(80) NOT NULL, # 로그인 인증키
 	UNIQUE INDEX loginId (loginId),
@@ -183,6 +184,4 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
-
-
 

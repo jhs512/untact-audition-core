@@ -84,4 +84,5 @@ public class CommonGenFileController {
 		
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)).body(resource);
 	}
+	
 }

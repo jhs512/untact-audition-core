@@ -1,6 +1,5 @@
 package com.audictionary.controller;
 
-import java.io.File;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.audictionary.dto.Attr;
-import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.AttrService;
@@ -21,6 +19,9 @@ import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.PdService;
 import com.audictionary.util.Util;
+
+import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
+import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
 
 @Controller
 public class UsrPdController {
@@ -250,6 +251,26 @@ public class UsrPdController {
 		pdService.doDeleteMemberById(loginedMemberId);
 		
 		return new ResultData("S-1", "회원탈퇴성공");
+	}
+	
+	@RequestMapping("/usr/pd/testApi")
+	@ResponseBody
+	public String testApi() throws OpenAPIFault, Exception {
+		String key = "18079f7256bfdbf9fed52291986149b8";
+		KobisOpenAPIRestService test = new KobisOpenAPIRestService(key);
+		String curPage = "1";
+		String itemPerPage = "100";
+		String movieNm ="괴물";
+		String directorNm = "";
+		String openStartDt = "";
+		String openEndDt = "";
+		String prdtStartYear = "";
+		String prdtEndYear = "";
+		String repNationCd = "";
+		
+		String result = test.getMovieList(true, curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, null);
+		return result;
+		
 	}
 	
 }
