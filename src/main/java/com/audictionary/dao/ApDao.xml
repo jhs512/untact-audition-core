@@ -25,7 +25,7 @@
         filmgraphy = #{filmgraphy}, 
         jobArea = #{jobArea}, 
         corp = #{corp},
-		authKey = CONCAT("authKey1__", UUID(), "__", RAND()) 
+		authKey = CONCAT("ap__authKey1__", UUID(), "__", RAND()) 
 	</insert>
 	
 	<select id="getApByLoginId" resultType="Ap">
@@ -71,4 +71,19 @@
 		WHERE id = #{id}
 	</update>
 	
+	<select id="getApByAuthKey" resultType="Ap">
+		SELECT * FROM ap
+		WHERE authKey = #{authKey}
+	</select>
+	
+	<select id="getApById" resultType="Ap">
+		SELECT * FROM ap
+		WHERE id = #{id}
+	</select>
+	
+	<select id="isAdmin" resultType="Ap">
+		SELECT * FROM ap
+		WHERE id = #{id}
+		AND authLevel = 1
+	</select>
 </mapper>

@@ -253,14 +253,14 @@ public class UsrPdController {
 		return new ResultData("S-1", "회원탈퇴성공");
 	}
 	
-	@RequestMapping("/usr/pd/testApi")
+	@RequestMapping("/usr/pd/searchMvList")
 	@ResponseBody
-	public String testApi() throws OpenAPIFault, Exception {
+	public String testApi(@RequestParam String movieName) throws OpenAPIFault, Exception {
 		String key = "18079f7256bfdbf9fed52291986149b8";
 		KobisOpenAPIRestService test = new KobisOpenAPIRestService(key);
 		String curPage = "1";
 		String itemPerPage = "100";
-		String movieNm ="괴물";
+		String movieNm = movieName;
 		String directorNm = "";
 		String openStartDt = "";
 		String openEndDt = "";
@@ -269,6 +269,7 @@ public class UsrPdController {
 		String repNationCd = "";
 		
 		String result = test.getMovieList(true, curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, null);
+		
 		return result;
 		
 	}

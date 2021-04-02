@@ -4,6 +4,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,6 +17,9 @@ import com.audictionary.util.Util;
 
 @Service
 public class EmailService {
+	@Value("${server.address}")
+	private String domainUrl;
+	
 	@Autowired
 	private JavaMailSender mailSender;
 	@Autowired
@@ -44,7 +48,7 @@ public class EmailService {
 		 attrService.setValue("pd", 0, "emailCertKey", email, emailCertKey, null);
 		 
 		 StringBuilder str = new StringBuilder();
-		 str.append("<a href=\"http://192.168.0.17:5555/usr/pd/emailCert?email="+email+"&key="+emailCertKey+"\">인증</a>");
+		 str.append("<a href=\"http://" + domainUrl + ":5555/usr/pd/emailCert?email="+email+"&key="+emailCertKey+"\">인증</a>");
 		 helper.setText(str.toString(),true);
 		 mailSender.send(msg);
 	}

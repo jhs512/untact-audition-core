@@ -34,5 +34,18 @@ public class ApService {
 
 		return new ResultData("S-1", "회원정보가 수정되었습니다.");
 	}
+	
+	public Ap getApByAuthKey(String authKey) {
+		return apDao.getApByAuthKey(authKey);
+	}
+
+	public Ap getApById(int loginedMemberId) {
+		return apDao.getApById(loginedMemberId);
+	}
+
+	public boolean isAdmin(int loginedMemberId) {
+		return apDao.isAdmin(loginedMemberId);
+	}
+	
 
 }

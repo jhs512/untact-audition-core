@@ -120,7 +120,6 @@ manager CHAR(10), # 담당자
 INDEX title (title)
 );
 
-
 # 작품 테이블 만들기
 CREATE TABLE artwork (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,

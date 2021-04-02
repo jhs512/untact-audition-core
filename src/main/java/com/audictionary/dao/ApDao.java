@@ -15,4 +15,10 @@ public interface ApDao {
 	Ap getApByLoginId(@Param("loginId") String loginId);
 
 	void doModify(Map<String, Object> param);
+
+	Ap getApByAuthKey(String authKey);
+
+	Ap getApById(int loginedMemberId);
+
+	boolean isAdmin(int loginedMemberId);
 }

@@ -23,7 +23,7 @@
 		corpType = #{corpType},
 		</if>
 		authLevel = 2,
-		authKey = CONCAT("authKey1__", UUID(), "__", RAND())
+		authKey = CONCAT("pd__authKey1__", UUID(), "__", RAND())
 	</insert>
 	
 	<select id="getMemberById" resultType="Pd">
