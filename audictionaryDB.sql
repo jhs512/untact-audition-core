@@ -116,7 +116,9 @@ title CHAR(100) NOT NULL, # 공고제목
 location CHAR(10), # 촬영장소
 `period` CHAR(10), # 촬영기간
 deadline DATETIME, # 모집기한날짜
-manager CHAR(10), # 담당자
+script text not null, # 연기대사
+videoTime int(10) unsigned not null, # 영상 시간( 1 = 1분이내 / 2 = 1~2분 / 3 = 2~3분 / 4 = 5분이내 )
+etc text not null, # 기타우대사항
 INDEX title (title)
 );
 
@@ -125,11 +127,17 @@ CREATE TABLE artwork (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
-    recruitmentId INT(10) UNSIGNED, # 공고 번호
+    relTypeCode char(50) not null, # 타입코드
+    relId INT(10) UNSIGNED, # 공고 번호
     `name` CHAR(50) NOT NULL, # 작품이름
+	media char(50) not null, # 매체
     genre CHAR(20), # 장르
 	corp CHAR(50) NOT NULL, # 제작사
     director CHAR(50) NOT NULL, # 감독
+    producer char(50) not null, # 프로듀서
+    castingManager char(20) not null, # 캐스팅매니저
+    story text not null, # 줄거리
+	imageUrl char(100), # 이미지url
     etc TEXT
 );
 
@@ -183,4 +191,6 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
+
+select * from pd;
 
