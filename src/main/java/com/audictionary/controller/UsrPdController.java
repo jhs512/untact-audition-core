@@ -1,6 +1,5 @@
 package com.audictionary.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +7,13 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.audictionary.dto.Artwork;
 import com.audictionary.dto.Attr;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
@@ -22,10 +23,6 @@ import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.PdService;
 import com.audictionary.util.Util;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class UsrPdController {
@@ -262,6 +259,19 @@ public class UsrPdController {
 		pdService.doDeleteMemberById(loginedMemberId);
 		
 		return new ResultData("S-1", "회원탈퇴성공");
+	}
+	
+	@GetMapping("/usr/pd/getArtwork")
+	@ResponseBody
+	public ResultData getArtworks(@RequestParam int loginedMemberId) {
+		
+		List<Artwork> artworks = artworkService.getArtworksByPdId(loginedMemberId);
+		
+		if( artworks == null || artworks.size() == 0 ) {
+			return new ResultData("F-1", "작품이 없습니다.");
+		}
+		
+		return new ResultData("S-1","작품 불러오기 성공", "artworks", artworks);
 	}
 	
 	

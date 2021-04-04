@@ -68,4 +68,8 @@ public class ArtworkService {
 		}
 	}
 
+	public List<Artwork> getArtworksByPdId(int loginedMemberId) {
+		return artworkDao.getArtworksByPdId(loginedMemberId);
+	}
+
 }

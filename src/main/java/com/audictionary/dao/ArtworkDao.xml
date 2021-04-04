@@ -133,4 +133,10 @@
 				, `link` = #{link}
 			</if>
 	</insert>
+	
+	<select id="getArtworksByPdId" resultType="Artwork">
+		SELECT * FROM artwork
+		WHERE relTypeCode = 'pd'
+		AND relId = #{loginedMemberId}
+	</select>
 </mapper>
