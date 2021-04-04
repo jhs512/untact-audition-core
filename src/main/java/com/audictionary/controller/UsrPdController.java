@@ -1,5 +1,7 @@
 package com.audictionary.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -14,14 +16,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.audictionary.dto.Attr;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
+import com.audictionary.service.ArtworkService;
 import com.audictionary.service.AttrService;
 import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.PdService;
 import com.audictionary.util.Util;
-
-import kr.or.kobis.kobisopenapi.consumer.rest.KobisOpenAPIRestService;
-import kr.or.kobis.kobisopenapi.consumer.rest.exception.OpenAPIFault;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class UsrPdController {
@@ -33,6 +37,8 @@ public class UsrPdController {
 	private EmailService emailService;
 	@Autowired
 	private AttrService attrService;
+	@Autowired
+	private ArtworkService artworkService;
 
 	@PostMapping("usr/pd/doJoin")
 	@ResponseBody
@@ -158,6 +164,7 @@ public class UsrPdController {
 	@PostMapping("/usr/pd/doModify")
 	@ResponseBody
 	public ResultData doModify(@RequestParam Map<String, Object> param) {
+		
 		String loginedMemberId = (String)param.get("loginedMemberId");
 		int id = Integer.parseInt(loginedMemberId);
 		
@@ -183,6 +190,10 @@ public class UsrPdController {
 		pdService.doModify(param);
 		
 		pd = pdService.getMemberById(id);
+		
+		artworkService.deleteByPdId(Integer.parseInt((String)param.get("loginedMemberId")));
+		
+		artworkService.doWriteArtWorkForPdProfile(param);
 		
 		return new ResultData("S-1", "회원정보수정","authKey", pd.getAuthKey(), "pd", pd);
 	}
@@ -253,25 +264,6 @@ public class UsrPdController {
 		return new ResultData("S-1", "회원탈퇴성공");
 	}
 	
-	@RequestMapping("/usr/pd/searchMvList")
-	@ResponseBody
-	public String testApi(@RequestParam String movieName) throws OpenAPIFault, Exception {
-		String key = "18079f7256bfdbf9fed52291986149b8";
-		KobisOpenAPIRestService test = new KobisOpenAPIRestService(key);
-		String curPage = "1";
-		String itemPerPage = "100";
-		String movieNm = movieName;
-		String directorNm = "";
-		String openStartDt = "";
-		String openEndDt = "";
-		String prdtStartYear = "";
-		String prdtEndYear = "";
-		String repNationCd = "";
-		
-		String result = test.getMovieList(true, curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, null);
-		
-		return result;
-		
-	}
+	
 	
 }

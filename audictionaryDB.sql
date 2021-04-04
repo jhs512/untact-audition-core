@@ -80,26 +80,25 @@ regDate DATETIME NOT NULL,
 updateDate DATETIME NOT NULL,
 delDate DATETIME,
 delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-`name` char(20) not null,
-`code` char(20) not null
+`name` CHAR(20) NOT NULL,
+`code` CHAR(20) NOT NULL
 );
 
 # 기본적인 게시판 만들기
 INSERT INTO board SET
-regDate = Now(), updateDate = now(),
+regDate = NOW(), updateDate = NOW(),
 `name` = '공지사항',
 `code` = 'notice';
 
 INSERT INTO board SET
-regDate = Now(), updateDate = now(),
+regDate = NOW(), updateDate = NOW(),
 `name` = '문의사항',
 `code` = 'qna';
 
 INSERT INTO board SET
-regDate = Now(), updateDate = now(),
+regDate = NOW(), updateDate = NOW(),
 `name` = '공고',
 `code` = 'recruit';
-
 
 # 모집공고 테이블 생성
 CREATE TABLE recruitment (
@@ -109,16 +108,18 @@ updateDate DATETIME NOT NULL,
 delDate DATETIME,
 delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 memberId INT(10) UNSIGNED,
-boardId INT(10) UNSIGNED,
-roleType char(100) not null, # 배역타입
 title CHAR(100) NOT NULL, # 공고제목
 `body` LONGTEXT NOT NULL, # 공고내용
+roleType CHAR(100), # 배역타입
+pay CHAR(50) NOT NULL, # 출연료
 location CHAR(10), # 촬영장소
 `period` CHAR(10), # 촬영기간
 deadline DATETIME, # 모집기한날짜
-script text not null, # 연기대사
-videoTime int(10) unsigned not null, # 영상 시간( 1 = 1분이내 / 2 = 1~2분 / 3 = 2~3분 / 4 = 5분이내 )
-etc text not null, # 기타우대사항
+gender char(20), # 지원요건 성별
+age char(50), # 지원요건 나이대
+script TEXT, # 연기대사
+videoTime char(50), # 영상 시간( 1 = 1분이내 / 2 = 1~2분 / 3 = 2~3분 / 4 = 5분이내 )
+etc TEXT, # 기타우대사항
 INDEX title (title)
 );
 
@@ -127,17 +128,19 @@ CREATE TABLE artwork (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
-    relTypeCode char(50) not null, # 타입코드
-    relId INT(10) UNSIGNED, # 공고 번호
-    `name` CHAR(50) NOT NULL, # 작품이름
-	media char(50) not null, # 매체
+    relTypeCode CHAR(50) NOT NULL, # 타입코드
+    relId INT(10) UNSIGNED NOT NULL, # 공고 번호
+    `title` CHAR(50) NOT NULL, # 작품이름
+    `subtitle` CHAR(50), # 작품부제
+	media CHAR(50), # 매체
     genre CHAR(20), # 장르
-	corp CHAR(50) NOT NULL, # 제작사
-    director CHAR(50) NOT NULL, # 감독
-    producer char(50) not null, # 프로듀서
-    castingManager char(20) not null, # 캐스팅매니저
-    story text not null, # 줄거리
-	imageUrl char(100), # 이미지url
+	corp CHAR(50), # 제작사
+    director CHAR(50), # 감독
+    producer CHAR(50), # 프로듀서
+    castingManager CHAR(20), # 캐스팅매니저
+    story TEXT, # 줄거리
+	image CHAR(100), # 이미지url
+    link CHAR(100), # 링크url
     etc TEXT
 );
 
@@ -149,13 +152,12 @@ CREATE TABLE actingRole (
     recruitmentId INT(10) UNSIGNED NOT NULL,
     realName CHAR(50) NOT NULL, # 배역본명
     `name` CHAR(50) NOT NULL, # 배역이름
-    pay CHAR(50) NOT NULL, # 출연료
     age CHAR(50) NOT NULL, # 나이
     job CHAR(100) NOT NULL, # 직업
-    gender CHAR(5) NOT NULL, # 성별
-    scriptStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0, # 대사유무
-    scenesCount TINYINT(2) UNSIGNED NOT NULL DEFAULT 0, # 장면수
-    shootingsCount TINYINT(2) UNSIGNED NOT NULL DEFAULT 0, # 촬영횟수
+    gender CHAR(50) NOT NULL, # 성별
+    scriptStatus char(5) NOT NULL, # 대사유무
+    scenesCount char(50) NOT NULL DEFAULT '0', # 장면수
+    shootingsCount char(50) NOT NULL DEFAULT '0', # 촬영횟수
     `character` TEXT, # 배역 설명
     etc TEXT
 );
@@ -191,6 +193,3 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
-
-select * from pd;
-

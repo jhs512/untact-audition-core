@@ -13,8 +13,8 @@ public class ActingRoleService {
 	@Autowired
 	private ActingRoleDao actingRoleDao;
 
-	public ActingRole getActingRoleByRecruitmentId(int recruitmentId) {
-		return actingRoleDao.getActingRoleByRecruitmentId(recruitmentId);
+	public ActingRole getActingRoleByRecruitmentId(int rmId) {
+		return actingRoleDao.getActingRoleByRecruitmentId(rmId);
 	}
 
 	public int doWriteActingRole(Map<String, Object> param) {

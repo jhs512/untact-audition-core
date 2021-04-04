@@ -10,7 +10,7 @@ import com.audictionary.dto.ActingRole;
 @Mapper
 public interface ActingRoleDao {
 
-	ActingRole getActingRoleByRecruitmentId(@Param("recruitmentId")int recruitmentId);
+	ActingRole getActingRoleByRecruitmentId(int rmId);
 
 	int doWriteActingRole(Map<String, Object> param);
 

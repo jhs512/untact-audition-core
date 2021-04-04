@@ -4,18 +4,23 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.audictionary.dao.RecruitDao">
+
 	<insert id="doWrite" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO recruitment SET
 		regDate = NOW(), updateDate = NOW(),
-		title = #{title},
-		`body` = #{body},
 		memberId = #{memberId},
-		boardId = #{boardId},
-		roleType = #{roleType},
-		location = #{location},
-		period = #{period},
-		deadline = #{deadline},
-		manager = #{manager}
+		title = #{rmTitle},
+		`body` = #{rmBody},
+		roleType = #{rmRoleType},
+		pay = #{rmPay},
+		location = #{rmLocation},
+		period = #{rmPeriod},
+		deadline = #{rmDeadline},
+		gender = #{rmGender},
+		age = #{rmAge},
+		script = #{rmScript},
+		videoTime = #{rmVideoTime},
+		etc = #{rmEtc}
 	</insert>
 	
 	
@@ -36,26 +41,41 @@
 			<if test="isNeedToModify">
 				updateDate = NOW()
 			</if>
-			<if test="title != null and title.length > 0">
-				, title = #{title}
+			<if test="rmTitle != null and rmTitle.length > 0">
+				, title = #{rmTitle}
 			</if>
-			<if test="body != null and body.length > 0">
-				, `body` = #{body}
+			<if test="rmBody != null and rmBody.length > 0">
+				, `body` = #{rmBody}
 			</if>
-			<if test="roleType != null and roleType.length > 0">
-				, `roleType` = #{roleType}
+			<if test="rmRoleType != null and rmRoleType.length > 0">
+				, `roleType` = #{rmRoleType}
 			</if>
-			<if test="location != null and location.length > 0">
-				, `location` = #{location}
+			<if test="rmPay != null and rmPay.length > 0">
+				, `pay` = #{rmPay}
 			</if>
-			<if test="period != null and period.length > 0">
-				, `period` = #{period}
+			<if test="rmLocation != null and rmLocation.length > 0">
+				, `location` = #{rmLocation}
 			</if>
-			<if test="deadline != null and deadline.length > 0">
-				, `deadline` = #{deadline}
+			<if test="rmPeriod != null and rmPeriod.length > 0">
+				, `period` = #{rmPeriod}
 			</if>
-			<if test="manager != null and manager.length > 0">
-				, `manager` = #{manager}
+			<if test="rmDeadline != null and rmDeadline.length > 0">
+				, `deadline` = #{rmDeadline}
+			</if>
+			<if test="rmGender != null and rmGender.length > 0">
+				, `gender` = #{rmGender}
+			</if>
+			<if test="rmAge != null and rmAge.length > 0">
+				, `age` = #{rmAge}
+			</if>
+			<if test="rmScript != null and rmScript.length > 0">
+				, `script` = #{rmScript}
+			</if>
+			<if test="rmVideoTime != null and rmVideoTime.length > 0">
+				, `videoTime` = #{rmVideoTime}
+			</if>
+			<if test="rmEtc != null and rmEtc.length > 0">
+				, `etc` = #{rmEtc}
 			</if>
 		</set>
 		WHERE id = #{recruitmentId} 

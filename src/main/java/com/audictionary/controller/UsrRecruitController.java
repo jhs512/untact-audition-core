@@ -35,20 +35,23 @@ public class UsrRecruitController {
 	@PostMapping("/usr/recruit/write")
 	@ResponseBody
 	public ResultData doWrite(@RequestParam Map<String, Object> param) {
-
+		
 		recruitService.doWrite(param);
-
-		int id = Util.getAsInt(param.get("id"), 0);
 		
-		param.put("recruitId", id);
+		int rmId = Util.getAsInt(param.get("id"), 0);
 		
-		artworkService.doWriteArtwork(param);
+		param.put("rmId", rmId);
 		
-		actingRoleService.doWriteActingRole(param);
+		if( rmId != 0 ) {
+			artworkService.doWriteArtworkForRecruitment(param);
+			actingRoleService.doWriteActingRole(param);
+		}
+		
+		
 
-		genFileService.changeInputFileRelIds(param, id);
+		genFileService.changeInputFileRelIds(param, rmId);
 
-		return new ResultData("S-1", "공고 등록 성공", "id", id);
+		return new ResultData("S-1", "공고 등록 성공", "id", rmId);
 	}
 
 	@GetMapping("/usr/recruit/list")
@@ -72,11 +75,11 @@ public class UsrRecruitController {
 
 		Recruit recruit = recruitService.getRecruitById(id);
 		
-		int recruitmentId = id;
+		int rmId = id;
 		
-		Artwork artwork = artworkService.getArtworkByRecruitmentId(recruitmentId);
+		Artwork artwork = artworkService.getArtworkByRecruitmentId(rmId);
 
-		ActingRole actingRole = actingRoleService.getActingRoleByRecruitmentId(recruitmentId);
+		ActingRole actingRole = actingRoleService.getActingRoleByRecruitmentId(rmId);
 		
 		return new ResultData("S-1", "공고 불러오기", "recruit", recruit, "artwork", artwork, "actingRole", actingRole);
 	}
@@ -97,12 +100,17 @@ public class UsrRecruitController {
 		
 		boolean isNeedToModify = false;
 
-		if ( !recruit.getTitle().equals(param.get("title")) || !recruit.getBody().equals(param.get("body"))
-				|| !recruit.getRoleType().equals(param.get("roleType"))
-				|| !recruit.getLocation().equals(param.get("location"))
-				|| !recruit.getPeriod().equals(param.get("period"))
-				|| !recruit.getDeadline().equals(param.get("deadline"))
-				|| !recruit.getManager().equals(param.get("manager"))
+		if ( !recruit.getTitle().equals(param.get("rmTitle")) || !recruit.getBody().equals(param.get("rmBody"))
+				|| !recruit.getRoleType().equals(param.get("rmRoleType"))
+				|| !recruit.getPay().equals(param.get("rmPay"))
+				|| !recruit.getLocation().equals(param.get("rmLocation"))
+				|| !recruit.getPeriod().equals(param.get("rmPeriod"))
+				|| !recruit.getDeadline().equals(param.get("rmDeadline"))
+				|| !recruit.getGender().equals(param.get("rmGender"))
+				|| !recruit.getAge().equals(param.get("rmAge"))
+				|| !recruit.getScript().equals(param.get("rmScript"))
+				|| !recruit.getVideoTime().equals(param.get("rmVideoTime"))
+				|| !recruit.getEtc().equals(param.get("rmEtc"))
 				) {
 			isNeedToModify = true;
 		}
@@ -129,10 +137,14 @@ public class UsrRecruitController {
 		}
 		boolean isNeedToModify = false;
 
-		if ( !artwork.getName().equals(param.get("artworkName")) || !artwork.getGenre().equals(param.get("genre"))
-				|| !artwork.getCorp().equals(param.get("corp"))
-				|| !artwork.getDirector().equals(param.get("director"))
-				|| !artwork.getEtc().equals(param.get("artworkEtc"))
+		if ( !artwork.getMedia().equals(param.get("awMedia")) || !artwork.getTitle().equals(param.get("awTitle"))
+				|| !artwork.getCorp().equals(param.get("awCorp"))
+				|| !artwork.getDirector().equals(param.get("awDirector"))
+				|| !artwork.getProducer().equals(param.get("awProducer"))
+				|| !artwork.getCastingManager().equals(param.get("awManager"))
+				|| !artwork.getGenre().equals(param.get("awGenre"))
+				|| !artwork.getStory().equals(param.get("awStory"))
+				|| !artwork.getEtc().equals(param.get("awEtc"))
 				) {
 			isNeedToModify = true;
 		}
@@ -152,16 +164,15 @@ public class UsrRecruitController {
 		}
 		boolean isNeedToModify = false;
 
-		if ( !actingRole.getRealName().equals(param.get("roleRealName")) || !actingRole.getName().equals(param.get("roleName"))
-				|| !actingRole.getPay().equals(param.get("pay"))
-				|| !actingRole.getAge().equals(param.get("roleAge"))
-				|| !actingRole.getGender().equals(param.get("roleGender"))
-				|| !actingRole.getJob().equals(param.get("roleJob"))
-				|| actingRole.getScriptStatus() != Integer.parseInt((String)param.get("roleScript"))
-				|| actingRole.getScenesCount() != Integer.parseInt((String)param.get("roleScenesCount"))
-				|| actingRole.getShootingsCount() != Integer.parseInt((String)param.get("roleShootingsCount"))
-				|| actingRole.getCharacter().equals(param.get("roleCharacter"))
-				|| actingRole.getEtc().equals(param.get("actingRoleEtc"))
+		if ( !actingRole.getRealName().equals(param.get("arRealName")) || !actingRole.getName().equals(param.get("arName"))
+				|| !actingRole.getAge().equals(param.get("arAge"))
+				|| !actingRole.getGender().equals(param.get("arGender"))
+				|| !actingRole.getJob().equals(param.get("arJob"))
+				|| actingRole.getScriptStatus() != (String)param.get("arScript")
+				|| actingRole.getScenesCount() != Integer.parseInt((String)param.get("arScenesCount"))
+				|| actingRole.getShootingsCount() != Integer.parseInt((String)param.get("arShootingsCount"))
+				|| actingRole.getCharacter().equals(param.get("arCharacter"))
+				|| actingRole.getEtc().equals(param.get("arEtc"))
 				) {
 			isNeedToModify = true;
 		}

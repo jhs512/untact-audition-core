@@ -6,21 +6,60 @@
 <mapper namespace="com.audictionary.dao.ArtworkDao">
 	<select id="getArtworkByRecruitmentId" resultType="Artwork">
 		SELECT * FROM artwork
-		WHERE recruitmentId = #{recruitmentId}
+		WHERE relTypeCode = 'recruitment'
+		AND relId = #{rmId}
 	</select>
 	
 	<insert id="doWriteArtwork" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO artwork SET
 		regDate = NOW(), updateDate = NOW()
-		, recruitmentId = #{recruitId}
-		, `name` = #{artworkName}
-		<if test="artworkEtc != null">
-		 , genre = #{genre}
+		, relTypeCode = '#{awRelTypeCode}'
+		, relId = #{awRelId}
+		, `title` = #{awTitle}
+		<if test="awSubtitle != null and awSubtitle.length > 0">
+			, subtitle = #{awSubtitle}
 		</if>
-		, corp = #{corp}
-		, director = #{director}
-		<if test="artworkEtc != null">
-			, etc = #{artworkEtc}
+		<if test="awMedia != null and awMedia.length > 0">
+			, media = #{awMedia}
+		</if>
+		<if test="awGenre != null and awGenre.length > 0">
+		, genre = #{awGenre}
+		</if>
+		<if test="awCorp != null and awCorp.length > 0">
+		, corp = #{awCorp}
+		</if>
+		<if test="awDirector != null and awDirector.length > 0">
+		, director = #{awDirector}
+		</if>
+		<if test="awProducer != null and awProducer.length > 0">
+		, producer = #{awProducer}
+		</if>
+		<if test="awManager != null and awManager.length > 0">
+		, castingManager = #{awManager}
+		</if>
+		<if test="awStory != null and awStory.length > 0">
+		, story = #{awStory}
+		</if>
+		<if test="awEtc != null and awEtc.length > 0">
+			, etc = #{awEtc}
+		</if>
+	</insert>
+	
+	<insert id="doWriteArtworkForRecruitment" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO artwork SET
+		regDate = NOW(), updateDate = NOW()
+		, relTypeCode = 'recruitment'
+		, relId = #{rmId}
+		, `title` = #{awTitle}
+		, media = #{awMedia}
+		, genre = #{awGenre}
+		, corp = #{awCorp}
+		, director = #{awDirector}
+		, producer = #{awProducer}
+		, castingManager = #{awManager}
+		, story = #{awStory}
+		<if test="awEtc != null and awEtc.length > 0">
+			, etc = #{awEtc}
 		</if>
 	</insert>
 	
@@ -31,22 +70,67 @@
 			<if test="isNeedToModify">
 				regDate = NOW()
 			</if>
-			<if test="artworkName != null and artworkName.length > 0">
-				, `name` = #{artworkName}
+			<if test="awTitle != null and awTitle.length > 0">
+				, `title` = #{awTitle}
 			</if>
-			<if test="genre != null and genre.length > 0">
-				, `genre` = #{genre}
+			<if test="awSubtitle != null and awSubtitle.length > 0">
+				, `subtitle` = #{awSubtitle}
 			</if>
-			<if test="corp != null and corp.length > 0">
-				, `corp` = #{corp}
+			<if test="awMedia != null and awMedia.length > 0">
+				, `media` = #{awMedia}
+			</if>
+			<if test="awGenre != null and awGenre.length > 0">
+				, `genre` = #{awGenre}
+			</if>
+			<if test="awCorp != null and awCorp.length > 0">
+				, `corp` = #{awCorp}
+			</if>
+			<if test="awDirector != null and awDirector.length > 0">
+				, `director` = #{awDirector}
+			</if>
+			<if test="awProducer != null and awProducer.length > 0">
+				, `producer` = #{awProducer}
+			</if>
+			<if test="awManager != null and awManager.length > 0">
+				, `castingManager` = #{awManager}
+			</if>
+			<if test="awStory != null and awStory.length > 0">
+				, `story` = #{awStory}
+			</if>
+			<if test="awEtc != null and awEtc.length > 0">
+				, `etc` = #{awEtc}
+			</if>
+		</set>
+		WHERE relTypeCode = 'recruitment' 
+		AND relId = #{recruitmentId}
+	</update>
+	
+	<delete id="deleteByPdId">
+		DELETE FROM artwork
+		WHERE relTypeCode = 'pd'
+		AND relId = #{loginedMemberId}
+	</delete>
+	
+	<insert id="doWriteArtWorkForPdProfile" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO artwork SET
+		regDate = NOW() 
+		, updateDate = NOW()
+		, relTypeCode = 'pd'
+		, relId = #{loginedMemberId}
+			<if test="title != null and title.length > 0">
+				, `title` = #{title}
+			</if>
+			<if test="subtitle != null and subtitle.length > 0">
+				, `subtitle` = #{subtitle}
 			</if>
 			<if test="director != null and director.length > 0">
 				, `director` = #{director}
 			</if>
-			<if test="artworkEtc != null and artworkEtc.length > 0">
-				, `etc` = #{artworkEtc}
+			<if test="image != null and image.length > 0">
+				, `image` = #{image}
 			</if>
-		</set>
-		WHERE recruitmentId = #{recruitmentId}
-	</update>
+			<if test="link != null and link.length > 0">
+				, `link` = #{link}
+			</if>
+	</insert>
 </mapper>

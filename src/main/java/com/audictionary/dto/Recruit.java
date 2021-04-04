@@ -21,8 +21,13 @@ public class Recruit extends EntityDto {
 	private String title;
 	private String body;
 	private String roleType;
+	private String pay;
 	private String location;
 	private String period;
 	private String deadline;
-	private String manager;
+	private String gender;
+	private String age;
+	private String script;
+	private String videoTime;
+	private String etc;
 }

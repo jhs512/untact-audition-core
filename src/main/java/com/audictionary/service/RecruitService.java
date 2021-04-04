@@ -52,8 +52,6 @@ public class RecruitService {
 			recruit.getExtraNotNull().put("file__common__attachment", genFiles);	
 		}
 		
-		
-		
 		return recruit;
 		
 	}

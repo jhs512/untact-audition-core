@@ -6,27 +6,26 @@
 <mapper namespace="com.audictionary.dao.ActingRoleDao">
 	<select id="getActingRoleByRecruitmentId" resultType="ActingRole">
 		SELECT * FROM actingRole
-		WHERE recruitmentId = #{recruitmentId}
+		WHERE recruitmentId = #{rmId}
 	</select>
 	
 	<insert id="doWriteActingRole" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO actingRole SET
 		regDate = NOW(), updateDate = NOW(),
-		recruitmentId = #{recruitId},
-		realName = #{roleRealName},
-		`name` = #{roleName},
-		pay = #{pay},
-		age = #{roleAge},
-		job = #{roleJob},
-		gender = #{roleGender},
-		scriptStatus = #{roleScript},
-		scenesCount = #{roleScenesCount},
-		shootingsCount = #{roleShootingsCount}
-		<if test="roleCharacter != null">
-			, `character` = #{roleCharacter}
+		recruitmentId = #{rmId},
+		realName = #{arRealName},
+		`name` = #{arName},
+		age = #{arAge},
+		job = #{arJob},
+		gender = #{arGender},
+		scriptStatus = #{arScript},
+		scenesCount = #{arScenesCount},
+		shootingsCount = #{arShootingsCount}
+		<if test="arCharacter != null">
+			, `character` = #{arCharacter}
 		</if>
-		<if test="actingRoleEtc != null">
-			, etc = #{actingRoleEtc}
+		<if test="arEtc != null">
+			, etc = #{arEtc}
 		</if>
 	</insert>
 	
@@ -36,38 +35,35 @@
 			<if test="isNeedToModify">
 				updateDate = NOW()
 			</if>
-			<if test="roleRealName != null and roleRealName.length > 0">
-				, realName = #{roleRealName}
+			<if test="arRealName != null and arRealName.length > 0">
+				, realName = #{arRealName}
 			</if>
-			<if test="roleName != null and roleName.length > 0">
-				, `name` = #{roleName}
+			<if test="arName != null and arName.length > 0">
+				, `name` = #{arName}
 			</if>
-			<if test="pay != null and pay.length > 0">
-				, pay = #{pay}
+			<if test="arAge != null and arAge.length > 0">
+				, age = #{arAge}
 			</if>
-			<if test="roleAge != null and roleAge.length > 0">
-				, age = #{roleAge}
+			<if test="arGender != null and arGender.length > 0">
+				, gender = #{arGender}
 			</if>
-			<if test="roleGender != null and roleGender.length > 0">
-				, gender = #{roleGender}
+			<if test="arJob != null and arJob.length > 0">
+				, job = #{arJob}
 			</if>
-			<if test="roleJob != null and roleJob.length > 0">
-				, job = #{roleJob}
+			<if test="arScript != null and arScript.length > 0">
+				, scriptStatus = #{arScript}
 			</if>
-			<if test="roleScript != null and roleScript.length > 0">
-				, scriptStatus = #{roleScript}
+			<if test="arScenesCount != null and arScenesCount.length > 0">
+				, scenesCount = #{arScenesCount}
 			</if>
-			<if test="roleScenesCount != null and roleScenesCount.length > 0">
-				, scenesCount = #{roleScenesCount}
+			<if test="arShootingsCount != null and arShootingsCount.length > 0">
+				, shootingsCount = #{arShootingsCount}
 			</if>
-			<if test="roleShootingsCount != null and roleShootingsCount.length > 0">
-				, shootingsCount = #{roleShootingsCount}
+			<if test="arCharacter != null and arCharacter.length > 0">
+				, `character` = #{arCharacter}
 			</if>
-			<if test="roleCharacter != null and roleCharacter.length > 0">
-				, `character` = #{roleCharacter}
-			</if>
-			<if test="actingRoleEtc != null and actingRoleEtc.length > 0">
-				, `etc` = #{actingRoleEtc}
+			<if test="arEtc != null and arEtc.length > 0">
+				, `etc` = #{arEtc}
 			</if>
 		</set>
 		WHERE recruitmentId = #{recruitmentId}

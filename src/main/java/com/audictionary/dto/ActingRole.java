@@ -19,7 +19,7 @@ public class ActingRole extends EntityDto {
 	private String pay;
 	private String age;
 	private String job;
-	private int scriptStatus;
+	private String scriptStatus;
 	private String gender;
 	private int scenesCount;
 	private int shootingsCount;
