@@ -52,4 +52,24 @@ public class EmailService {
 		 helper.setText(str.toString(),true);
 		 mailSender.send(msg);
 	}
+
+	@Async
+	public void sendMailForFindLoginPw(String email, int id) throws MessagingException {
+		 MimeMessage msg = mailSender.createMimeMessage();
+		 MimeMessageHelper helper = new MimeMessageHelper(msg,true);
+		 
+		 helper.setTo(email);
+		 helper.setFrom("cdbitmana@gmail.com");
+		 helper.setSubject("Audictionary 비밀번호 재설정 확인 메일");
+		 
+		 String emailCertKey = Util.getTempPassword(50);
+		 
+		 attrService.setValue("pd", id, "emailCertKey", email, emailCertKey, null);
+		 
+		 StringBuilder str = new StringBuilder();
+		 str.append("<a href=\"http://" + domainUrl + ":5555/usr/pd/modifyPw?email="+email+"&key="+emailCertKey+"\">비밀번호 재설정하러 가</a>");
+		 helper.setText(str.toString(),true);
+		 mailSender.send(msg);
+		
+	}
 }

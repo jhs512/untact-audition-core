@@ -44,7 +44,13 @@ public class ApService {
 	}
 
 	public boolean isAdmin(int loginedMemberId) {
-		return apDao.isAdmin(loginedMemberId);
+		Ap ap = apDao.isAdmin(loginedMemberId);
+		
+		if ( ap != null ) {
+			return true;
+		}else { 
+			return false;
+		}
 	}
 	
 

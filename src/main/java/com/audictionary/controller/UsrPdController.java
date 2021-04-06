@@ -68,11 +68,14 @@ public class UsrPdController {
 		if (param.get("jobPosition") == null) {
 			return new ResultData("F-1", "직급을 입력해 주세요.");
 		}
-
+		String isEmailCert = attrService.getValue("pd", 0, "isEmailCert", (String)param.get("email"));
+		if ( isEmailCert == null ) {
+			return new ResultData("F-1", "이메일 인증을 진행해주세요.");
+		}
 		pdService.doJoin(param);
 
 		int id = Util.getAsInt(param.get("id"), 0);
-
+		
 		return new ResultData("S-1", "회원가입성공", "id", id);
 	}
 	
@@ -91,16 +94,16 @@ public class UsrPdController {
 		
 	}
 	
-	@RequestMapping("/usr/pd/sendEmail")
+	@RequestMapping("/usr/pd/sendEmailForJoin")
 	@ResponseBody
-	public ResultData sendEmail(@RequestParam String email) throws MessagingException {
+	public ResultData sendEmailForJoin(@RequestParam String email) throws MessagingException {
 		
 		emailService.sendMailForCert(email);
 		return new ResultData("S-1" , "메일 발송");
 		
 	}
 	
-	@RequestMapping("/usr/pd/emailCert")
+	@RequestMapping("/usr/pd/emailCertForJoin")
 	@ResponseBody
 	public ResultData doEmailCert(@RequestParam Map<String,Object> param) throws MessagingException {
 		String emailCertkey = attrService.getValue("pd", 0, "emailCertKey", (String)param.get("email"));
@@ -109,6 +112,7 @@ public class UsrPdController {
 			return new ResultData("F-1", "인증실패");
 		}else {
 			attrService.remove("pd", 0, "emailCertKey", (String)param.get("email"));
+			attrService.setValue("pd", 0, "isEmailCert", (String)param.get("email"), "emailCertTrue", null);
 			return new ResultData("S-1", "인증성공", "isCert" , true);	
 		}
 		
@@ -118,9 +122,15 @@ public class UsrPdController {
 	@ResponseBody
 	public ResultData checkEmailCert(@RequestParam String email) throws MessagingException {
 		
-		Attr attr = attrService.get("pd", 0, "emailCertKey", email);
+		String isEmailCert = attrService.getValue("pd", 0, "isEmailCert", email);
 		
-		if(attr == null) {
+		System.out.println("search:"+isEmailCert);		
+		if( isEmailCert == null) {
+			return new ResultData("F-1", "인증되지 않은 이메일입니다.");
+		}
+		
+		if(isEmailCert.equals("emailCertTrue")) {
+			attrService.remove("pd", 0, "isEmailCert", email);
 			return new ResultData("S-1", "인증된 이메일입니다." , "emailCert", true);
 		}else {
 			return new ResultData("F-1", "인증되지 않은 이메일입니다." , "emailCert", false);
@@ -238,12 +248,42 @@ public class UsrPdController {
 		if ( pd == null ) {
 			return new ResultData("F-2" , "일치하는 회원이 없습니다.");
 		}
+		if( !pd.getRegNumber().equals(param.get("regNumber"))){
+			return new ResultData("F-2" , "주민등록번호가 일치하지 않습니다.");
+		}
+		int id = pd.getId();
+		try {
+			emailService.sendMailForFindLoginPw(email,id);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		String tempPw = Util.getTempPassword(6);
-		String tempRealPw = (String)Util.sha256(tempPw);
-		pdService.setTempPw(email,tempRealPw);
 		
-		return new ResultData("S-1", "임시 비밀번호 발송", "pd", pd, "loginPw", tempPw);
+		return new ResultData("S-1", "임시 비밀번호 발송", "pd", pd);
+	}
+	
+	@PostMapping("usr/pd/doModifyPw")
+	@ResponseBody
+	public ResultData doModifyPw(@RequestParam Map<String,Object> param) {
+		Pd pd = pdService.getMemberByEmail((String)param.get("email"));
+		
+		int id = pd.getId();
+		
+		String key = attrService.getValue("pd", id, "emailCertKey", pd.getEmail());
+		
+		if( key == null ) {
+			return new ResultData("F-1","비정상적인 접근입니다.", "key", key);
+		}
+		
+		if( !key.equals(param.get("key"))) {
+			return new ResultData("F-1","비정상적인 접근입니다.", "key", key);
+		}
+		
+		pdService.doModify(param);
+		attrService.remove("pd", id, "emailCertKey", pd.getEmail());
+		
+		return new ResultData("S-1", "비밀번호 재설정 성공");
 	}
 	
 	@PostMapping("/usr/pd/doDelete")

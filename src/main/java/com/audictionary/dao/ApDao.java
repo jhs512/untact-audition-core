@@ -20,5 +20,5 @@ public interface ApDao {
 
 	Ap getApById(int loginedMemberId);
 
-	boolean isAdmin(int loginedMemberId);
+	Ap isAdmin(int loginedMemberId);
 }
