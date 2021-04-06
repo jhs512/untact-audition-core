@@ -48,7 +48,7 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 						request.setAttribute("authKeyStatus", "invalid");
 					} else {
 						request.setAttribute("authKeyStatus", "valid");
-						loginedMemberId = loginedPd.getId();
+						loginedMemberId = loginedAp.getId();
 					}
 				} else {
 					request.setAttribute("authKeyStatus", "none");

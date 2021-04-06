@@ -77,8 +77,10 @@ public class KakaoApiController {
 
     private String accessToken;
     private String adminKey;
-    
-    
+
+    ///////////////////////
+    //카카오 api 사용컨트롤러
+    ///////////////////////
     @RequestMapping("/usr/kakao/localApi")
     @ResponseBody
     public String kakaoLocalApi(@RequestParam String keyword) {
