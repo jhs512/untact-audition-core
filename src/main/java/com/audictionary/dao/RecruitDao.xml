@@ -27,6 +27,7 @@
 	<select id="getListForPrint" resultType="Recruit">
 		SELECT * FROM recruitment
 		WHERE delStatus != 1
+		ORDER BY id DESC
 		LIMIT #{limit}
 	</select>
 	
