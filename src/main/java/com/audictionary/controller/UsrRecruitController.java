@@ -1,5 +1,7 @@
 package com.audictionary.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.audictionary.dto.ActingRole;
 import com.audictionary.dto.Artwork;
-import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ActingRoleService;
@@ -47,8 +48,6 @@ public class UsrRecruitController {
 			actingRoleService.doWriteActingRole(param);
 		}
 		
-		
-
 		genFileService.changeInputFileRelIds(param, rmId);
 
 		return new ResultData("S-1", "공고 등록 성공", "id", rmId);
@@ -59,14 +58,16 @@ public class UsrRecruitController {
 	public ResultData showList(@RequestParam int limit) {
 
 		List<Recruit> recruits = recruitService.getListForPrint(limit);
-
+		List<Artwork> artworks = artworkService.getArtworksForPrint(limit);
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrint(limit);
+		
 		boolean isAllLoaded = false;
 
 		if (limit > recruits.size()) {
 			isAllLoaded = true;
 		}
 
-		return new ResultData("S-1", "공고 리스트 출력", "recruits", recruits, "isAllLoaded", isAllLoaded);
+		return new ResultData("S-1", "공고 리스트 출력", "recruits", recruits, "artworks", artworks, "actingRoles", actingRoles, "isAllLoaded", isAllLoaded);
 	}
 
 	@GetMapping("/usr/recruit/detail")

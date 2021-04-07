@@ -19,6 +19,10 @@ public interface RecruitDao {
 
 	void doModify(Map<String, Object> param);
 
+	int getRecruitsCount();
+
+	Recruit getRecruitByLimit(int limitStart);
+
 	
 
 	

@@ -60,5 +60,20 @@ public class RecruitService {
 		recruitDao.doModify(param);
 	}
 
+	public int getRecruitsCount() {
+		return recruitDao.getRecruitsCount();
+		
+	}
+
+	public Recruit getRecruitByLimit(int limitStart) {
+		Recruit recruit = recruitDao.getRecruitByLimit(limitStart);
+		List<GenFile> genFiles = genFileService.getGenFiles("recruit", recruit.getId(), "common", "attachment");
+		
+		if( !genFiles.isEmpty() ) {
+			recruit.getExtraNotNull().put("file__common__attachment", genFiles);	
+		}
+		return recruit;
+	}
+
 
 }

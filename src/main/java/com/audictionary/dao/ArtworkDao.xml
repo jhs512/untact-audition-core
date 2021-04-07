@@ -139,4 +139,10 @@
 		WHERE relTypeCode = 'pd'
 		AND relId = #{loginedMemberId}
 	</select>
+	
+	<select id="getArtworksForPrint" resultType="Artwork">
+		SELECT * FROM artwork
+		WHERE relTypeCode = 'recruitment'
+		LIMIT #{limit}
+	</select>
 </mapper>

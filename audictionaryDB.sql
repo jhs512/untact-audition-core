@@ -61,6 +61,7 @@ CREATE TABLE pd (
 	INDEX `name` (`name`)
 );
 
+# attr 테이블 생성
 CREATE TABLE attr(
 id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 regDate DATETIME NOT NULL,
@@ -70,7 +71,7 @@ relTypeCode CHAR(50),
 relId INT(10) UNSIGNED,
 typeCode CHAR(50),
 type2Code CHAR(50),
-`value` CHAR(50)
+`value` CHAR(100)
 );
 
 #보드 테이블 만들기
@@ -94,11 +95,6 @@ INSERT INTO board SET
 regDate = NOW(), updateDate = NOW(),
 `name` = '문의사항',
 `code` = 'qna';
-
-INSERT INTO board SET
-regDate = NOW(), updateDate = NOW(),
-`name` = '공고',
-`code` = 'recruit';
 
 # 모집공고 테이블 생성
 CREATE TABLE recruitment (
@@ -138,6 +134,7 @@ CREATE TABLE artwork (
     director CHAR(50), # 감독
     producer CHAR(50), # 프로듀서
     castingManager CHAR(20), # 캐스팅매니저
+    writer char(20), # 작가(원작)
     story TEXT, # 줄거리
 	image CHAR(100), # 이미지url
     link CHAR(100), # 링크url
@@ -193,3 +190,5 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
+
+

@@ -314,6 +314,18 @@ public class UsrPdController {
 		return new ResultData("S-1","작품 불러오기 성공", "artworks", artworks);
 	}
 	
+	@GetMapping("/usr/pd/showDetail")
+	@ResponseBody
+	public ResultData showDetail(@RequestParam int id) {
+		Pd pd = pdService.getMemberById(id);
+		
+		if(pd != null) {
+			return new ResultData("S-1", "회원 정보 불러오기 성공", "pd", pd);
+		} else {
+			return new ResultData("F-1", "일치하는 회원이 없습니다.");
+		}
+	}
+	
 	
 	
 }

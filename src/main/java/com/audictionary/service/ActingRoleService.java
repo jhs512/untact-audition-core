@@ -1,5 +1,6 @@
 package com.audictionary.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,10 @@ public class ActingRoleService {
 
 	public void doModify(Map<String, Object> param) {
 		actingRoleDao.doModify(param);
+	}
+
+	public List<ActingRole> getActingRolesForPrint(int limit) {
+		return actingRoleDao.getActingRolesForPrint(limit);
 	}
 
 }

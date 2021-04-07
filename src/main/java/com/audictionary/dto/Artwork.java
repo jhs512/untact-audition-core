@@ -24,6 +24,7 @@ public class Artwork extends EntityDto {
 	private String director;
 	private String producer;
 	private String castingManager;
+	private String writer;
 	private String story;
 	private String image;
 	private String link;

@@ -72,4 +72,8 @@ public class ArtworkService {
 		return artworkDao.getArtworksByPdId(loginedMemberId);
 	}
 
+	public List<Artwork> getArtworksForPrint(int limit) {
+		return artworkDao.getArtworksForPrint(limit);
+	}
+
 }

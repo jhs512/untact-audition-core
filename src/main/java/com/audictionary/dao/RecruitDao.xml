@@ -82,4 +82,15 @@
 		AND memberId = #{memberId}
 	</update>
 	
+	<select id="getRecruitsCount" resultType="int">
+		SELECT COUNT(*) FROM recruitment
+		WHERE delStatus != 1
+	</select>
+	
+	<select id="getRecruitByLimit" resultType="Recruit">
+		SELECT * FROM recruitment
+		WHERE delStatus != 1
+		LIMIT #{limitStart} , 1
+	</select>
+	
 </mapper>

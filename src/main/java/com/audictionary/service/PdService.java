@@ -22,14 +22,20 @@ public class PdService {
 	}
 
 	public Pd getMemberById(int loginedMemberId) {
-		Pd pd = pdDao.getMemberById(loginedMemberId); 
-		List<GenFile> genFiles = genFileService.getGenFiles("pd", loginedMemberId, "common", "attachment");
+		Pd pd = pdDao.getMemberById(loginedMemberId);
 		
-		if( !genFiles.isEmpty() ) {
-			pd.getExtraNotNull().put("file__common__attachment", genFiles);	
+		if ( pd != null ) {
+			
+			List<GenFile> genFiles = genFileService.getGenFiles("pd", loginedMemberId, "common", "attachment");
+			
+			if( !genFiles.isEmpty() ) {
+				pd.getExtraNotNull().put("file__common__attachment", genFiles);	
+			}
+			
+			pd = updateForPrint(pd);
+			
 		}
 		
-		pd = updateForPrint(pd);
 		return pd;
 	}
 	

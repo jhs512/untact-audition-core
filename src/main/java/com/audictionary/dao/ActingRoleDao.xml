@@ -68,4 +68,9 @@
 		</set>
 		WHERE recruitmentId = #{recruitmentId}
 	</update>
+	
+	<select id="getActingRolesForPrint" resultType="ActingRole">
+		SELECT * FROM actingRole
+		LIMIT #{limit}
+	</select>
 </mapper>
