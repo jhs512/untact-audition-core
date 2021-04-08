@@ -26,8 +26,9 @@ public class ActingRoleService {
 		actingRoleDao.doModify(param);
 	}
 
-	public List<ActingRole> getActingRolesForPrint(int limit) {
-		return actingRoleDao.getActingRolesForPrint(limit);
+	public List<ActingRole> getActingRolesForPrint(Map<String,Object> param) {
+
+		return actingRoleDao.getActingRolesForPrint(param);
 	}
 
 }

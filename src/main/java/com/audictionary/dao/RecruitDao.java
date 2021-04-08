@@ -13,7 +13,7 @@ public interface RecruitDao {
 
 	int doWrite(Map<String, Object> param);
 
-	List<Recruit> getListForPrint(@Param("limit")int limit);
+	List<Recruit> getListForPrint(Map<String,Object> param);
 
 	Recruit getRecruitById(@Param("id") int id);
 

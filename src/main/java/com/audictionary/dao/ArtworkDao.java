@@ -25,6 +25,6 @@ public interface ArtworkDao {
 
 	List<Artwork> getArtworksByPdId(int loginedMemberId);
 
-	List<Artwork> getArtworksForPrint(int limit);
+	List<Artwork> getArtworksForPrint(Map<String,Object> param);
 
 }

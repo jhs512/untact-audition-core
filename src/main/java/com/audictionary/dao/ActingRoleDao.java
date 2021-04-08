@@ -17,6 +17,6 @@ public interface ActingRoleDao {
 
 	void doModify(Map<String, Object> param);
 
-	List<ActingRole> getActingRolesForPrint(int limit);
+	List<ActingRole> getActingRolesForPrint(Map<String,Object> param);
 
 }

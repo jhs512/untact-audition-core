@@ -124,7 +124,7 @@ public class UsrPdController {
 		
 		String isEmailCert = attrService.getValue("pd", 0, "isEmailCert", email);
 		
-		System.out.println("search:"+isEmailCert);		
+			
 		if( isEmailCert == null) {
 			return new ResultData("F-1", "인증되지 않은 이메일입니다.");
 		}

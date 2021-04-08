@@ -1,7 +1,5 @@
 package com.audictionary.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -53,13 +52,18 @@ public class UsrRecruitController {
 		return new ResultData("S-1", "공고 등록 성공", "id", rmId);
 	}
 
-	@GetMapping("/usr/recruit/list")
+	@RequestMapping("/usr/recruit/list")
 	@ResponseBody
-	public ResultData showList(@RequestParam int limit) {
+	public ResultData showList(@RequestParam Map<String,Object> param) {
 
-		List<Recruit> recruits = recruitService.getListForPrint(limit);
-		List<Artwork> artworks = artworkService.getArtworksForPrint(limit);
-		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrint(limit);
+		
+		int limit = Integer.parseInt((String)param.get("limit"));
+		
+		
+		
+		List<Recruit> recruits = recruitService.getListForPrint(param);
+		List<Artwork> artworks = artworkService.getArtworksForPrint(param);
+		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrint(param);
 		
 		boolean isAllLoaded = false;
 

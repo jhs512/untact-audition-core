@@ -22,10 +22,68 @@ public class RecruitService {
 		return recruitDao.doWrite(param);	
 	}
 
-	public List<Recruit> getListForPrint(int limit) {
+	public List<Recruit> getListForPrint(Map<String,Object> param) {
 		
+		int limit = Integer.parseInt((String)param.get("limit"));
 		
-		List<Recruit> recruits =  recruitDao.getListForPrint(limit);
+		param.put("limit", limit);
+		
+		String[] filters;
+		
+		boolean isFiltered = false;
+		
+		if(param.get("filter") != null) {
+			String filter = (String)param.get("filter");
+			
+			if(filter.length() > 0) {
+				filters = filter.split(",");
+				
+				for(int i = 0 ; i < filters.length; i ++) {
+					if(filters[i].equals("영유아 캐스팅")) {
+						param.put("age1", "영유아");
+						isFiltered = true;
+					}
+					if(filters[i].equals("10대 캐스팅")) {
+						param.put("age10", "10대");
+						isFiltered = true;
+					}
+					if(filters[i].equals("20대 캐스팅")) {
+						param.put("age20", "20대");
+						isFiltered = true;
+					}
+					if(filters[i].equals("30대 캐스팅")) {
+						param.put("age30", "30대");
+						isFiltered = true;
+					}
+					if(filters[i].equals("40-50대 캐스팅")) {
+						param.put("age4050", "40-50대");
+						isFiltered = true;
+					}
+					if(filters[i].equals("60대 이상 캐스팅")) {
+						param.put("age60", "60대 이상");
+						isFiltered = true;
+					}
+					if(filters[i].equals("남자 캐스팅")) {
+						param.put("genderMale", "남자");
+						isFiltered = true;
+					}
+					if(filters[i].equals("여자 캐스팅")) {
+						param.put("genderFemale", "여자");
+						isFiltered = true;
+					}
+					if(filters[i].equals("성별 무관 캐스팅")) {
+						param.put("genderNone", "상관없음");
+						isFiltered = true;
+					}
+					
+				}
+			}
+			
+		}
+		
+		param.put("isFiltered", isFiltered);
+		
+		List<Recruit> recruits =  recruitDao.getListForPrint(param);
 		
 		List<Integer> recruitIds = recruits.stream().map(recruit -> recruit.getId()).collect(Collectors.toList());
 		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("recruit", recruitIds, "common", "attachment");

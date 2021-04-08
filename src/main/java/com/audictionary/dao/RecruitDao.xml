@@ -27,6 +27,21 @@
 	<select id="getListForPrint" resultType="Recruit">
 		SELECT * FROM recruitment
 		WHERE delStatus != 1
+		<if test="isFiltered">
+			AND (
+		</if>
+		<if test="genderMale != null">
+			gender LIKE CONCAT('%',#{genderMale},'%') OR gender LIKE CONCAT('%',#{genderMale},'%')
+		</if>
+		<if test="genderFemale != null">
+			gender LIKE CONCAT('%',#{genderFemale},'%') OR gender LIKE CONCAT('%',#{genderFemale},'%')
+		</if>
+		<if test="genderNone != null">
+			gender LIKE CONCAT('%',#{genderNone},'%') OR gender LIKE CONCAT('%',#{genderNone},'%')
+		</if>
+		<if test="isFiltered">
+			)
+		</if>
 		ORDER BY id DESC
 		LIMIT #{limit}
 	</select>

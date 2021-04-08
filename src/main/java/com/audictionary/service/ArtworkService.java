@@ -72,8 +72,9 @@ public class ArtworkService {
 		return artworkDao.getArtworksByPdId(loginedMemberId);
 	}
 
-	public List<Artwork> getArtworksForPrint(int limit) {
-		return artworkDao.getArtworksForPrint(limit);
+	public List<Artwork> getArtworksForPrint(Map<String,Object> param) {
+
+		return artworkDao.getArtworksForPrint(param);
 	}
 
 }
