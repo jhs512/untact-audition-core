@@ -1,5 +1,8 @@
 package com.audictionary.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -56,14 +59,19 @@ public class UsrRecruitController {
 	@ResponseBody
 	public ResultData showList(@RequestParam Map<String,Object> param) {
 
-		
 		int limit = Integer.parseInt((String)param.get("limit"));
 		
-		
-		
 		List<Recruit> recruits = recruitService.getListForPrint(param);
-		List<Artwork> artworks = artworkService.getArtworksForPrint(param);
-		List<ActingRole> actingRoles = actingRoleService.getActingRolesForPrint(param);
+		List<Artwork> artworks = new ArrayList<>();
+		List<ActingRole> actingRoles = new ArrayList<>();
+		
+		for(Recruit recruit : recruits) {
+			Artwork artwork = artworkService.getArtworkByRecruitmentId(recruit.getId());
+			ActingRole actingRole = actingRoleService.getActingRoleByRecruitmentId(recruit.getId());
+			
+			artworks.add(artwork);
+			actingRoles.add(actingRole);
+		}
 		
 		boolean isAllLoaded = false;
 

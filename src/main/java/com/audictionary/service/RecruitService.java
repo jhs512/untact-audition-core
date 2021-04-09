@@ -1,5 +1,9 @@
 package com.audictionary.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,6 +35,7 @@ public class RecruitService {
 		String[] filters;
 		
 		boolean isFiltered = false;
+		
 		
 		if(param.get("filter") != null) {
 			String filter = (String)param.get("filter");
@@ -73,6 +78,26 @@ public class RecruitService {
 					}
 					if(filters[i].equals("성별 무관 캐스팅")) {
 						param.put("genderNone", "상관없음");
+						isFiltered = true;
+					}
+					if(filters[i].equals("영화")) {
+						param.put("genreMv", "영화");
+						isFiltered = true;
+					}
+					if(filters[i].equals("드라마")) {
+						param.put("genreDrama", "드라마");
+						isFiltered = true;
+					}
+					if(filters[i].equals("연극")) {
+						param.put("genreTheater", "연극");
+						isFiltered = true;
+					}
+					if(filters[i].equals("독립영화")) {
+						param.put("genreIndieMv", "독립영화");
+						isFiltered = true;
+					}
+					if(filters[i].equals("현재 진행중인 공고")) {
+						param.put("notExpired", "notExpired");
 						isFiltered = true;
 					}
 					

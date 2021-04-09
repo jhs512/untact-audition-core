@@ -73,7 +73,6 @@ public class ArtworkService {
 	}
 
 	public List<Artwork> getArtworksForPrint(Map<String,Object> param) {
-
 		return artworkDao.getArtworksForPrint(param);
 	}
 

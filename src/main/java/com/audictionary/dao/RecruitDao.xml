@@ -28,16 +28,49 @@
 		SELECT * FROM recruitment
 		WHERE delStatus != 1
 		<if test="isFiltered">
-			AND (
+			AND ( 0
 		</if>
 		<if test="genderMale != null">
-			gender LIKE CONCAT('%',#{genderMale},'%') OR gender LIKE CONCAT('%',#{genderMale},'%')
+			OR gender LIKE CONCAT('%',#{genderMale},'%')
 		</if>
 		<if test="genderFemale != null">
-			gender LIKE CONCAT('%',#{genderFemale},'%') OR gender LIKE CONCAT('%',#{genderFemale},'%')
+			OR gender LIKE CONCAT('%',#{genderFemale},'%')
 		</if>
 		<if test="genderNone != null">
-			gender LIKE CONCAT('%',#{genderNone},'%') OR gender LIKE CONCAT('%',#{genderNone},'%')
+			OR gender LIKE CONCAT('%',#{genderNone},'%')
+		</if>
+		<if test="age1 != null">
+			OR age LIKE CONCAT('%',#{age1},'%')
+		</if>
+		<if test="age10 != null">
+			OR age LIKE CONCAT('%',#{age10},'%')
+		</if>
+		<if test="age20 != null">
+			OR age LIKE CONCAT('%',#{age20},'%')
+		</if>
+		<if test="age30 != null">
+			OR age LIKE CONCAT('%',#{age30},'%')
+		</if>
+		<if test="age4050 != null">
+			OR age LIKE CONCAT('%',#{age4050},'%')
+		</if>
+		<if test="age60 != null">
+			OR age LIKE CONCAT('%',#{age60},'%')
+		</if>
+		<if test="genreMv != null">
+			OR gender LIKE CONCAT('%',#{genreMv},'%')
+		</if>
+		<if test="genreDrama != null">
+			OR gender LIKE CONCAT('%',#{genreDrama},'%')
+		</if>
+		<if test="genreTheater != null">
+			OR gender LIKE CONCAT('%',#{genreTheater},'%')
+		</if>
+		<if test="genreIndieMv != null">
+			OR gender LIKE CONCAT('%',#{genreIndieMv},'%')
+		</if>
+		<if test="notExpired != null">
+			OR deadline > NOW()
 		</if>
 		<if test="isFiltered">
 			)

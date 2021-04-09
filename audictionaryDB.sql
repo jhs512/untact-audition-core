@@ -111,10 +111,11 @@ pay CHAR(50) NOT NULL, # 출연료
 location CHAR(10), # 촬영장소
 `period` CHAR(10), # 촬영기간
 deadline DATETIME, # 모집기한날짜
+media CHAR(50), # 매체
 gender char(20), # 지원요건 성별
 age char(50), # 지원요건 나이대
 script TEXT, # 연기대사
-videoTime char(50), # 영상 시간( 1 = 1분이내 / 2 = 1~2분 / 3 = 2~3분 / 4 = 5분이내 )
+videoTime char(50), # 영상 시간
 etc TEXT, # 기타우대사항
 INDEX title (title)
 );
@@ -190,5 +191,3 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
-
-
