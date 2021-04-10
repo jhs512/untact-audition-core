@@ -188,6 +188,7 @@ public class GenFileService {
 
 	public Map<Integer, Map<String, GenFile>> getFilesMapKeyRelIdAndFileNo(String relTypeCode, List<Integer> relIds,
 			String typeCode, String type2Code) {
+		
 		List<GenFile> genFiles = genFileDao.getGenFilesRelTypeCodeAndRelIdsAndTypeCodeAndType2Code(relTypeCode, relIds,
 				typeCode, type2Code);
 		Map<String, GenFile> map = new HashMap<>();

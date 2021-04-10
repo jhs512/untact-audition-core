@@ -143,6 +143,87 @@
 	<select id="getArtworksForPrint" resultType="Artwork">
 		SELECT * FROM artwork
 		WHERE relTypeCode = 'recruitment'
-		LIMIT #{limit}
+		<if test="limit != null">
+			LIMIT #{limit}
+		</if>
+	</select>
+	
+	<select id="getArtworksByKeyword" resultType="Artwork">
+		SELECT * FROM artwork
+		WHERE relTypeCode = 'recruitment'
+		<if test="limit != null">
+			LIMIT #{limit}
+		</if>
+	</select>
+	
+	<select id="getArtworksForPrintByKeyword" resultType="Artwork">
+		SELECT * FROM artwork
+		WHERE relTypeCode = 'recruitment'
+		<if test="keyword != null">
+			AND ( 0
+		</if>
+		<if test="keyword != null">
+			OR `title` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `subtitle` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `media` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `genre` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `corp` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `director` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `producer` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `castingManager` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `story` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `etc` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="limit != null">
+			LIMIT #{limit}
+		</if>
+		<if test="keyword != null">
+			)
+		</if>
+	</select>
+	
+	<select id="getArtworksForPrintByFilter" resultType="Artwork">
+		SELECT * FROM artwork
+		WHERE relTypeCode = 'recruitment'
+		<if test="isFiltered">
+			AND ( 0
+		</if>
+		<if test="genreMv != null">
+			OR media LIKE CONCAT('%',#{genreMv},'%')		
+		</if>
+		<if test="genreDrama != null">
+			OR media LIKE CONCAT('%',#{genreDrama},'%')		
+		</if>
+		<if test="genreTheater != null">
+			OR media LIKE CONCAT('%',#{genreTheater},'%')		
+		</if>
+		<if test="genreIndieMv != null">
+			OR media LIKE CONCAT('%',#{genreIndieMv},'%')		
+		</if>
+		<if test="isFiltered">
+			)
+		</if>
+		ORDER BY relId DESC
+		<if test="limit != null">
+			LIMIT #{limit}
+		</if>
 	</select>
 </mapper>

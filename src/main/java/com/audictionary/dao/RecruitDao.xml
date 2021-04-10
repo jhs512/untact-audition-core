@@ -16,6 +16,7 @@
 		location = #{rmLocation},
 		period = #{rmPeriod},
 		deadline = #{rmDeadline},
+		media = #{awMedia},
 		gender = #{rmGender},
 		age = #{rmAge},
 		script = #{rmScript},
@@ -23,60 +24,65 @@
 		etc = #{rmEtc}
 	</insert>
 	
-	
 	<select id="getListForPrint" resultType="Recruit">
 		SELECT * FROM recruitment
 		WHERE delStatus != 1
-		<if test="isFiltered">
-			AND ( 0
+		ORDER BY id DESC
+		<if test="limit != null">
+			LIMIT #{limit}
 		</if>
+	</select>
+	
+	
+	<select id="getListForPrintByFilter" resultType="Recruit">
+		SELECT * FROM recruitment
+		WHERE delStatus != 1
 		<if test="genderMale != null">
-			OR gender LIKE CONCAT('%',#{genderMale},'%')
+			AND gender LIKE CONCAT('%',#{genderMale},'%')
 		</if>
 		<if test="genderFemale != null">
-			OR gender LIKE CONCAT('%',#{genderFemale},'%')
+			AND gender LIKE CONCAT('%',#{genderFemale},'%')
 		</if>
 		<if test="genderNone != null">
-			OR gender LIKE CONCAT('%',#{genderNone},'%')
+			AND gender LIKE CONCAT('%',#{genderNone},'%')
 		</if>
 		<if test="age1 != null">
-			OR age LIKE CONCAT('%',#{age1},'%')
+			AND age LIKE CONCAT('%',#{age1},'%')
 		</if>
 		<if test="age10 != null">
-			OR age LIKE CONCAT('%',#{age10},'%')
+			AND age LIKE CONCAT('%',#{age10},'%')
 		</if>
 		<if test="age20 != null">
-			OR age LIKE CONCAT('%',#{age20},'%')
+			AND age LIKE CONCAT('%',#{age20},'%')
 		</if>
 		<if test="age30 != null">
-			OR age LIKE CONCAT('%',#{age30},'%')
+			AND age LIKE CONCAT('%',#{age30},'%')
 		</if>
 		<if test="age4050 != null">
-			OR age LIKE CONCAT('%',#{age4050},'%')
+			AND age LIKE CONCAT('%',#{age4050},'%')
 		</if>
 		<if test="age60 != null">
-			OR age LIKE CONCAT('%',#{age60},'%')
+			AND age LIKE CONCAT('%',#{age60},'%')
 		</if>
 		<if test="genreMv != null">
-			OR gender LIKE CONCAT('%',#{genreMv},'%')
+			AND media LIKE CONCAT('%',#{genreMv},'%')
 		</if>
 		<if test="genreDrama != null">
-			OR gender LIKE CONCAT('%',#{genreDrama},'%')
+			AND media LIKE CONCAT('%',#{genreDrama},'%')
 		</if>
 		<if test="genreTheater != null">
-			OR gender LIKE CONCAT('%',#{genreTheater},'%')
+			AND media LIKE CONCAT('%',#{genreTheater},'%')
 		</if>
 		<if test="genreIndieMv != null">
-			OR gender LIKE CONCAT('%',#{genreIndieMv},'%')
+			AND media LIKE CONCAT('%',#{genreIndieMv},'%')
 		</if>
 		<if test="notExpired != null">
-			OR deadline > NOW()
-		</if>
-		<if test="isFiltered">
-			)
+			AND deadline > NOW()
 		</if>
 		ORDER BY id DESC
+		<if test="limit != null">
 		LIMIT #{limit}
+		</if>
 	</select>
 	
 	<select id="getRecruitById" resultType="Recruit">
@@ -140,6 +146,57 @@
 		SELECT * FROM recruitment
 		WHERE delStatus != 1
 		LIMIT #{limitStart} , 1
+	</select>
+	
+	<select id="getListForPrintByKeyword" resultType="Recruit">
+		SELECT * FROM recruitment
+		WHERE delStatus != 1
+		<if test="keyword != null">
+			AND ( 0
+		</if>
+		<if test="keyword != null">
+			OR `title` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `body` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `roleType` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `pay` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `location` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `period` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `deadline` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `gender` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `age` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `script` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `videoTime` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR `etc` LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			)
+		</if>
+		ORDER BY id DESC
+		<if test="limit != null">
+		LIMIT #{limit}
+		</if>
 	</select>
 	
 </mapper>

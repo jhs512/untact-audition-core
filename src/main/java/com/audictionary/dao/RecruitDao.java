@@ -23,6 +23,12 @@ public interface RecruitDao {
 
 	Recruit getRecruitByLimit(int limitStart);
 
+	List<Recruit> getListForPrintByFilter(Map<String, Object> param);
+
+	List<Recruit> getListForPrintByKeyword(Map<String, Object> param);
+
+	Recruit getRecruitByArtworkId(int id);
+
 	
 
 	

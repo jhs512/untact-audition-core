@@ -27,4 +27,8 @@ public interface ArtworkDao {
 
 	List<Artwork> getArtworksForPrint(Map<String,Object> param);
 
+	List<Artwork> getArtworksForPrintByKeyword(Map<String, Object> param);
+	
+	List<Artwork> getArtworksForPrintByFilter(Map<String, Object> param);
+
 }

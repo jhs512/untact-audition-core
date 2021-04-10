@@ -61,7 +61,7 @@ public class UsrRecruitController {
 
 		int limit = Integer.parseInt((String)param.get("limit"));
 		
-		List<Recruit> recruits = recruitService.getListForPrint(param);
+		List<Recruit> recruits = recruitService.getListForPrintByFilter(param);
 		List<Artwork> artworks = new ArrayList<>();
 		List<ActingRole> actingRoles = new ArrayList<>();
 		
@@ -194,5 +194,37 @@ public class UsrRecruitController {
 		
 		actingRoleService.doModify(param);
 		
+	}
+	
+	@RequestMapping("/usr/recruit/search")
+	@ResponseBody
+	public ResultData doSearchByKeyword(@RequestParam Map<String,Object> param) {
+		
+		List<Recruit> recruits = recruitService.getListForPrintByKeyword(param);
+		List<Artwork> artworks = artworkService.getArtworksForPrintByKeyword(param);
+		List<ActingRole> actingRoles = new ArrayList<>();
+
+		for (Artwork artworkE : artworks) {
+			if(artworkE.getRelTypeCode().equals("recruitment")) {
+				if (recruits.indexOf(recruitService.getRecruitById(artworkE.getRelId())) < 0) {
+					recruits.add(recruitService.getRecruitById(artworkE.getRelId()));	
+				}
+			}
+		}
+		
+		for(Recruit recruit : recruits) {
+			Artwork artwork = artworkService.getArtworkByRecruitmentId(recruit.getId());
+			ActingRole actingRole = actingRoleService.getActingRoleByRecruitmentId(recruit.getId());
+			if(artworks.indexOf(artwork) < 0) {
+				artworks.add(artwork);
+			}
+			
+			actingRoles.add(actingRole);
+			
+		}
+		
+		recruits = recruitService.getRecruitExtraFile(recruits);
+		
+		return new ResultData("S-1", "검색 성공", "recruits", recruits, "artworks", artworks, "actingRoles", actingRoles);
 	}
 }

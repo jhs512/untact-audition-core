@@ -76,4 +76,50 @@ public class ArtworkService {
 		return artworkDao.getArtworksForPrint(param);
 	}
 
+	public List<Artwork> getArtworksForPrintByKeyword(Map<String, Object> param) {
+		return artworkDao.getArtworksForPrintByKeyword(param);
+	}
+
+	public List<Artwork> getListForPrintByFilter(Map<String, Object> param) {
+		String[] filters;
+		
+		boolean isFiltered = false;
+		
+		
+		if(param.get("filter") != null) {
+			String filter = (String)param.get("filter");
+			
+			if(filter.length() > 0) {
+				filters = filter.split(",");
+				
+				for(int i = 0 ; i < filters.length; i ++) {
+					if(filters[i].equals("영화")) {
+						param.put("genreMv", "영화");
+						isFiltered = true;
+					}
+					if(filters[i].equals("드라마")) {
+						param.put("genreDrama", "드라마");
+						isFiltered = true;
+					}
+					if(filters[i].equals("연극")) {
+						param.put("genreTheater", "연극");
+						isFiltered = true;
+					}
+					if(filters[i].equals("독립영화")) {
+						param.put("genreIndieMv", "독립영화");
+						isFiltered = true;
+					}
+					
+					
+				}
+			}
+			
+		}
+		
+		param.put("isFiltered", isFiltered);
+		return artworkDao.getArtworksForPrintByFilter(param);
+	}
+
+
+
 }
