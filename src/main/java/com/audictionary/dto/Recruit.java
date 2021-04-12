@@ -34,6 +34,7 @@ public class Recruit extends EntityDto {
 	private String extra__aw_media;
 	private String extra__aw_title;
 	private String extra__aw_subtitle;
+	private String extra__aw_genre;
 	private String extra__aw_director;
 	private String extra__aw_writer;
 	private String extra__aw_corp;
