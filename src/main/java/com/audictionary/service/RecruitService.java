@@ -97,7 +97,6 @@ public class RecruitService {
 		
 		boolean isFiltered = false;
 		
-		
 		if(param.get("filter") != null) {
 			String filter = (String)param.get("filter");
 			
@@ -197,7 +196,18 @@ public class RecruitService {
 		
 		List<Recruit> recruits = recruitDao.getListForPrintByKeyword(param);
 		
+		List<Integer> recruitIds = recruits.stream().map(recruit -> recruit.getId()).collect(Collectors.toList());
 		
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("recruit", recruitIds, "common", "attachment");
+		
+		for (Recruit recruit : recruits) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(recruit.getId());
+
+			if (mapByFileNo != null) {
+				recruit.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+			}
+		
+		}
 		
 		return recruits;
 		
@@ -217,6 +227,19 @@ public class RecruitService {
 		
 		}
 		return recruits;
+	}
+
+	public Recruit getRecruitForPrintById(int id) {
+		Recruit recruit =  recruitDao.getRecruitForPrintById(id);
+		
+		List<GenFile> genFiles = genFileService.getGenFiles("recruit", id, "common", "attachment");
+		
+		if( !genFiles.isEmpty() ) {
+			recruit.getExtraNotNull().put("file__common__attachment", genFiles);	
+		}
+		
+		return recruit;
+		
 	}
 
 

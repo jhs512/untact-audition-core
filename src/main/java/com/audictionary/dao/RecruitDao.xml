@@ -35,49 +35,54 @@
 	
 	
 	<select id="getListForPrintByFilter" resultType="Recruit">
-		SELECT * FROM recruitment
-		WHERE delStatus != 1
+		SELECT r.*, aw.media AS extra__aw_media, aw.title AS extra__aw_title, aw.director AS extra__aw_director, ar.name AS extra__ar_name, ar.character AS extra__ar_character FROM recruitment AS r
+		INNER JOIN artwork AS aw
+		ON aw.relTypeCode = 'recruitment'
+		AND aw.relId = r.id
+		INNER JOIN actingRole AS ar
+		ON ar.recruitmentId = r.id
+		WHERE r.delStatus != 1
 		<if test="genderMale != null">
-			AND gender LIKE CONCAT('%',#{genderMale},'%')
+			AND r.gender LIKE CONCAT('%',#{genderMale},'%')
 		</if>
 		<if test="genderFemale != null">
-			AND gender LIKE CONCAT('%',#{genderFemale},'%')
+			AND r.gender LIKE CONCAT('%',#{genderFemale},'%')
 		</if>
 		<if test="genderNone != null">
-			AND gender LIKE CONCAT('%',#{genderNone},'%')
+			AND r.gender LIKE CONCAT('%',#{genderNone},'%')
 		</if>
 		<if test="age1 != null">
-			AND age LIKE CONCAT('%',#{age1},'%')
+			AND r.age LIKE CONCAT('%',#{age1},'%')
 		</if>
 		<if test="age10 != null">
-			AND age LIKE CONCAT('%',#{age10},'%')
+			AND r.age LIKE CONCAT('%',#{age10},'%')
 		</if>
 		<if test="age20 != null">
-			AND age LIKE CONCAT('%',#{age20},'%')
+			AND r.age LIKE CONCAT('%',#{age20},'%')
 		</if>
 		<if test="age30 != null">
-			AND age LIKE CONCAT('%',#{age30},'%')
+			AND r.age LIKE CONCAT('%',#{age30},'%')
 		</if>
 		<if test="age4050 != null">
-			AND age LIKE CONCAT('%',#{age4050},'%')
+			AND r.age LIKE CONCAT('%',#{age4050},'%')
 		</if>
 		<if test="age60 != null">
-			AND age LIKE CONCAT('%',#{age60},'%')
+			AND r.age LIKE CONCAT('%',#{age60},'%')
 		</if>
 		<if test="genreMv != null">
-			AND media LIKE CONCAT('%',#{genreMv},'%')
+			AND aw.media LIKE CONCAT('%',#{genreMv},'%')
 		</if>
 		<if test="genreDrama != null">
-			AND media LIKE CONCAT('%',#{genreDrama},'%')
+			AND aw.media LIKE CONCAT('%',#{genreDrama},'%')
 		</if>
 		<if test="genreTheater != null">
-			AND media LIKE CONCAT('%',#{genreTheater},'%')
+			AND aw.media LIKE CONCAT('%',#{genreTheater},'%')
 		</if>
 		<if test="genreIndieMv != null">
-			AND media LIKE CONCAT('%',#{genreIndieMv},'%')
+			AND aw.media LIKE CONCAT('%',#{genreIndieMv},'%')
 		</if>
-		<if test="notExpired != null">
-			AND deadline > NOW()
+		<if test="notExpired != null"> 
+			AND deadline >= DATE_FORMAT(NOW(), '%Y-%m-%d')
 		</if>
 		ORDER BY id DESC
 		<if test="limit != null">
@@ -148,47 +153,148 @@
 		LIMIT #{limitStart} , 1
 	</select>
 	
+	<select id="getRecruitForPrintById" resultType="Recruit">
+		SELECT r.*,
+		aw.media AS extra__aw_media, 
+		aw.title AS extra__aw_title,
+		aw.subtitle AS extra__aw_subtitle,
+		aw.genre AS extra__aw_genre, 
+		aw.director AS extra__aw_director,
+		aw.producer AS extra__aw_producer, 
+		aw.writer AS extra__aw_writer,
+		aw.castingManager AS extra__aw_castingManager, 
+		aw.story AS extra__aw_story,
+		aw.corp AS extra__aw_corp, 
+		aw.etc AS extra__aw_etc, 
+		ar.realName AS extra__ar_realName,
+		ar.name AS extra__ar_name,
+		ar.age AS extra__ar_age,
+		ar.job AS extra__ar_job,
+		ar.gender AS extra__ar_gender,
+		ar.scriptStatus AS extra__ar_scriptStatus,
+		ar.scenesCount AS extra__ar_scenesCount,
+		ar.shootingsCount AS extra__ar_shootingsCount, 
+		ar.character AS extra__ar_character,
+		ar.etc AS extra__ar_etc 
+		FROM recruitment AS r
+		INNER JOIN artwork AS aw
+		ON aw.relTypeCode = 'recruitment'
+		AND aw.relId = r.id
+		INNER JOIN actingRole AS ar
+		ON ar.recruitmentId = r.id
+		WHERE r.delStatus != 1
+		AND r.id = #{id}
+	</select>
+	
 	<select id="getListForPrintByKeyword" resultType="Recruit">
-		SELECT * FROM recruitment
-		WHERE delStatus != 1
+		SELECT r.*, aw.media AS extra__aw_media, aw.title AS extra__aw_title, aw.director AS extra__aw_director, ar.name AS extra__ar_name, ar.character AS extra__ar_character FROM recruitment AS r
+		INNER JOIN artwork AS aw
+		ON aw.relTypeCode = 'recruitment'
+		AND aw.relId = r.id
+		INNER JOIN actingRole AS ar
+		ON ar.recruitmentId = r.id
+		WHERE r.delStatus != 1
 		<if test="keyword != null">
 			AND ( 0
 		</if>
 		<if test="keyword != null">
-			OR `title` LIKE CONCAT('%',#{keyword},'%')
+			OR r.title LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `body` LIKE CONCAT('%',#{keyword},'%')
+			OR r.body LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `roleType` LIKE CONCAT('%',#{keyword},'%')
+			OR r.roleType LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `pay` LIKE CONCAT('%',#{keyword},'%')
+			OR r.pay LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `location` LIKE CONCAT('%',#{keyword},'%')
+			OR r.location LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `period` LIKE CONCAT('%',#{keyword},'%')
+			OR r.period LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `deadline` LIKE CONCAT('%',#{keyword},'%')
+			OR r.deadline LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `gender` LIKE CONCAT('%',#{keyword},'%')
+			OR r.gender LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `age` LIKE CONCAT('%',#{keyword},'%')
+			OR r.age LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `script` LIKE CONCAT('%',#{keyword},'%')
+			OR r.script LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `videoTime` LIKE CONCAT('%',#{keyword},'%')
+			OR r.videoTime LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
-			OR `etc` LIKE CONCAT('%',#{keyword},'%')
+			OR r.etc LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.title LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.subtitle LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.media LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.genre LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.corp LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.director LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.producer LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.castingManager LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.writer LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.story LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR aw.etc LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.realName LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.name LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.age LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.job LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.gender LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.scriptStatus LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.scenesCount LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.shootingsCount LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.character LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="keyword != null">
+			OR ar.etc LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="keyword != null">
 			)

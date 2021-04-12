@@ -62,39 +62,23 @@ public class UsrRecruitController {
 		int limit = Integer.parseInt((String)param.get("limit"));
 		
 		List<Recruit> recruits = recruitService.getListForPrintByFilter(param);
-		List<Artwork> artworks = new ArrayList<>();
-		List<ActingRole> actingRoles = new ArrayList<>();
-		
-		for(Recruit recruit : recruits) {
-			Artwork artwork = artworkService.getArtworkByRecruitmentId(recruit.getId());
-			ActingRole actingRole = actingRoleService.getActingRoleByRecruitmentId(recruit.getId());
-			
-			artworks.add(artwork);
-			actingRoles.add(actingRole);
-		}
-		
+	
 		boolean isAllLoaded = false;
 
 		if (limit > recruits.size()) {
 			isAllLoaded = true;
 		}
 
-		return new ResultData("S-1", "공고 리스트 출력", "recruits", recruits, "artworks", artworks, "actingRoles", actingRoles, "isAllLoaded", isAllLoaded);
+		return new ResultData("S-1", "공고 리스트 출력", "recruits", recruits, "isAllLoaded", isAllLoaded);
 	}
 
 	@GetMapping("/usr/recruit/detail")
 	@ResponseBody
 	public ResultData showDetail(@RequestParam int id) {
 
-		Recruit recruit = recruitService.getRecruitById(id);
-		
-		int rmId = id;
-		
-		Artwork artwork = artworkService.getArtworkByRecruitmentId(rmId);
-
-		ActingRole actingRole = actingRoleService.getActingRoleByRecruitmentId(rmId);
-		
-		return new ResultData("S-1", "공고 불러오기", "recruit", recruit, "artwork", artwork, "actingRole", actingRole);
+		Recruit recruit = recruitService.getRecruitForPrintById(id);
+				
+		return new ResultData("S-1", "공고 불러오기", "recruit", recruit );
 	}
 
 
@@ -201,30 +185,7 @@ public class UsrRecruitController {
 	public ResultData doSearchByKeyword(@RequestParam Map<String,Object> param) {
 		
 		List<Recruit> recruits = recruitService.getListForPrintByKeyword(param);
-		List<Artwork> artworks = artworkService.getArtworksForPrintByKeyword(param);
-		List<ActingRole> actingRoles = new ArrayList<>();
 
-		for (Artwork artworkE : artworks) {
-			if(artworkE.getRelTypeCode().equals("recruitment")) {
-				if (recruits.indexOf(recruitService.getRecruitById(artworkE.getRelId())) < 0) {
-					recruits.add(recruitService.getRecruitById(artworkE.getRelId()));	
-				}
-			}
-		}
-		
-		for(Recruit recruit : recruits) {
-			Artwork artwork = artworkService.getArtworkByRecruitmentId(recruit.getId());
-			ActingRole actingRole = actingRoleService.getActingRoleByRecruitmentId(recruit.getId());
-			if(artworks.indexOf(artwork) < 0) {
-				artworks.add(artwork);
-			}
-			
-			actingRoles.add(actingRole);
-			
-		}
-		
-		recruits = recruitService.getRecruitExtraFile(recruits);
-		
-		return new ResultData("S-1", "검색 성공", "recruits", recruits, "artworks", artworks, "actingRoles", actingRoles);
+		return new ResultData("S-1", "검색 성공", "recruits", recruits);
 	}
 }

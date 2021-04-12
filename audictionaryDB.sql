@@ -165,6 +165,8 @@ CREATE TABLE application (
 id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 regDate DATETIME NOT NULL,
 updateDate DATETIME NOT NULL,
+delDate DATETIME,
+delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 memberId INT(10) UNSIGNED NOT NULL,
 recruitId INT(10) UNSIGNED NOT NULL, # 공고번호
 `exp` TINYINT(1) UNSIGNED NOT NULL #경력 여부
@@ -191,3 +193,15 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
+
+select * from genFile;
+select * from application;
+select * from artwork;
+
+select R.*, aw.*, ar.* from recruitment as R
+left JOIN artwork as aw
+on aw.relTypeCode = 'recruitment'
+and R.id = aw.relId
+left join actingRoles as ar
+on R.id = ar.recruitmentId
+WHERE R.delStatus != 1 ;

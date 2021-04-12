@@ -29,6 +29,8 @@ public interface RecruitDao {
 
 	Recruit getRecruitByArtworkId(int id);
 
+	Recruit getRecruitForPrintById(int id);
+
 	
 
 	
