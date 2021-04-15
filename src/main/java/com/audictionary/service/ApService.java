@@ -52,6 +52,10 @@ public class ApService {
 			return false;
 		}
 	}
+
+	public Ap doIdDupCheck(String loginId) {
+		return apDao.doIdDupCheck(loginId);
+	}
 	
 
 }

@@ -86,4 +86,9 @@
 		WHERE id = #{id}
 		AND authLevel = 1
 	</select>
+	
+	<select id="doIdDupCheck" resultType="Ap">
+		SELECT * FROM ap
+		WHERE loginId = #{loginId}
+	</select>
 </mapper>

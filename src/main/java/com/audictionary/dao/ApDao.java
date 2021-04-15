@@ -21,4 +21,6 @@ public interface ApDao {
 	Ap getApById(int loginedMemberId);
 
 	Ap isAdmin(int loginedMemberId);
+
+	Ap doIdDupCheck(String loginId);
 }

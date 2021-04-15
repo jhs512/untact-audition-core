@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -92,5 +93,18 @@ public class UsrApController {
 		param.put("id", loginedMemberId);
 		
 		return apService.doModify(param);
+	}
+	
+	@GetMapping("/usr/ap/doIdDupCheck")
+	@ResponseBody
+	public ResultData doIdDupCheck(@RequestParam String loginId) {
+		
+		Ap ap = apService.doIdDupCheck(loginId);
+		
+		if ( ap != null ) {
+			return new ResultData("F-1", "이미 사용중인 아이디입니다.");
+		} else {
+			return new ResultData("S-1", "사용 가능한 아이디입니다.");
+		}
 	}
 }
