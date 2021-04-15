@@ -60,8 +60,6 @@ public class ArtworkService {
 			}
 		}
 		
-		System.out.println("search:"+artworks.get(0));
-		
 		for( int i = 0 ; i < artworks.size(); i++ ) {
 			artworks.get(i).put("loginedMemberId", param.get("loginedMemberId"));
 			artworkDao.doWriteArtWorkForPdProfile(artworks.get(i));

@@ -326,6 +326,13 @@ public class UsrPdController {
 		}
 	}
 	
-	
+	@RequestMapping("/usr/pd/deleteProfileImg")
+	@ResponseBody
+	public ResultData deleteProfileImg (@RequestParam int id) {
+		
+		genFileService.deleteGenFiles("pd", id);
+		
+		return new ResultData("S-1", "프로필 이미지 삭제 성공");
+	}
 	
 }
