@@ -30,6 +30,7 @@ CREATE TABLE ap (
 	corp CHAR(20), # 소속 회사
     authLevel INT(10) UNSIGNED NOT NULL DEFAULT 2, # 회원관리등급
     authKey CHAR(80) NOT NULL, # 로그인 인증키
+    authStatus TINYINT(2) UNSIGNED NOT NULL DEFAULT 0, # 이메일 인증 여부 (0 = 미인증, 1 = 인증)
 	UNIQUE INDEX loginId (loginId),
 	UNIQUE INDEX authKey (authKey),
 	INDEX `name` (`name` , jobArea, feature, gender, feet, weight)
