@@ -17,8 +17,8 @@ CREATE TABLE ap (
     engName CHAR(20) NOT NULL, # 영문이름
 	nickName CHAR(10), # 활동명
 	gender CHAR(2) NOT NULL, # 성별
-	regNumber CHAR(14) NOT NULL, # 주민등록번호
-    address CHAR(30) NOT NULL, # 주소
+	regNumber CHAR(100) NOT NULL, # 주민등록번호
+    address CHAR(100) NOT NULL, # 주소
 	cellPhoneNo VARCHAR(15) NOT NULL, # 전화번호
     feet INT(10) UNSIGNED, # 키
     weight INT(10) UNSIGNED, # 몸무게
@@ -47,7 +47,7 @@ CREATE TABLE pd (
 	`name` CHAR(10) NOT NULL,
 	gender CHAR(2) NOT NULL, # 성별
 	regNumber CHAR(100) NOT NULL, # 주민등록번호
-	address CHAR(30) NOT NULL,	# 주소
+	address CHAR(100) NOT NULL,	# 주소
 	email CHAR(20) NOT NULL,  # 이메일
 	cellPhoneNo VARCHAR(15) NOT NULL,  # 전화번호
     jobPosition CHAR(10) NOT NULL, # 직급
@@ -193,15 +193,3 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
-
-select * from genFile;
-select * from application;
-select * from artwork;
-
-select R.*, aw.*, ar.* from recruitment as R
-left JOIN artwork as aw
-on aw.relTypeCode = 'recruitment'
-and R.id = aw.relId
-left join actingRoles as ar
-on R.id = ar.recruitmentId
-WHERE R.delStatus != 1 ;
