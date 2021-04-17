@@ -73,6 +73,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/usr/ap/doLogin")
 			.excludePathPatterns("/usr/ap/doJoin")
 			.excludePathPatterns("/usr/ap/doIdDupCheck")
+			.excludePathPatterns("/usr/ap/emailCertForJoin")
 			.excludePathPatterns("/usr/recruit/list")
 			.excludePathPatterns("/usr/file/test*")
 			.excludePathPatterns("/usr/file/doTest*")

@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.audictionary.dto.Ap;
 import com.audictionary.util.Util;
 
 
@@ -24,6 +25,8 @@ public class EmailService {
 	private JavaMailSender mailSender;
 	@Autowired
 	private AttrService attrService;
+	@Autowired
+	private ApService apService;
 	
 	@Async
 	public void sendMailForCert(String email) throws MessagingException {
@@ -49,6 +52,24 @@ public class EmailService {
 		 
 		 StringBuilder str = new StringBuilder();
 		 str.append("<a href=\"http://" + domainUrl + ":5555/usr/pd/emailCert?email="+email+"&key="+emailCertKey+"\">인증</a>");
+		 helper.setText(str.toString(),true);
+		 mailSender.send(msg);
+	}
+	
+	@Async
+	public void sendMailForCertAp(String email) throws MessagingException {
+		 MimeMessage msg = mailSender.createMimeMessage();
+		 MimeMessageHelper helper = new MimeMessageHelper(msg,true);
+		 
+		 helper.setTo(email);
+		 helper.setFrom("cdbitmana@gmail.com");
+		 helper.setSubject("Audictionary 회원가입 인증메일입니다.");
+		 
+		 Ap ap = apService.getApByLoginId(email);
+		 String emailCertKey = ap.getAuthKey();
+		 
+		 StringBuilder str = new StringBuilder();
+		 str.append("<a href=\"http://" + domainUrl + ":8100/member/emailCert?email="+email+"&emailCertKey="+emailCertKey+"\">인증</a>");
 		 helper.setText(str.toString(),true);
 		 mailSender.send(msg);
 	}

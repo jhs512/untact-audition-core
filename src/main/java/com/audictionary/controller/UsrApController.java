@@ -2,10 +2,13 @@ package com.audictionary.controller;
 
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,7 +23,7 @@ public class UsrApController {
 
 	@PostMapping("/usr/ap/doJoin")
 	@ResponseBody
-	public ResultData doJoin(@RequestParam Map<String, Object> param) {
+	public ResultData doJoin(@RequestParam Map<String, Object> param) throws MessagingException {
 		
 		if (param.get("loginId") == null) {
 			return new ResultData("F-1", "아이디를 입력해 주세요.");
@@ -107,4 +110,19 @@ public class UsrApController {
 			return new ResultData("S-1", "사용 가능한 아이디입니다.");
 		}
 	}
+	
+	@RequestMapping("/usr/ap/emailCertForJoin")
+	@ResponseBody
+	public ResultData doEmailCert(@RequestParam Map<String,Object> param) throws MessagingException {
+		Ap ap = apService.getApByAuthKey((String)param.get("authKey"));
+		
+		if ( ap == null ) {
+			return new ResultData("F-1", "유효하지 않은 인증입니다.");
+		} else {
+			apService.setAuthStatusValid(ap.getAuthKey());
+			return new ResultData("S-1", "인증성공", "isCert" , true);	
+		}
+		
+	}
+	
 }

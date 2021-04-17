@@ -32,6 +32,7 @@ public class Ap {
     private String jobArea;
 	private String corp;
 	private int authLevel;
+	private int authStatus;
 	@JsonIgnore
 	private String authKey;
 }

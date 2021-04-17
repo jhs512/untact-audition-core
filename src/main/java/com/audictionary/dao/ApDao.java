@@ -23,4 +23,6 @@ public interface ApDao {
 	Ap isAdmin(int loginedMemberId);
 
 	Ap doIdDupCheck(String loginId);
+
+	void setAuthStatusValid(String authKey);
 }

@@ -2,6 +2,8 @@ package com.audictionary.service;
 
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,13 @@ public class ApService {
 	
 	@Autowired
 	private ApDao apDao;
+	@Autowired
+	private EmailService emailService; 
 
-	public ResultData doJoin(Map<String, Object> param) {
+	public ResultData doJoin(Map<String, Object> param) throws MessagingException {
 		apDao.doJoin(param);
+		
+		emailService.sendMailForCertAp((String)param.get("loginId"));
 		
 		int id = Util.getAsInt(param.get("id"), 0);
 		
@@ -55,6 +61,11 @@ public class ApService {
 
 	public Ap doIdDupCheck(String loginId) {
 		return apDao.doIdDupCheck(loginId);
+	}
+
+	public void setAuthStatusValid(String authKey) {
+		apDao.setAuthStatusValid(authKey);
+		
 	}
 	
 
