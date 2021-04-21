@@ -33,6 +33,8 @@ public class Ap {
 	private String corp;
 	private int authLevel;
 	private int authStatus;
+	private String extra__thumbImg;
+	private String extra__fileType;
 	@JsonIgnore
 	private String authKey;
 }

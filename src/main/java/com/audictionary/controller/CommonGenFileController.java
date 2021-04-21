@@ -85,4 +85,32 @@ public class CommonGenFileController {
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)).body(resource);
 	}
 	
+	@GetMapping("/common/genFile/getThumbImgUrl")
+	@ResponseBody
+	public ResultData getThumbImgUrl( int id ) {
+		GenFile genFile = genFileService.getGenFile("ap", id , "common", "attachment", 1);
+		
+		if ( genFile == null ) {
+			return new ResultData ("F-1", "파일이 존재하지 않습니다.");
+		}
+		
+		String imgUrl = genFile.getForPrintUrl();
+		
+		return new ResultData("S-1", "불러오기 성공", "imgUrl", imgUrl);
+	}
+	
+	@GetMapping("/common/genFile/deleteGenFile")
+	@ResponseBody
+	public ResultData deleteGenFile( int id ) {
+		GenFile genFile = genFileService.getGenFile("ap", id , "common", "attachment", 1);
+		
+		if ( genFile == null ) {
+			return new ResultData ("F-1", "파일이 존재하지 않습니다.");
+		}
+		
+		genFileService.deleteGenFiles("ap", id);
+		
+		return new ResultData("S-1", "파일이 삭제되었습니다.");
+	}
+	
 }

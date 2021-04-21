@@ -13,14 +13,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.audictionary.dto.Ap;
+import com.audictionary.dto.GenFile;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
 import com.audictionary.service.AttrService;
+import com.audictionary.service.GenFileService;
 
 @Controller
 public class UsrApController {
 	@Autowired
 	private ApService apService;
+	
+	@Autowired
+	private GenFileService genFileService;
 
 	@PostMapping("/usr/ap/doJoin")
 	@ResponseBody
@@ -82,7 +87,12 @@ public class UsrApController {
 			return new ResultData("F-3", "비밀번호가 일치하지 않습니다.");
 		}
 		
-		System.out.println("출력용 existingAp.getName() : " + existingAp.getName() + "authKey : " + existingAp.getAuthKey() + "member : " + existingAp);
+		GenFile genFile = genFileService.getGenFile("ap", existingAp.getId(), "common", "attachment", 1);
+		
+		if ( genFile != null ) {
+			String imgUrl = genFile.getForPrintUrl();
+			existingAp.setExtra__thumbImg(imgUrl);
+		}
 
 		return new ResultData("S-1", String.format("%s님 환영합니다.", existingAp.getNickName()), "authKey", existingAp.getAuthKey(), "member", existingAp);
 	}

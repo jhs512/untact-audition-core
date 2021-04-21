@@ -1,5 +1,5 @@
 server:
-  address: 172.30.1.15
+  address: 192.168.219.100
   port: 8024
 logging.level.org.springframework.batch: DEBUG 
 spring:
@@ -30,7 +30,7 @@ spring:
 mybatis:
   type-aliases-package: com.audictionary.dto
 custom:
-  genFileDirPath: ../../ionic_projects/Audictionary_pd/public/gen
+  genFileDirPath: ../../ionic_projects/untact-audition-client-end/public/gen
   logging:
     dir: log
     level: debug
