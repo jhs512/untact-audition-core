@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
+import com.audictionary.service.AttrService;
 
 @Controller
 public class UsrApController {
@@ -123,6 +124,16 @@ public class UsrApController {
 			return new ResultData("S-1", "인증성공", "isCert" , true);	
 		}
 		
+	}
+	
+	
+	@RequestMapping("/usr/ap/select")
+	@ResponseBody
+	public ResultData doSelect(@RequestParam Map<String,Object> param) {
+		
+		apService.doSelect(param);
+		
+		return new ResultData("S-1", "지원자선정");
 	}
 	
 }

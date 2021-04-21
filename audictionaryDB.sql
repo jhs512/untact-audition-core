@@ -18,7 +18,7 @@ CREATE TABLE ap (
 	nickName CHAR(10), # 활동명
 	gender CHAR(2) NOT NULL, # 성별
 	regNumber CHAR(100) NOT NULL, # 주민등록번호
-    address CHAR(100) NOT NULL, # 주소
+    address CHAR(200) NOT NULL, # 주소
 	cellPhoneNo VARCHAR(15) NOT NULL, # 전화번호
     feet INT(10) UNSIGNED, # 키
     weight INT(10) UNSIGNED, # 몸무게
@@ -48,7 +48,7 @@ CREATE TABLE pd (
 	`name` CHAR(10) NOT NULL,
 	gender CHAR(2) NOT NULL, # 성별
 	regNumber CHAR(100) NOT NULL, # 주민등록번호
-	address CHAR(100) NOT NULL,	# 주소
+	address CHAR(200) NOT NULL,	# 주소
 	email CHAR(20) NOT NULL,  # 이메일
 	cellPhoneNo VARCHAR(15) NOT NULL,  # 전화번호
     jobPosition CHAR(10) NOT NULL, # 직급

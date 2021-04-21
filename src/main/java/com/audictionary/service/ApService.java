@@ -19,6 +19,8 @@ public class ApService {
 	private ApDao apDao;
 	@Autowired
 	private EmailService emailService; 
+	@Autowired
+	private AttrService attrService;
 
 	public ResultData doJoin(Map<String, Object> param) throws MessagingException {
 		apDao.doJoin(param);
@@ -65,6 +67,17 @@ public class ApService {
 
 	public void setAuthStatusValid(String authKey) {
 		apDao.setAuthStatusValid(authKey);
+		
+	}
+
+	public void doSelect(Map<String, Object> param) {
+		String relTypeCode = "application";
+		int relId = Integer.parseInt((String)param.get("applicationId"));
+		String typeCode = "ap";
+		String type2Code = "ap";
+		String memberId = (String)param.get("memberId");
+		
+		attrService.setValue(relTypeCode, relId, typeCode, type2Code, memberId, "");
 		
 	}
 	

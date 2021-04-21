@@ -33,7 +33,7 @@
 	<insert id="setValue">
 		INSERT INTO attr SET
 		regDate = NOW() , updateDate = NOW(),
-		<if test="expireDate != null">
+		<if test="expireDate != null and expireDate.length > 0">
 			expireDate = #{expireDate},
 		</if>
 		relTypeCode = #{relTypeCode},
