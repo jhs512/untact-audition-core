@@ -31,4 +31,6 @@ public interface GenFileDao {
 	List<GenFile> getGenFilesRelTypeCodeAndRelIdsAndTypeCodeAndType2Code(@Param("relTypeCode") String relTypeCode,
 			@Param("relIds") List<Integer> relIds, @Param("typeCode") String typeCode,
 			@Param("type2Code") String type2Code);
+
+	GenFile getGenFileByUpdateDate(@Param("relTypeCode") String relTypeCode, @Param("relId") int relId, @Param("updateDate") String updateDate);
 }
