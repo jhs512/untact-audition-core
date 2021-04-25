@@ -12,4 +12,6 @@ public interface ApplicationDao {
 
 	List<Application> getListForPrint(Map<String, Object> param);
 
+	List<Application> getListByRecruitId(Map<String, Object> param);
+
 }

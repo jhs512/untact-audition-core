@@ -1,5 +1,7 @@
 package com.audictionary.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +80,22 @@ public class AttrService {
 		}
 
 		return -1;
+	}
+	
+	public List<Attr> getAttrs(String name){
+		String[] nameBits = name.split("__");
+		String relTypeCode = nameBits[0];
+		int relId = Integer.parseInt(nameBits[1]);
+		String typeCode = nameBits[2];
+		String type2Code = nameBits[3];
+		
+		return getAttrs(relTypeCode, relId, typeCode, type2Code);
+	}
+
+	public List<Attr> getAttrs(String relTypeCode, int relId, String typeCode, String type2Code) {
+		List<Attr> attrs = attrDao.getAttrs(relTypeCode, relId, typeCode, type2Code);
+		
+		return attrs;
 	}
 
 }

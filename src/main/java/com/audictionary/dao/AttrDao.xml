@@ -42,4 +42,13 @@
 		type2Code = #{type2Code},
 		`value` = #{value}
 	</insert> 
+	
+	<select id="getAttrs" resultType="Attr">
+		SELECT * FROM attr
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND typeCode = #{typeCode}
+		AND type2Code = #{type2Code}
+		AND (expireDate >= NOW() OR expireDate IS NULL)
+	</select>
 </mapper>

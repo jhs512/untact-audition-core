@@ -9,4 +9,10 @@
 		WHERE delStatus != 1
 		AND recruitId = #{id}
 	</select>
+	
+	<select id="getListByRecruitId" resultType="Application">
+		SELECT * FROM application
+		WHERE delStatus != 1
+		AND recruitId = #{id}
+	</select>
 </mapper>

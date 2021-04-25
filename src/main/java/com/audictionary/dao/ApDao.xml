@@ -78,7 +78,7 @@
 	
 	<select id="getApById" resultType="Ap">
 		SELECT * FROM ap
-		WHERE id = #{id}
+		WHERE id = #{loginedMemberId}
 	</select>
 	
 	<select id="isAdmin" resultType="Ap">

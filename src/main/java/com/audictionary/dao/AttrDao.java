@@ -1,5 +1,7 @@
 package com.audictionary.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.audictionary.dto.Attr;
@@ -14,5 +16,7 @@ public interface AttrDao {
 	void remove(String relTypeCode, int relId, String typeCode, String type2Code);
 
 	int setValue(String relTypeCode, int relId, String typeCode, String type2Code, String value, String expireDate);
+
+	List<Attr> getAttrs(String relTypeCode, int relId, String typeCode, String type2Code);
 
 }

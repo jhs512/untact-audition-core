@@ -31,6 +31,8 @@ public interface RecruitDao {
 
 	Recruit getRecruitForPrintById(int id);
 
+	List<Recruit> getListForPrintByMemberId(Map<String, Object> param);
+
 	
 
 	

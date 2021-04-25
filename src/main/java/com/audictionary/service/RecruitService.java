@@ -28,7 +28,7 @@ public class RecruitService {
 
 	public List<Recruit> getListForPrint(Map<String,Object> param) {
 		
-		if(param.get("limit") != null) {
+		if(param.get("limit") != null && !param.get("limit").equals("null")) {
 			int limit = Integer.parseInt((String)param.get("limit"));
 			
 			param.put("limit", limit);	
@@ -86,10 +86,13 @@ public class RecruitService {
 	}
 
 	public List<Recruit> getListForPrintByFilter(Map<String, Object> param) {
+		int limit = 0;
 		
-		if(param.get("limit") != null) {
-			int limit = Integer.parseInt((String)param.get("limit"));
-			
+		if(!param.get("limit").equals("null")){
+			limit = Integer.parseInt((String)param.get("limit"));	
+		}
+		
+		if(param.get("limit") != null) {	
 			param.put("limit", limit);	
 		}
 		
@@ -242,6 +245,30 @@ public class RecruitService {
 		
 	}
 
+	public List<Recruit> getListForPrintByMemberId(Map<String, Object> param) {
+		
+		if(param.get("limit") != null && !param.get("limit").equals("null")) {
+			int limit = Integer.parseInt((String)param.get("limit"));
+			
+			param.put("limit", limit);	
+		}
+		
+		
+		List<Recruit> recruits =  recruitDao.getListForPrintByMemberId(param);
+		
+		List<Integer> recruitIds = recruits.stream().map(recruit -> recruit.getId()).collect(Collectors.toList());
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("recruit", recruitIds, "common", "attachment");
+		
+		for (Recruit recruit : recruits) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(recruit.getId());
 
+			if (mapByFileNo != null) {
+				recruit.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+			}
+		}
+		
+		return recruits;
+	}
+	
 
 }

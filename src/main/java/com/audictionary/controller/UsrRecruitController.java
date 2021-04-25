@@ -58,8 +58,12 @@ public class UsrRecruitController {
 	@RequestMapping("/usr/recruit/list")
 	@ResponseBody
 	public ResultData showList(@RequestParam Map<String,Object> param) {
-
-		int limit = Integer.parseInt((String)param.get("limit"));
+		int limit = 0;
+		
+		if(!param.get("limit").equals("null")){
+			limit = Integer.parseInt((String)param.get("limit"));	
+		}
+		
 		
 		List<Recruit> recruits = recruitService.getListForPrintByFilter(param);
 	
@@ -187,5 +191,15 @@ public class UsrRecruitController {
 		List<Recruit> recruits = recruitService.getListForPrintByKeyword(param);
 
 		return new ResultData("S-1", "검색 성공", "recruits", recruits);
+	}
+	
+	@RequestMapping("/usr/recruit/listByMemberId")
+	@ResponseBody
+	public ResultData showListByMemberId(@RequestParam Map<String,Object> param) {
+		
+		List<Recruit> recruits = recruitService.getListForPrintByMemberId(param);
+	
+		
+		return new ResultData("S-1", "공고 리스트 불러오기 성공", "recruits", recruits);
 	}
 }

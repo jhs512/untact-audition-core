@@ -31,6 +31,8 @@ public class Recruit extends EntityDto {
 	private String videoTime;
 	private String etc;
 	
+	private int extra__application__count;
+	
 	private String extra__aw_media;
 	private String extra__aw_title;
 	private String extra__aw_subtitle;

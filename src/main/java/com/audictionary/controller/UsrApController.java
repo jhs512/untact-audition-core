@@ -1,5 +1,6 @@
 package com.audictionary.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -16,7 +17,6 @@ import com.audictionary.dto.Ap;
 import com.audictionary.dto.GenFile;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
-import com.audictionary.service.AttrService;
 import com.audictionary.service.GenFileService;
 
 @Controller
@@ -145,5 +145,29 @@ public class UsrApController {
 		
 		return new ResultData("S-1", "지원자선정");
 	}
+	
+	@RequestMapping("/usr/ap/list")
+	@ResponseBody
+	public ResultData showList(@RequestParam Map<String,Object> param) {
+		
+		List<Ap> aps = apService.getApsApplying(param);
+		
+		return new ResultData("S-1", "지원자선정", "aps", aps);
+	}
+	
+	@RequestMapping("/usr/ap/acceptedList")
+	@ResponseBody
+	public ResultData showAcceptedList(@RequestParam Map<String,Object> param) {
+		
+		Map<String,List> apListMap = apService.getApsAccepted(param);
+		
+		List<Ap> apListAccepted1 = apListMap.get("apListAccepted1"); 
+		List<Ap> apListAccepted2 = apListMap.get("apListAccepted2"); 
+		List<Ap> apListAccepted3 = apListMap.get("apListAccepted3"); 
+		
+		return new ResultData("S-1", "지원자선정", "apListAccepted1", apListAccepted1, "apListAccepted2", apListAccepted2, "apListAccepted3", apListAccepted3);
+	}
+	
+	
 	
 }

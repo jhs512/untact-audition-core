@@ -25,22 +25,50 @@
 	</insert>
 	
 	<select id="getListForPrint" resultType="Recruit">
-		SELECT * FROM recruitment
-		WHERE delStatus != 1
+		SELECT r.*, COUNT(ap.id) as extra__application__count, aw.media AS extra__aw_media, aw.title AS extra__aw_title, aw.director AS extra__aw_director, ar.name AS extra__ar_name, ar.character AS extra__ar_character FROM recruitment AS r
+		INNER JOIN artwork AS aw
+		ON aw.relTypeCode = 'recruitment'
+		AND aw.relId = r.id
+		INNER JOIN actingRole AS ar
+		ON ar.recruitmentId = r.id
+		LEFT JOIN application AS ap
+		ON ap.recruitId = r.id
+		WHERE r.delStatus != 1
+		GROUP BY r.id
 		ORDER BY id DESC
-		<if test="limit != null">
+		<if test="limit != null and limit != 0">
+			LIMIT #{limit}
+		</if>
+	</select>
+	
+	<select id="getListForPrintByMemberId" resultType="Recruit">
+		SELECT r.*, COUNT(ap.id) as extra__application__count, aw.media AS extra__aw_media, aw.title AS extra__aw_title, aw.director AS extra__aw_director, ar.name AS extra__ar_name, ar.character AS extra__ar_character FROM recruitment AS r
+		INNER JOIN artwork AS aw
+		ON aw.relTypeCode = 'recruitment'
+		AND aw.relId = r.id
+		INNER JOIN actingRole AS ar
+		ON ar.recruitmentId = r.id
+		LEFT JOIN application AS ap
+		ON ap.recruitId = r.id
+		WHERE r.delStatus != 1
+		AND r.memberId = #{id}
+		GROUP BY r.id
+		ORDER BY id DESC
+		<if test="limit != null and limit != 0">
 			LIMIT #{limit}
 		</if>
 	</select>
 	
 	
 	<select id="getListForPrintByFilter" resultType="Recruit">
-		SELECT r.*, aw.media AS extra__aw_media, aw.title AS extra__aw_title, aw.director AS extra__aw_director, ar.name AS extra__ar_name, ar.character AS extra__ar_character FROM recruitment AS r
+		SELECT r.*, COUNT(ap.id) as extra__application__count, aw.media AS extra__aw_media, aw.title AS extra__aw_title, aw.director AS extra__aw_director, ar.name AS extra__ar_name, ar.character AS extra__ar_character FROM recruitment AS r
 		INNER JOIN artwork AS aw
 		ON aw.relTypeCode = 'recruitment'
 		AND aw.relId = r.id
 		INNER JOIN actingRole AS ar
 		ON ar.recruitmentId = r.id
+		LEFT JOIN application AS ap
+		ON ap.recruitId = r.id
 		WHERE r.delStatus != 1
 		<if test="genderMale != null">
 			AND r.gender LIKE CONCAT('%',#{genderMale},'%')
@@ -84,8 +112,9 @@
 		<if test="notExpired != null"> 
 			AND deadline >= DATE_FORMAT(NOW(), '%Y-%m-%d')
 		</if>
+		GROUP BY r.id
 		ORDER BY id DESC
-		<if test="limit != null">
+		<if test="limit != null and limit != 0">
 		LIMIT #{limit}
 		</if>
 	</select>
@@ -155,6 +184,7 @@
 	
 	<select id="getRecruitForPrintById" resultType="Recruit">
 		SELECT r.*,
+		COUNT(ap.id) as extra__application__count,
 		aw.media AS extra__aw_media, 
 		aw.title AS extra__aw_title,
 		aw.subtitle AS extra__aw_subtitle,
@@ -182,17 +212,21 @@
 		AND aw.relId = r.id
 		INNER JOIN actingRole AS ar
 		ON ar.recruitmentId = r.id
+		LEFT JOIN application AS ap
+		ON ap.recruitId = r.id
 		WHERE r.delStatus != 1
 		AND r.id = #{id}
 	</select>
 	
 	<select id="getListForPrintByKeyword" resultType="Recruit">
-		SELECT r.*, aw.media AS extra__aw_media, aw.title AS extra__aw_title, aw.director AS extra__aw_director, ar.name AS extra__ar_name, ar.character AS extra__ar_character FROM recruitment AS r
+		SELECT r.*, COUNT(ap.id) as extra__application__count, aw.media AS extra__aw_media, aw.title AS extra__aw_title, aw.director AS extra__aw_director, ar.name AS extra__ar_name, ar.character AS extra__ar_character FROM recruitment AS r
 		INNER JOIN artwork AS aw
 		ON aw.relTypeCode = 'recruitment'
 		AND aw.relId = r.id
 		INNER JOIN actingRole AS ar
 		ON ar.recruitmentId = r.id
+		LEFT JOIN application AS ap
+		ON ap.recruitId = r.id
 		WHERE r.delStatus != 1
 		<if test="keyword != null">
 			AND ( 0
@@ -299,8 +333,9 @@
 		<if test="keyword != null">
 			)
 		</if>
+		GROUP BY r.id
 		ORDER BY id DESC
-		<if test="limit != null">
+		<if test="limit != null and limit != 0">
 		LIMIT #{limit}
 		</if>
 	</select>

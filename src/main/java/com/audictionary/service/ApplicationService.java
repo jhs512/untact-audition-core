@@ -39,4 +39,23 @@ public class ApplicationService {
 		return applications;
 	}
 
+	public List<Application> getListByRecruitId(Map<String, Object> param) {
+		List<Application> applications =  applicationDao.getListByRecruitId(param);
+		
+		List<Integer> applicationIds = applications.stream().map(recruit -> recruit.getId()).collect(Collectors.toList());
+		
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("application", applicationIds, "common", "attachment");
+		
+		for (Application application : applications) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(application.getId());
+
+			if (mapByFileNo != null) {
+				application.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+			}
+			
+		}
+		
+		return applications;
+	}
+
 }
