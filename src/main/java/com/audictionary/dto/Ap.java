@@ -22,11 +22,11 @@ public class Ap {
 	private String gender;
 	private String regNumber;
 	private String address;
-	private String cellPhonoNe;
+	private String cellPhoneNo;
 	private int feet;
 	private int weight;
     private String skinTone;
-    private boolean eyelid;
+    private int eyelid;
     private String feature;
     private String filmgraphy;
     private String jobArea;

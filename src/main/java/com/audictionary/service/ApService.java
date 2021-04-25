@@ -36,11 +36,9 @@ public class ApService {
 		return apDao.getApByLoginId(loginId);
 	}
 
-	public ResultData doModify(Map<String, Object> param) {
+	public void doModify(Map<String, Object> param) {
 		
 		apDao.doModify(param);
-
-		return new ResultData("S-1", "회원정보가 수정되었습니다.");
 	}
 	
 	public Ap getApByAuthKey(String authKey) {

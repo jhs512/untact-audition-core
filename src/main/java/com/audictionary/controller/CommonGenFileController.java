@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,7 +90,7 @@ public class CommonGenFileController {
 	@GetMapping("/common/genFile/getThumbImgUrl")
 	@ResponseBody
 	public ResultData getThumbImgUrl( int id ) {
-		GenFile genFile = genFileService.getGenFile("ap", id , "common", "attachment", 1);
+		GenFile genFile = genFileService.getGenFile("ap", id , "thumbnail", "attachment", 1);
 		
 		if ( genFile == null ) {
 			return new ResultData ("F-1", "파일이 존재하지 않습니다.");
@@ -97,6 +99,24 @@ public class CommonGenFileController {
 		String imgUrl = genFile.getForPrintUrl();
 		
 		return new ResultData("S-1", "불러오기 성공", "imgUrl", imgUrl);
+	}
+	
+	@GetMapping("/common/genFile/getProfileImgUrls")
+	@ResponseBody
+	public ResultData getProfileImgUrls( int id ) {
+		List<GenFile> genFiles = genFileService.getGenFiles("ap", id , "profile", "attachment");
+		
+		if ( genFiles == null ) {
+			return new ResultData ("F-1", "파일이 존재하지 않습니다.");
+		}
+		
+		List<String> imgUrls = new ArrayList<>(); 
+		
+		for ( GenFile genFile : genFiles ) {
+			imgUrls.add(genFile.getForPrintUrl());
+		}
+		
+		return new ResultData("S-1", "불러오기 성공", "imgUrls", imgUrls);
 	}
 	
 	@GetMapping("/common/genFile/deleteGenFile")
@@ -109,6 +129,20 @@ public class CommonGenFileController {
 		}
 		
 		genFileService.deleteGenFiles("ap", id);
+		
+		return new ResultData("S-1", "파일이 삭제되었습니다.");
+	}
+	
+	@GetMapping("/common/genFile/deleteProfileImg")
+	@ResponseBody
+	public ResultData deleteProfileImg( int id, String updateDate ) {
+		GenFile genFile = genFileService.getGenFileByUpdateDate("ap", id, updateDate);
+		
+		if ( genFile == null ) {
+			return new ResultData ("F-1", "파일이 존재하지 않습니다.");
+		}
+		
+		genFileService.deleteGenFile(genFile);
 		
 		return new ResultData("S-1", "파일이 삭제되었습니다.");
 	}

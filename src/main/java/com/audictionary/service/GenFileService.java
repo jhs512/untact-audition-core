@@ -175,7 +175,7 @@ public class GenFileService {
 		}
 	}
 
-	private void deleteGenFile(GenFile genFile) {
+	public void deleteGenFile(GenFile genFile) {
 		String filePath = genFile.getFilePath(genFileDirPath);
 		Util.delteFile(filePath);
 
@@ -217,5 +217,9 @@ public class GenFileService {
 				changeRelId(genFileId, id);
 			}
 		}
+	}
+
+	public GenFile getGenFileByUpdateDate(String relTypeCode, int relId, String updateDate) {
+		return genFileDao.getGenFileByUpdateDate(relTypeCode, relId, updateDate);
 	}
 }

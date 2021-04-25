@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.GenFile;
+import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
 import com.audictionary.service.AttrService;
@@ -99,14 +100,34 @@ public class UsrApController {
 	
 	@PostMapping("/usr/ap/doModify")
 	@ResponseBody
-	public ResultData doModify(@RequestParam Map<String, Object> param, String loginedMemberId) {
+	public ResultData doModify(@RequestParam Map<String, Object> param) {
+		String loginedMemberId = (String)param.get("loginedMemberId");
+		int id = Integer.parseInt(loginedMemberId);
 		
-		if ( param.isEmpty() ) {
-			return new ResultData("F-1", "수정할 정보를 입력해주세요.");
+		Ap ap = apService.getApById(id);
+
+		boolean isNeedToModify = false;
+
+		if (!ap.getNickName().equals(param.get("nickName")) 
+				|| ap.getFeet() != Integer.parseInt((String)param.get("feet"))
+				|| ap.getWeight() != Integer.parseInt((String)param.get("weight"))
+				|| !ap.getSkinTone().equals(param.get("skinTone"))
+				|| ap.getEyelid() != Integer.parseInt((String) param.get("eyelid"))
+				|| !ap.getFeature().equals(param.get("feature"))
+				|| !ap.getFilmgraphy().equals(param.get("filmgraphy"))
+				|| !ap.getJobArea().equals(param.get("jobArea"))
+				|| !ap.getCorp().equals(param.get("corp"))) {
+			isNeedToModify = true;
 		}
+		
+		param.put("isNeedToModify", isNeedToModify);
 		param.put("id", loginedMemberId);
 		
-		return apService.doModify(param);
+		apService.doModify(param);
+		
+		ap = apService.getApById(id);
+		
+		return new ResultData("S-1", "회원정보수정","authKey", ap.getAuthKey(), "ap", ap);
 	}
 	
 	@GetMapping("/usr/ap/doIdDupCheck")

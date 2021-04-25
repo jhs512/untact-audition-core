@@ -35,40 +35,40 @@
 	</select>
 	
 	<update id="doModify">
-		UPDATE `ap`
-		<set>
-			<if test="loginPw != null || name != null || engName != null || nickname != null || gender != null || regNumber != null || address != null || email != null || cellphoneNo != null">
-			updateDate = NOW(),
-			</if>
-			<if test="loginPw != null">
-			loginPw = #{loginPw},
-			</if>
-			<if test="name != null">
-			`name` = #{name},
-			</if>
-			<if test="engName != null">
-			engName = #{engName},
-			</if>
-			<if test="nickname != null">
-			nickname = #{nickname},
-			</if>
-			<if test="gender != null">
-			gender = #{gender},
-			</if>
-			<if test="regNumber != null">
-			regNumber = #{regNumber},
-			</if>
-			<if test="address != null">
-			address = #{address},
-			</if>
-			<if test="email != null">
-			email = #{email},
-			</if>
-			<if test="cellphoneNo != null">
-			cellphoneNo = #{cellphoneNo},
-			</if>
-		</set>
-		WHERE id = #{id}
+		UPDATE ap
+			<set>
+				<if test="isNeedToModify">
+					updateDate = NOW(),
+				</if>
+				<if test="nickName != null and nickName.length > 0">
+					nickName = #{nickName},
+				</if>
+				<if test="feet != null and feet.length > 0">
+					feet = #{feet},
+				</if>
+				<if test="weight != null and weight.length > 0">
+					weight = #{weight},
+				</if>
+				<if test="skinTone != null and skinTone.length > 0">
+					skinTone = #{skinTone},
+				</if>
+				<if test="eyelid != null and eyelid.length > 0">
+					eyelid = #{eyelid},
+				</if>
+				<if test="feature != null and feature.length > 0">
+					feature = #{feature},
+				</if>
+				<if test="filmgraphy != null and filmgraphy.length > 0">
+					filmgraphy = #{filmgraphy},
+				</if>
+				<if test="jobArea != null and jobArea.length > 0">
+					jobArea = #{jobArea},
+				</if>
+				<if test="corp != null and corp.length > 0">
+					corp = #{corp},
+				</if>
+			</set>
+			WHERE id = #{id}
 	</update>
 	
 	<select id="getApByAuthKey" resultType="Ap">
