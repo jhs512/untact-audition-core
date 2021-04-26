@@ -58,4 +58,9 @@ public class ApplicationService {
 		return applications;
 	}
 
+	public void doWrite(Map<String, Object> param) {
+		applicationDao.doWrite(param);
+		
+	}
+
 }

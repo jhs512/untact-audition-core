@@ -119,6 +119,18 @@ public class CommonGenFileController {
 		return new ResultData("S-1", "불러오기 성공", "imgUrls", imgUrls);
 	}
 	
+	@GetMapping("/common/genFile/getProfileImgs")
+	@ResponseBody
+	public ResultData getProfileImgs( int id ) {
+		List<GenFile> genFiles = genFileService.getGenFiles("ap", id , "profile", "attachment");
+		
+		if ( genFiles == null ) {
+			return new ResultData ("F-1", "파일이 존재하지 않습니다.");
+		}
+		
+		return new ResultData("S-1", "불러오기 성공", "genFiles", genFiles);
+	}
+	
 	@GetMapping("/common/genFile/deleteGenFile")
 	@ResponseBody
 	public ResultData deleteGenFile( int id ) {

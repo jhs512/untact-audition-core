@@ -14,4 +14,6 @@ public interface ApplicationDao {
 
 	List<Application> getListByRecruitId(Map<String, Object> param);
 
+	void doWrite(Map<String, Object> param);
+
 }
