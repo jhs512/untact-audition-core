@@ -11,9 +11,11 @@
 	</select>
 	
 	<select id="getListByRecruitId" resultType="Application">
-		SELECT * FROM application
-		WHERE delStatus != 1
-		AND recruitId = #{id}
+		SELECT apl.* , ap.name AS extra__ap_name FROM application AS apl
+		INNER JOIN ap AS ap
+		ON apl.memberId = ap.id
+		WHERE apl.delStatus != 1
+		AND apl.recruitId = #{id}
 	</select>
 	
 	<insert id="doWrite" useGeneratedKeys="true" keyProperty="id">
@@ -24,4 +26,21 @@
 		recruitId = #{recruitId}
 	</insert>
 	
+
+	<update id="setPassStatus">
+		UPDATE application
+		<set>
+			passStatus = #{status}
+		</set>
+		WHERE id = #{applicationId}
+	</update>
+	
+	<insert id="doLike">
+		INSERT INTO `like` SET
+		regDate = NOW(), updateDate = NOW()
+		, relTypeCode = #{relTypeCode}
+		, relId = #{applicationId}
+		, memberId = #{memberId}
+	</insert>
+
 </mapper>

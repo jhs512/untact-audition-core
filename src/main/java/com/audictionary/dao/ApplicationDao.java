@@ -16,4 +16,9 @@ public interface ApplicationDao {
 
 	void doWrite(Map<String, Object> param);
 
+	void setPassStatus(int applicationId, int status);
+
+	void doLike(Map<String, Object> param);
+
+
 }

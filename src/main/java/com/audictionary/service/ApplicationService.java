@@ -21,7 +21,7 @@ public class ApplicationService {
 
 	public List<Application> getListForPrint(Map<String, Object> param) {
 		
-		List<Application> applications =  applicationDao.getListForPrint(param);
+		List<Application> applications =  applicationDao.getListByRecruitId(param);
 		
 		List<Integer> applicationIds = applications.stream().map(application -> application.getId()).collect(Collectors.toList());
 		
@@ -63,4 +63,23 @@ public class ApplicationService {
 		
 	}
 
+	public void setPassStatus(int applicationId, int status) {
+		applicationDao.setPassStatus(applicationId, status);
+	}
+
+	
+	public void doSelect(Map<String, Object> param) {
+		int applicationId = Integer.parseInt((String)param.get("applicationId"));
+		setPassStatus(applicationId, 1);	
+	}
+
+	public void doFail(Map<String, Object> param) {
+		int applicationId = Integer.parseInt((String)param.get("applicationId"));
+		setPassStatus(applicationId, -1);
+	}
+
+	public void doLike(Map<String, Object> param) {
+		param.put("relTypeCode", "application");
+		applicationDao.doLike(param);
+	}
 }
