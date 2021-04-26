@@ -139,6 +139,7 @@ public class ApService {
 			
 			apListAccepted1.add(ap);
 		}
+		
 		for(Attr attr : attrs2) {
 			Ap ap = apDao.getApById(Integer.parseInt(attr.getValue()));
 			
@@ -151,6 +152,7 @@ public class ApService {
 			
 			apListAccepted2.add(ap);
 		}
+		
 		for(Attr attr : attrs3) {
 			Ap ap = apDao.getApById(Integer.parseInt(attr.getValue()));
 			

@@ -23,7 +23,7 @@ public class ApplicationService {
 		
 		List<Application> applications =  applicationDao.getListForPrint(param);
 		
-		List<Integer> applicationIds = applications.stream().map(recruit -> recruit.getId()).collect(Collectors.toList());
+		List<Integer> applicationIds = applications.stream().map(application -> application.getId()).collect(Collectors.toList());
 		
 		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("application", applicationIds, "common", "attachment");
 		

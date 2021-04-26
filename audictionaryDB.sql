@@ -170,7 +170,19 @@ delDate DATETIME,
 delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 memberId INT(10) UNSIGNED NOT NULL,
 recruitId INT(10) UNSIGNED NOT NULL, # 공고번호
-`exp` TINYINT(1) UNSIGNED NOT NULL #경력 여부
+passStatus int(5) not null default 0 # 합격여부 ( -1: 불합격 / 0: 디폴트 / 1: 1차합격 / 2: 2차합격 / 3: 최합격 )
+);
+
+# 좋아요 테이블 생성
+CREATE TABLE `like` (
+  `id` int(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `regDate` datetime NOT NULL,
+  `updateDate` datetime NOT NULL,
+  `relTypeCode` char(30) NOT NULL,
+  `relId` int(10) unsigned NOT NULL,
+  `memberTypeCode` char(30) not null, # 
+  `memberId` int(10) unsigned NOT NULL,
+  KEY `relTypeCode` (`relTypeCode`,`relId`,`memberId`)
 );
 
 # 파일 테이블 생성
@@ -194,3 +206,4 @@ CREATE TABLE genFile (
   PRIMARY KEY (id),
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
+
