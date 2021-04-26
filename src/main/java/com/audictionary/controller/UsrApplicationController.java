@@ -33,4 +33,31 @@ public class UsrApplicationController {
 		return new ResultData("S-1", "지원 목록 불러오기 성공", "applications", applications);
 	}
 	
+	@RequestMapping("/usr/application/select")
+	@ResponseBody
+	public ResultData doSelect(@RequestParam Map<String,Object> param) {
+		
+		applicationService.doSelect(param);
+		
+		return new ResultData("S-1", "지원자선정");
+	}
+	
+	@RequestMapping("/usr/application/fail")
+	@ResponseBody
+	public ResultData doFail(@RequestParam Map<String,Object> param) {
+		
+		applicationService.doFail(param);
+		
+		return new ResultData("S-1", "지원자선정");
+	}
+	
+	@RequestMapping("/usr/application/like")
+	@ResponseBody
+	public ResultData doLike(@RequestParam Map<String,Object> param) {
+		
+		applicationService.doLike(param);
+		
+		return new ResultData("S-1", "지원자선정");
+	}
+	
 }

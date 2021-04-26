@@ -14,4 +14,8 @@ public interface ApplicationDao {
 
 	List<Application> getListByRecruitId(Map<String, Object> param);
 
+	void setPassStatus(int applicationId, int status);
+
+	void doLike(Map<String, Object> param);
+
 }

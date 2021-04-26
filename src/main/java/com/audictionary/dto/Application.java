@@ -17,4 +17,7 @@ public class Application extends EntityDto {
 	private int memberId;
 	private int recruitId;
 	private int exp;
+	
+	
+	private String extra__ap_name;
 }
