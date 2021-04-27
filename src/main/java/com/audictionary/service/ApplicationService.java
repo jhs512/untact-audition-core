@@ -26,6 +26,8 @@ public class ApplicationService {
 	GenFileService genFileService;
 	@Autowired
 	AttrService atterService;
+	@Autowired
+	RecruitService recruitService;
 
 	public List<Application> getListForPrint(Map<String, Object> param) {
 		
@@ -117,5 +119,25 @@ public class ApplicationService {
 			atterService.setValue("application", applicationId, "genFile", "profile",(String)idsStr.get("profileImgIdsStr") , "");
 		}
 		
+	}
+
+	public List<Application> getApplications(int memberId) {
+		return applicationDao.getListForPrintByMemberId(memberId);
+	}
+
+	public List<Application> getApplicationsAndRecruit(int memberId) {
+		
+		List<Application> applications = applicationDao.getListForPrintByMemberId(memberId);;
+		
+		for ( Application application : applications) {
+			int recruitId = application.getRecruitId();
+			Recruit recruit = recruitService.getRecruitForPrintById(recruitId);
+			
+			application.getExtraNotNull().put("Extra__aw_title", recruit.getExtra__aw_title());
+			application.getExtraNotNull().put("Extra__ar_name", recruit.getExtra__ar_name());
+			application.getExtraNotNull().put("Extra__deadline", recruit.getDeadline());
+		}
+		
+		return applications;
 	}
 }

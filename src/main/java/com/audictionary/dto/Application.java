@@ -16,7 +16,7 @@ public class Application extends EntityDto {
 	private int delStatus;
 	private int memberId;
 	private int recruitId;
-	private int exp;
+	private int passStatus;
 	
 	
 	private String extra__ap_name;

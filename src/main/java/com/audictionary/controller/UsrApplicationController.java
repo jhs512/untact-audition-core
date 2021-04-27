@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,6 +74,24 @@ public class UsrApplicationController {
 		applicationService.doLike(param);
 		
 		return new ResultData("S-1", "지원자선정");
+	}
+	
+	@GetMapping("/usr/application/getApplications")
+	@ResponseBody
+	public ResultData getApplications(int memberId) {
+		
+		List<Application> applications = applicationService.getApplications(memberId);
+		
+		return new ResultData("S-1", "불러오기 성공", "applications", applications);
+	}
+	
+	@GetMapping("/usr/application/getApplicationsAndRecruit")
+	@ResponseBody
+	public ResultData getApplicationsAndRecruit(int memberId) {
+		
+		List<Application> applications = applicationService.getApplicationsAndRecruit(memberId);
+		
+		return new ResultData("S-1", "불러오기 성공", "applications", applications);
 	}
 	
 }

@@ -10,6 +10,12 @@
 		AND recruitId = #{id}
 	</select>
 	
+	<select id="getListForPrintByMemberId" resultType="Application">
+		SELECT * FROM application
+		WHERE delStatus != 1
+		AND memberId = #{memberId}
+	</select>
+	
 	<select id="getListByRecruitId" resultType="Application">
 		SELECT apl.* , ap.name AS extra__ap_name FROM application AS apl
 		INNER JOIN ap AS ap

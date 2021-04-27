@@ -20,5 +20,7 @@ public interface ApplicationDao {
 
 	void doLike(Map<String, Object> param);
 
+	List<Application> getListForPrintByMemberId(int memberId);
+
 
 }
