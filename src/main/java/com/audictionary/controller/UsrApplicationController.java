@@ -14,13 +14,10 @@ import com.audictionary.dto.Application;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApplicationService;
 import com.audictionary.service.GenFileService;
-import com.audictionary.service.RecruitService;
 import com.audictionary.util.Util;
 
 @Controller
 public class UsrApplicationController {
-	@Autowired
-	private RecruitService recruitService;
 	@Autowired
 	private GenFileService genFileService;
 	@Autowired
@@ -44,9 +41,11 @@ public class UsrApplicationController {
 		
 		int applicationId = Util.getAsInt(param.get("id"), 0);
 		
-		genFileService.changeInputFileRelIds(param, applicationId);
+		genFileService.changeInputFileRelIdsForApplication(param, applicationId);
+		
+		applicationService.getProfileImgFileIdsStr(param, applicationId);
 
-		return new ResultData("S-1", "지원 성공", "id", applicationId);
+		return new ResultData("S-1", "지원이 완료되었습니다.", "id", applicationId);
 	}
 
 	@RequestMapping("/usr/application/select")

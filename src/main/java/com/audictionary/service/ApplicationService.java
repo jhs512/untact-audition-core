@@ -1,5 +1,6 @@
 package com.audictionary.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,6 +12,11 @@ import com.audictionary.dao.ApplicationDao;
 import com.audictionary.dto.Application;
 import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Recruit;
+import com.audictionary.util.Util;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ApplicationService {
@@ -18,6 +24,8 @@ public class ApplicationService {
 	ApplicationDao applicationDao;
 	@Autowired
 	GenFileService genFileService;
+	@Autowired
+	AttrService atterService;
 
 	public List<Application> getListForPrint(Map<String, Object> param) {
 		
@@ -81,5 +89,33 @@ public class ApplicationService {
 	public void doLike(Map<String, Object> param) {
 		param.put("relTypeCode", "application");
 		applicationDao.doLike(param);
+	}
+
+	public void getProfileImgFileIdsStr(Map<String, Object> param, int applicationId) {
+		String profileImgIdsStr = (String)param.get("profileImgIdsStr");
+		
+		List<Map<String,Object>> profileImgIdsStrs = new ArrayList<>();
+		
+		if ( profileImgIdsStr != null && profileImgIdsStr.length() > 0 ) {
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);    
+			try {
+				profileImgIdsStrs = objectMapper.readValue(profileImgIdsStr, ArrayList.class);
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		for( int i = 0 ; i < profileImgIdsStrs.size(); i++ ) {
+			Map<String, Object> idsStr = profileImgIdsStrs.get(i);
+			
+			atterService.setValue("application", applicationId, "genFile", "profile",(String)idsStr.get("profileImgIdsStr") , "");
+		}
+		
 	}
 }

@@ -1,5 +1,5 @@
 server:
-  address: 172.20.10.4
+  address: 192.168.219.102
   port: 8024
 logging.level.org.springframework.batch: DEBUG 
 spring:
