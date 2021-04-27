@@ -99,4 +99,27 @@
 		</set>
 		WHERE authKey = #{authKey}
 	</update>
+	
+	<insert id="doLike" >
+		INSERT INTO `like`
+		SET regDate = NOW(), 
+		updateDate = NOW(),
+		relTypeCode = #{relTypeCode},
+		relId = #{relId},
+		memberTypeCode = #{memberTypeCode},
+		memberId = #{memberId}
+	</insert>
+	
+	<select id="isDupLike" resultType="int">
+		SELECT COUNT(*) FROM `like`
+		WHERE relId = #{relId}
+		AND memberId = #{memberId}
+	</select>
+	
+	<delete id="deleteLike">
+		DELETE FROM `like`
+		WHERE relId = #{relId}
+		AND memberId = #{memberId}
+	</delete>
+	
 </mapper>

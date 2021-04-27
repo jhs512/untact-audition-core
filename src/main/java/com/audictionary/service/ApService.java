@@ -104,6 +104,18 @@ public class ApService {
 		
 		return aps;
 	}
+
+	public void doLike(String relTypeCode, int relId, String memberTypeCode, int memberId) {
+		apDao.doLike(relTypeCode, relId, memberTypeCode, memberId);
+	}
+	public int isDupLike(int relId, int memberId) {
+		return apDao.isDupLike(relId, memberId);
+	}
+
+	public void deleteLike(int relId, int memberId) {
+		apDao.deleteLike(relId, memberId);
+		
+	}
 	
 
 }

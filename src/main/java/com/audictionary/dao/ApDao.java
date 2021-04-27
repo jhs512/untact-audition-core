@@ -25,4 +25,10 @@ public interface ApDao {
 	Ap doIdDupCheck(String loginId);
 
 	void setAuthStatusValid(String authKey);
+
+	void doLike(String relTypeCode, int relId, String memberTypeCode, int memberId);
+
+	int isDupLike(int relId, int memberId);
+
+	void deleteLike(int relId, int memberId);
 }
