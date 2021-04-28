@@ -32,6 +32,7 @@
 		SELECT *
 		FROM ap
 		WHERE loginId = #{loginId}
+		AND delStatus != 1
 	</select>
 	
 	<update id="doModify">
@@ -69,27 +70,32 @@
 				</if>
 			</set>
 			WHERE id = #{id}
+			AND delStatus != 1
 	</update>
 	
 	<select id="getApByAuthKey" resultType="Ap">
 		SELECT * FROM ap
 		WHERE authKey = #{authKey}
+		AND delStatus != 1
 	</select>
 	
 	<select id="getApById" resultType="Ap">
 		SELECT * FROM ap
 		WHERE id = #{loginedMemberId}
+		AND delStatus != 1
 	</select>
 	
 	<select id="isAdmin" resultType="Ap">
 		SELECT * FROM ap
 		WHERE id = #{id}
 		AND authLevel = 1
+		AND delStatus != 1
 	</select>
 	
 	<select id="doIdDupCheck" resultType="Ap">
 		SELECT * FROM ap
 		WHERE loginId = #{loginId}
+		AND delStatus != 1
 	</select>
 	
 	<update id="setAuthStatusValid">
@@ -126,6 +132,5 @@
 		SELECT relId FROM `like`
 		WHERE memberId = #{memberId}
 	</select>
-	
 	
 </mapper>
