@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
+import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
 import com.audictionary.service.GenFileService;
+import com.audictionary.service.RecruitService;
 
 @Controller
 public class UsrApController {
@@ -220,6 +222,20 @@ public class UsrApController {
 		}
 	}
 	
+	@GetMapping("/usr/ap/recruitLikeList")
+	@ResponseBody
+	public ResultData recruitLikeList(int memberId) {
+		
+		List<Integer> likedRecruitIds = apService.likeListsByMemberId(memberId);
+		
+		if( likedRecruitIds.isEmpty() ) {
+			return new ResultData("F-1", "좋아요 내역이 존재하지 않습니다.");
+		}
+		
+		List<Recruit> likedRecruits = apService.getLikedRecruits(likedRecruitIds);
+		
+		return new ResultData("S-1", "불러오기 성공", "likedRecruits", likedRecruits);
+	}
 	
 	
 	

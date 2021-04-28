@@ -1,5 +1,6 @@
 package com.audictionary.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -31,4 +32,6 @@ public interface ApDao {
 	int isDupLike(int relId, int memberId);
 
 	void deleteLike(int relId, int memberId);
+
+	List<Integer> likeListsByMemberId(int memberId);
 }

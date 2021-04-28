@@ -122,4 +122,10 @@
 		AND memberId = #{memberId}
 	</delete>
 	
+	<select id="likeListsByMemberId" resultType="Integer">
+		SELECT relId FROM `like`
+		WHERE memberId = #{memberId}
+	</select>
+	
+	
 </mapper>

@@ -1,7 +1,6 @@
 package com.audictionary.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Service;
 import com.audictionary.dao.ApDao;
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.Application;
-import com.audictionary.dto.Attr;
 import com.audictionary.dto.GenFile;
+import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
 import com.audictionary.util.Util;
 
@@ -32,6 +31,8 @@ public class ApService {
 	private ApplicationService applicationService;
 	@Autowired
 	private GenFileService genFileService;
+	@Autowired
+	private RecruitService recruitService;
 
 	public ResultData doJoin(Map<String, Object> param) throws MessagingException {
 		apDao.doJoin(param);
@@ -115,6 +116,22 @@ public class ApService {
 	public void deleteLike(int relId, int memberId) {
 		apDao.deleteLike(relId, memberId);
 		
+	}
+
+	public List<Integer> likeListsByMemberId(int memberId) {
+		return apDao.likeListsByMemberId(memberId);
+	}
+
+	public List<Recruit> getLikedRecruits(List<Integer> likedRecruitIds) {
+		List<Recruit> LikedRecruits = new ArrayList<>();
+		
+		for ( int likedRecruitId :  likedRecruitIds) {
+			Recruit recruit = recruitService.getRecruitForPrintById(likedRecruitId);
+			
+			LikedRecruits.add(recruit);
+		}
+		
+		return LikedRecruits;
 	}
 	
 
