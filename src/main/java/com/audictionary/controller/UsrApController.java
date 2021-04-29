@@ -113,8 +113,6 @@ public class UsrApController {
 		if (!ap.getNickName().equals(param.get("nickName")) 
 				|| ap.getFeet() != Integer.parseInt((String)param.get("feet"))
 				|| ap.getWeight() != Integer.parseInt((String)param.get("weight"))
-				|| !ap.getSkinTone().equals(param.get("skinTone"))
-				|| ap.getEyelid() != Integer.parseInt((String) param.get("eyelid"))
 				|| !ap.getFeature().equals(param.get("feature"))
 				|| !ap.getFilmgraphy().equals(param.get("filmgraphy"))
 				|| !ap.getJobArea().equals(param.get("jobArea"))

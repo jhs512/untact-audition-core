@@ -19,8 +19,6 @@
 		nickName = #{nickName}, 
         feet = #{feet}, 
         weight = #{weight}, 
-        skinTone = #{skinTone}, 
-        eyelid = #{eyelid}, 
         feature = #{feature}, 
         filmgraphy = #{filmgraphy}, 
         jobArea = #{jobArea}, 
@@ -49,12 +47,6 @@
 				</if>
 				<if test="weight != null and weight.length > 0">
 					weight = #{weight},
-				</if>
-				<if test="skinTone != null and skinTone.length > 0">
-					skinTone = #{skinTone},
-				</if>
-				<if test="eyelid != null and eyelid.length > 0">
-					eyelid = #{eyelid},
 				</if>
 				<if test="feature != null and feature.length > 0">
 					feature = #{feature},
