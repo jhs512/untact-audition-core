@@ -25,8 +25,6 @@ public class Ap extends EntityDto{
 	private String cellPhoneNo;
 	private int feet;
 	private int weight;
-    private String skinTone;
-    private int eyelid;
     private String feature;
     private String filmgraphy;
     private String jobArea;

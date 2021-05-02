@@ -22,8 +22,6 @@ CREATE TABLE ap (
 	cellPhoneNo VARCHAR(15) NOT NULL, # 전화번호
     feet INT(10) UNSIGNED, # 키
     weight INT(10) UNSIGNED, # 몸무게
-    skinTone CHAR(10), # 피부색
-    eyelid TINYINT(1) UNSIGNED, # 쌍꺼풀 유무
     feature CHAR(100), # 키워드(특징)
     filmgraphy TEXT, # 커리어
     jobArea CHAR(10), # 희망분야

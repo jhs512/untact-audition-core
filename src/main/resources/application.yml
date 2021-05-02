@@ -30,7 +30,7 @@ spring:
 mybatis:
   type-aliases-package: com.audictionary.dto
 custom:
-  genFileDirPath: ../../ionic_projects/Audictionary_pd/public/gen
+  genFileDirPath: ../../ionic_projects/untact-audition-client-end/public/gen
   logging:
     dir: log
     level: debug

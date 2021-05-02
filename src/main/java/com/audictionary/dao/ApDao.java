@@ -33,5 +33,12 @@ public interface ApDao {
 
 	List<Integer> getListByLikedAp(Map<String, Object> param);
 
-	
+	void doLike(String relTypeCode, int relId, String memberTypeCode, int memberId);
+
+	int isDupLike(int relId, int memberId);
+
+	void deleteLike(int relId, int memberId);
+
+	List<Integer> likeListsByMemberId(int memberId);
+
 }

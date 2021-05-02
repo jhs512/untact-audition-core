@@ -14,6 +14,8 @@ public interface ApplicationDao {
 
 	List<Application> getListByRecruitId(Map<String, Object> param);
 
+	void doWrite(Map<String, Object> param);
+
 	void setPassStatus(int applicationId, int status);
 
 	void doLike(Map<String, Object> param);
@@ -29,5 +31,9 @@ public interface ApplicationDao {
 	void cancelLike(Map<String, Object> param);
 
 	Application getApplicationById(Map<String, Object> param);
+
+	List<Application> getListForPrintByMemberId(int memberId);
+
+
 
 }

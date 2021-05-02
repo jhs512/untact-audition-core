@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
+import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
 import com.audictionary.service.GenFileService;
+import com.audictionary.service.RecruitService;
 
 @Controller
 public class UsrApController {
@@ -112,8 +114,6 @@ public class UsrApController {
 		if (!ap.getNickName().equals(param.get("nickName")) 
 				|| ap.getFeet() != Integer.parseInt((String)param.get("feet"))
 				|| ap.getWeight() != Integer.parseInt((String)param.get("weight"))
-				|| !ap.getSkinTone().equals(param.get("skinTone"))
-				|| ap.getEyelid() != Integer.parseInt((String) param.get("eyelid"))
 				|| !ap.getFeature().equals(param.get("feature"))
 				|| !ap.getFilmgraphy().equals(param.get("filmgraphy"))
 				|| !ap.getJobArea().equals(param.get("jobArea"))
@@ -174,6 +174,71 @@ public class UsrApController {
 		return new ResultData("S-1", "지원자선정", "apListAll", apListAll, "apListLike", apListLike, "apList1Pass", apList1Pass, "apList2Pass", apList2Pass, "apList3Pass", apList3Pass);
 	}
 	
+	@GetMapping("/usr/ap/like")
+	@ResponseBody
+	public ResultData doLike(int recruitId, int memberId) {
+		
+		int existsLike = apService.isDupLike(recruitId, memberId);
+		
+		if ( existsLike != 0 ) {
+			return new ResultData("F-1", "이미 좋아요 처리 된 공고입니다.");
+		} else {
+			String relTypeCode = "recruit";
+			int relId = recruitId;
+			String memberTypeCode = "ap";
+			
+			apService.doLike(relTypeCode, relId, memberTypeCode, memberId);
+		  
+			return new ResultData("S-1", "처리 되었습니다.");
+		}
+	}
+	
+	@GetMapping("/usr/ap/disLike")
+	@ResponseBody
+	public ResultData disLike(int recruitId, int memberId) {
+		
+		int existsLike = apService.isDupLike(recruitId, memberId);
+		
+		if ( existsLike != 0 ) {
+			apService.deleteLike(recruitId, memberId);
+			return new ResultData("S-1", "취소 하였습니다.");
+		} else {
+			return new ResultData("F-1", "이미 취소 처리된 공고입니다.");
+		}
+	}
+	
+	@GetMapping("/usr/ap/checkLikeStatus")
+	@ResponseBody
+	public ResultData checkLikeStatus(int recruitId, int memberId) {
+		
+		int existsLike = apService.isDupLike(recruitId, memberId);
+		String likeStatus = "";
+		
+		if ( existsLike != 0 ) {
+			likeStatus = "like";
+			return new ResultData("S-1", "출력 성공", "likeStatus", likeStatus);
+		} else if ( existsLike == 0 ){
+			likeStatus = "disLike";
+			return new ResultData("S-1", "출력 성공", "likeStatus", likeStatus);
+		} else {
+			return new ResultData("F-1", "해당사항이 없습니다.");
+		}
+	}
+	
+	@GetMapping("/usr/ap/recruitLikeList")
+	@ResponseBody
+	public ResultData recruitLikeList(int memberId) {
+		
+		List<Integer> likedRecruitIds = apService.likeListsByMemberId(memberId);
+		
+		if( likedRecruitIds.isEmpty() ) {
+			return new ResultData("F-1", "좋아요 내역이 존재하지 않습니다.");
+		}
+		
+		List<Recruit> likedRecruits = apService.getLikedRecruits(likedRecruitIds);
+		
+		return new ResultData("S-1", "불러오기 성공", "likedRecruits", likedRecruits);
+	}
 	
 	
 	

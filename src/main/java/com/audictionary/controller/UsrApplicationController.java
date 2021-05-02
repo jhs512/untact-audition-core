@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,12 +17,10 @@ import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
 import com.audictionary.service.ApplicationService;
 import com.audictionary.service.GenFileService;
-import com.audictionary.service.RecruitService;
+import com.audictionary.util.Util;
 
 @Controller
 public class UsrApplicationController {
-	@Autowired
-	private RecruitService recruitService;
 	@Autowired
 	private GenFileService genFileService;
 	@Autowired
@@ -37,6 +37,22 @@ public class UsrApplicationController {
 		return new ResultData("S-1", "지원 목록 불러오기 성공", "applications", applications);
 	}
 	
+
+	@PostMapping("/usr/application/write")
+	@ResponseBody
+	public ResultData doWrite(@RequestParam Map<String, Object> param) {
+		
+		applicationService.doWrite(param);
+		
+		int applicationId = Util.getAsInt(param.get("id"), 0);
+		
+		genFileService.changeInputFileRelIdsForApplication(param, applicationId);
+		
+		applicationService.getProfileImgFileIdsStr(param, applicationId);
+
+		return new ResultData("S-1", "지원이 완료되었습니다.", "id", applicationId);
+	}
+
 	@RequestMapping("/usr/application/select")
 	@ResponseBody
 	public ResultData doSelect(@RequestParam Map<String,Object> param) {
@@ -70,6 +86,7 @@ public class UsrApplicationController {
 		return new ResultData("S-1", "지원자선정");
 	}
 	
+
 	@RequestMapping("/usr/application/cancelLike")
 	@ResponseBody
 	public ResultData cancelLike(@RequestParam Map<String,Object> param) {
@@ -96,4 +113,24 @@ public class UsrApplicationController {
 		
 		return new ResultData("S-1", "공고 지원서 불러오기 성공", "application", application, "ap", ap);
 	}
+
+	@GetMapping("/usr/application/getApplications")
+	@ResponseBody
+	public ResultData getApplications(int memberId) {
+		
+		List<Application> applications = applicationService.getApplications(memberId);
+		
+		return new ResultData("S-1", "불러오기 성공", "applications", applications);
+	}
+	
+	@GetMapping("/usr/application/getApplicationsAndRecruit")
+	@ResponseBody
+	public ResultData getApplicationsAndRecruit(int memberId) {
+		
+		List<Application> applications = applicationService.getApplicationsAndRecruit(memberId);
+		
+		return new ResultData("S-1", "불러오기 성공", "applications", applications);
+	}
+	
+
 }

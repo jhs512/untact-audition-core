@@ -19,8 +19,6 @@
 		nickName = #{nickName}, 
         feet = #{feet}, 
         weight = #{weight}, 
-        skinTone = #{skinTone}, 
-        eyelid = #{eyelid}, 
         feature = #{feature}, 
         filmgraphy = #{filmgraphy}, 
         jobArea = #{jobArea}, 
@@ -32,6 +30,7 @@
 		SELECT *
 		FROM ap
 		WHERE loginId = #{loginId}
+		AND delStatus != 1
 	</select>
 	
 	<update id="doModify">
@@ -49,12 +48,6 @@
 				<if test="weight != null and weight.length > 0">
 					weight = #{weight},
 				</if>
-				<if test="skinTone != null and skinTone.length > 0">
-					skinTone = #{skinTone},
-				</if>
-				<if test="eyelid != null and eyelid.length > 0">
-					eyelid = #{eyelid},
-				</if>
 				<if test="feature != null and feature.length > 0">
 					feature = #{feature},
 				</if>
@@ -69,27 +62,32 @@
 				</if>
 			</set>
 			WHERE id = #{id}
+			AND delStatus != 1
 	</update>
 	
 	<select id="getApByAuthKey" resultType="Ap">
 		SELECT * FROM ap
 		WHERE authKey = #{authKey}
+		AND delStatus != 1
 	</select>
 	
 	<select id="getApById" resultType="Ap">
 		SELECT * FROM ap
 		WHERE id = #{loginedMemberId}
+		AND delStatus != 1
 	</select>
 	
 	<select id="isAdmin" resultType="Ap">
 		SELECT * FROM ap
 		WHERE id = #{id}
 		AND authLevel = 1
+		AND delStatus != 1
 	</select>
 	
 	<select id="doIdDupCheck" resultType="Ap">
 		SELECT * FROM ap
 		WHERE loginId = #{loginId}
+		AND delStatus != 1
 	</select>
 	
 	<update id="setAuthStatusValid">
@@ -118,5 +116,32 @@
 		WHERE id = #{memberId}
 	</select>
 	
+	<insert id="doLike" >
+		INSERT INTO `like`
+		SET regDate = NOW(), 
+		updateDate = NOW(),
+		relTypeCode = #{relTypeCode},
+		relId = #{relId},
+		memberTypeCode = #{memberTypeCode},
+		memberId = #{memberId}
+	</insert>
+	
+	<select id="isDupLike" resultType="int">
+		SELECT COUNT(*) FROM `like`
+		WHERE relId = #{relId}
+		AND memberId = #{memberId}
+	</select>
+	
+	<delete id="deleteLike">
+		DELETE FROM `like`
+		WHERE relId = #{relId}
+		AND memberId = #{memberId}
+	</delete>
+	
+	<select id="likeListsByMemberId" resultType="Integer">
+		SELECT relId FROM `like`
+		WHERE memberId = #{memberId}
+	</select>
+
 	
 </mapper>

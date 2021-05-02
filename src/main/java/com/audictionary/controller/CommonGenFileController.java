@@ -29,6 +29,7 @@ import com.audictionary.dto.GenFile;
 import com.audictionary.dto.ResultData;
 import com.audictionary.exceptions.GenFileNotFoundException;
 import com.audictionary.service.GenFileService;
+import com.audictionary.util.Util;
 
 
 @Controller
@@ -117,6 +118,33 @@ public class CommonGenFileController {
 		}
 		
 		return new ResultData("S-1", "불러오기 성공", "imgUrls", imgUrls);
+	}
+	
+	@GetMapping("/common/genFile/getRecentImgUrl")
+	@ResponseBody
+	public ResultData getRecentImgUrl( String recentImgFileIdsStr ) {
+		int recentIngFileIdInt = Util.getAsInt(recentImgFileIdsStr, 0);
+		GenFile genFile = genFileService.getGenFile(recentIngFileIdInt);
+		
+		if ( genFile == null ) {
+			return new ResultData ("F-1", "파일이 존재하지 않습니다.");
+		}
+		
+		String imgUrl = genFile.getForPrintUrl();
+		
+		return new ResultData("S-1", "불러오기 성공", "imgUrl", imgUrl);
+	}
+	
+	@GetMapping("/common/genFile/getProfileImgs")
+	@ResponseBody
+	public ResultData getProfileImgs( int id ) {
+		List<GenFile> genFiles = genFileService.getGenFiles("ap", id , "profile", "attachment");
+		
+		if ( genFiles == null ) {
+			return new ResultData ("F-1", "파일이 존재하지 않습니다.");
+		}
+		
+		return new ResultData("S-1", "불러오기 성공", "genFiles", genFiles);
 	}
 	
 	@GetMapping("/common/genFile/deleteGenFile")

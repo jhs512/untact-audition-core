@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.audictionary.dao.ApDao;
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.Application;
-import com.audictionary.dto.Attr;
 import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
@@ -168,6 +167,7 @@ public class ApService {
 		return aps;
 	}
 
+
 	public List<Application> getListByLikedAp(Map<String, Object> param) {
 		List<Integer> likedApplicationIds = apDao.getListByLikedAp(param);
 		
@@ -192,6 +192,34 @@ public class ApService {
 		
 		return applications;
 		
+	}
+	public void doLike(String relTypeCode, int relId, String memberTypeCode, int memberId) {
+		apDao.doLike(relTypeCode, relId, memberTypeCode, memberId);
+	}
+	public int isDupLike(int relId, int memberId) {
+		return apDao.isDupLike(relId, memberId);
+	}
+
+	public void deleteLike(int relId, int memberId) {
+		apDao.deleteLike(relId, memberId);
+		
+	}
+
+	public List<Integer> likeListsByMemberId(int memberId) {
+		return apDao.likeListsByMemberId(memberId);
+	}
+
+	public List<Recruit> getLikedRecruits(List<Integer> likedRecruitIds) {
+		List<Recruit> LikedRecruits = new ArrayList<>();
+		
+		for ( int likedRecruitId :  likedRecruitIds) {
+			Recruit recruit = recruitService.getRecruitForPrintById(likedRecruitId);
+			
+			LikedRecruits.add(recruit);
+		}
+		
+		return LikedRecruits;
+
 	}
 	
 

@@ -218,6 +218,19 @@ public class GenFileService {
 			}
 		}
 	}
+	
+	public void changeInputFileRelIdsForApplication(Map<String, Object> param, int id) {
+		int videoFileIdsStr = Util.getAsInt(param.get("videoFileIdsStr"), 0);
+		int recentImgFileIdsStr = Util.getAsInt(param.get("recentImgFileIdsStr"), 0);
+		
+		if ( videoFileIdsStr != 0 ) {
+			changeRelId(videoFileIdsStr, id);
+		}
+		
+		if ( recentImgFileIdsStr != 0 ) {
+			changeRelId(recentImgFileIdsStr, id);
+		}
+	}
 
 	public GenFile getGenFileByUpdateDate(String relTypeCode, int relId, String updateDate) {
 		return genFileDao.getGenFileByUpdateDate(relTypeCode, relId, updateDate);
