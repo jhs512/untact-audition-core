@@ -1,5 +1,6 @@
 package com.audictionary.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -25,4 +26,12 @@ public interface ApDao {
 	Ap doIdDupCheck(String loginId);
 
 	void setAuthStatusValid(String authKey);
+
+	List<Integer> getListByLikedApplication(Map<String, Object> param);
+
+	Ap getListByMemberIds(int memberId);
+
+	List<Integer> getListByLikedAp(Map<String, Object> param);
+
+	
 }

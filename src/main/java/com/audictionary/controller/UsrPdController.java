@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.audictionary.dto.Application;
 import com.audictionary.dto.Artwork;
-import com.audictionary.dto.Attr;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
+import com.audictionary.service.ApService;
 import com.audictionary.service.ArtworkService;
 import com.audictionary.service.AttrService;
 import com.audictionary.service.EmailService;
@@ -36,6 +37,8 @@ public class UsrPdController {
 	private AttrService attrService;
 	@Autowired
 	private ArtworkService artworkService;
+	@Autowired
+	private ApService apService;
 
 	@PostMapping("usr/pd/doJoin")
 	@ResponseBody
@@ -207,8 +210,11 @@ public class UsrPdController {
 	
 	@PostMapping("/usr/pd/update")
 	@ResponseBody
-	public ResultData doUpdatePd(@RequestParam String loginedMemberId) {
+	public ResultData doUpdatePd(@RequestParam Map<String,Object> param) {
+
+		String loginedMemberId = (String)param.get("loginedMemberId");
 		int id = Integer.parseInt(loginedMemberId);
+		
 		Pd pd = pdService.getMemberById(id);
 		
 		return new ResultData("S-1", "갱신", "pd", pd);
@@ -288,15 +294,18 @@ public class UsrPdController {
 	
 	@PostMapping("/usr/pd/doDelete")
 	@ResponseBody
-	public ResultData doDelete(@RequestParam int loginedMemberId) {
+	public ResultData doDelete(@RequestParam Map<String,Object> param) {
+
+		String loginedMemberId = (String)param.get("loginedMemberId");
+		int id = Integer.parseInt(loginedMemberId);
 		
-		Pd pd = pdService.getMemberById(loginedMemberId);
+		Pd pd = pdService.getMemberById(id);
 		
 		if( pd.getDelStatus() == 1 ) {
 			return new ResultData("F-1", "이미 탈퇴한 회원입니다.");
 		}
 		
-		pdService.doDeleteMemberById(loginedMemberId);
+		pdService.doDeleteMemberById(param);
 		
 		return new ResultData("S-1", "회원탈퇴성공");
 	}
@@ -316,11 +325,17 @@ public class UsrPdController {
 	
 	@GetMapping("/usr/pd/showDetail")
 	@ResponseBody
-	public ResultData showDetail(@RequestParam int id) {
+	public ResultData showDetail(@RequestParam Map<String, Object> param) {
+
+		String loginedMemberId = (String)param.get("id");
+		int id = Integer.parseInt(loginedMemberId);
+		
 		Pd pd = pdService.getMemberById(id);
 		
+		List<Application> aps = apService.getListByLikedAp(param);
+		
 		if(pd != null) {
-			return new ResultData("S-1", "회원 정보 불러오기 성공", "pd", pd);
+			return new ResultData("S-1", "회원 정보 불러오기 성공", "pd", pd, "aps", aps);
 		} else {
 			return new ResultData("F-1", "일치하는 회원이 없습니다.");
 		}

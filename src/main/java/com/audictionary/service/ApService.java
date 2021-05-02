@@ -16,6 +16,7 @@ import com.audictionary.dto.Ap;
 import com.audictionary.dto.Application;
 import com.audictionary.dto.Attr;
 import com.audictionary.dto.GenFile;
+import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
 import com.audictionary.util.Util;
 
@@ -32,6 +33,8 @@ public class ApService {
 	private ApplicationService applicationService;
 	@Autowired
 	private GenFileService genFileService;
+	@Autowired
+	private RecruitService recruitService;
 
 	public ResultData doJoin(Map<String, Object> param) throws MessagingException {
 		apDao.doJoin(param);
@@ -57,7 +60,19 @@ public class ApService {
 	}
 
 	public Ap getApById(int loginedMemberId) {
-		return apDao.getApById(loginedMemberId);
+		Ap ap = apDao.getApById(loginedMemberId);
+		
+		GenFile profileFile = genFileService.getGenFile("application", ap.getId(), "profile", "attachment", 1);
+		GenFile videoFile = genFileService.getGenFile("application", ap.getId(), "video", "attachment", 1);
+		
+		if(profileFile != null) {
+			ap.getExtraNotNull().put("file__profile__attachment", profileFile);
+		}
+		if(videoFile != null) {
+			ap.getExtraNotNull().put("file__video__attachment", videoFile);
+		}
+		
+		return ap;
 	}
 
 	public boolean isAdmin(int loginedMemberId) {
@@ -81,28 +96,102 @@ public class ApService {
 
 	
 
-	public List<Ap> getApListByRecruitId(Map<String, Object> param) {
+	public Map<String, List<Ap>> getApListGroupByPassStatusByRecruitId(Map<String, Object> param) {
 		
 		List<Application> applications = applicationService.getListByRecruitId(param);
 		
-		List<Integer> memberIds = applications.stream().map(application -> application.getMemberId()).collect(Collectors.toList());
-
-		List<Ap> aps = new ArrayList<>();
+		Map<String, List<Ap>> apList = new HashMap<>();
 		
-		for ( int memberId : memberIds ) {
-			Ap ap = apDao.getApById(memberId);
+		List<Ap> apListAll = new ArrayList<>();
+		List<Ap> apList1Pass = new ArrayList<>();
+		List<Ap> apList2Pass = new ArrayList<>();
+		List<Ap> apList3Pass = new ArrayList<>();
+		
+		for (Application application : applications) {
 			
-			GenFile genFile = genFileService.getGenFile("ap", ap.getId(), "common", "attachment", 1);
+			Map<String, GenFile> mapByFileNo = new HashMap<>();
 			
-			if ( genFile != null ) {
-				String imgUrl = genFile.getForPrintUrl();
-				ap.setExtra__thumbImg(imgUrl);
+			GenFile genFile = genFileService.getGenFile("application", application.getRecruitId(), "profile", "attachment", 1);
+			
+			mapByFileNo.put("1", genFile);
+					
+			Ap ap = getApById(application.getMemberId());
+			
+			if (mapByFileNo != null) {
+				ap.getExtraNotNull().put("file__profile__attachment", mapByFileNo);
 			}
 			
+			apListAll.add(ap);			
+			
+			if(application.getPassStatus() == 1) {
+				apList1Pass.add(ap);
+			}
+			else if (application.getPassStatus() == 2) {
+				apList2Pass.add(ap);
+			}
+			else if (application.getPassStatus() == 3) {
+				apList3Pass.add(ap);
+			}
+			
+		}
+		
+		apList.put("apListAll", apListAll);
+		apList.put("apList1Pass", apList1Pass);
+		apList.put("apList2Pass", apList2Pass);
+		apList.put("apList3Pass", apList3Pass);
+		
+		return apList;
+	}
+
+	public List<Ap> getListByLikedApplication(Map<String, Object> param) {
+		List<Integer> memberIds = apDao.getListByLikedApplication(param);
+		
+		List<Ap> aps = new ArrayList<>();
+		
+		for (int memberId : memberIds) {
+			Ap ap = apDao.getListByMemberIds(memberId);
 			aps.add(ap);
 		}
 		
+		List<Integer> apIds = aps.stream().map(ap -> ap.getId()).collect(Collectors.toList());
+		
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("ap", apIds, "profile", "attachment");
+		
+		for (Ap ap : aps) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(ap.getId());
+
+			if (mapByFileNo != null) {
+				ap.getExtraNotNull().put("file__profile__attachment", mapByFileNo);
+			}
+		}
+		
 		return aps;
+	}
+
+	public List<Application> getListByLikedAp(Map<String, Object> param) {
+		List<Integer> likedApplicationIds = apDao.getListByLikedAp(param);
+		
+		List<Application> applications = new ArrayList<>();
+		
+		for(int applicationId: likedApplicationIds) {
+			Application application = applicationService.getListForPdInfo(applicationId);
+			applications.add(application);
+		}
+		
+		List<Integer> applicationIds = applications.stream().map(application -> application.getMemberId()).collect(Collectors.toList());
+		
+		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("ap", applicationIds, "profile", "attachment");
+		
+		for (Application application : applications) {
+			Map<String, GenFile> mapByFileNo = filesMap.get(application.getId());
+
+			if (mapByFileNo != null) {
+				application.getExtraNotNull().put("file__profile__attachment", mapByFileNo);
+			}
+		}
+		
+		return applications;
+		
 	}
 	
 

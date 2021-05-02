@@ -180,7 +180,7 @@ CREATE TABLE `like` (
   `updateDate` datetime NOT NULL,
   `relTypeCode` char(30) NOT NULL,
   `relId` int(10) unsigned NOT NULL,
-  `memberTypeCode` char(30) not null, # ( ap , recruit )
+  memberTypeCode char(30) not null,
   `memberId` int(10) unsigned NOT NULL,
   KEY `relTypeCode` (`relTypeCode`,`relId`,`memberId`)
 );
@@ -207,3 +207,16 @@ CREATE TABLE genFile (
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
 
+select * from application;
+select * from artwork;
+select * from actingRole;
+
+select * from `like`;
+
+select * from ap;
+
+select * from recruitment;
+
+select * from attr;
+
+select * from genFile;

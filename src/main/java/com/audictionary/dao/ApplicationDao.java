@@ -18,4 +18,16 @@ public interface ApplicationDao {
 
 	void doLike(Map<String, Object> param);
 
+	Application getApplicationByMemberId(int memberId);
+
+	Application getApplicationByRecruitId(int recruitId);
+
+	Application getListForPdInfo(int applicationId);
+
+	int getLike(Map<String, Object> param);
+
+	void cancelLike(Map<String, Object> param);
+
+	Application getApplicationById(Map<String, Object> param);
+
 }

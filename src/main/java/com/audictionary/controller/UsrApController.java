@@ -1,5 +1,6 @@
 package com.audictionary.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -157,16 +158,20 @@ public class UsrApController {
 		
 	}
 	
-	
-	
-	
 	@RequestMapping("/usr/ap/list")
 	@ResponseBody
-	public ResultData showList(@RequestParam Map<String,Object> param) {
+	public ResultData showListForAdmPage(@RequestParam Map<String,Object> param) {
 		
-		List<Ap> aps = apService.getApListByRecruitId(param);
+		Map<String, List<Ap>> apList = apService.getApListGroupByPassStatusByRecruitId(param);
 		
-		return new ResultData("S-1", "지원자선정", "aps", aps);
+		List<Ap> apListAll = apList.get("apListAll");
+		List<Ap> apList1Pass = apList.get("apList1Pass");
+		List<Ap> apList2Pass = apList.get("apList2Pass");
+		List<Ap> apList3Pass = apList.get("apList3Pass");
+		
+		List<Ap> apListLike = apService.getListByLikedApplication(param);
+		
+		return new ResultData("S-1", "지원자선정", "apListAll", apListAll, "apListLike", apListLike, "apList1Pass", apList1Pass, "apList2Pass", apList2Pass, "apList3Pass", apList3Pass);
 	}
 	
 	

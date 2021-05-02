@@ -31,6 +31,59 @@
 		regDate = NOW(), updateDate = NOW()
 		, relTypeCode = #{relTypeCode}
 		, relId = #{applicationId}
+		, memberTypeCode = 'pd'
 		, memberId = #{memberId}
 	</insert>
+	
+	<select id="getLike" resultType="int">
+		SELECT COUNT(*) FROM `like`
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = ${applicationId}
+		AND memberTypeCode = #{memberTypeCode}
+		AND memberId = #{memberId}
+	</select>
+	
+	<select id="getApplicationByMemberId" resultType="Application">
+		SELECT * FROM application
+		WHERE memberId = #{memberId}
+	</select>
+	
+	<select id="getApplicationByRecruitId" resultType="Application">
+		SELECT apl.*, ap.name AS extra__ap__name FROM application AS apl
+		INNER JOIN ap AS ap
+		ON apl.memberId = ap.id
+		INNER JOIN artwork AS artwork
+		ON artwork.relTypeCode = 'recruitment'
+		AND artwork.relId = #{recruitId}
+		INNER JOIN actingRole as actingRole
+		ON actingRole.recruitmentId = #{recruitId}
+		WHERE apl.recruitId = #{recruitId}
+		AND apl.delStatus != 1
+	</select>
+	
+	<select id="getListForPdInfo" resultType="Application">
+		SELECT apl.* , ap.id as extra__ap_id , ap.name as extra__ap_name, aw.title as extra__aw_title, ar.name as extra__ar_name from application AS apl
+		INNER JOIN ap AS ap
+		ON apl.memberId = ap.id
+		INNER JOIN artwork as aw
+		ON aw.relTypeCode = 'recruitment'
+		AND aw.relId = apl.recruitId
+		INNER JOIN actingRole as ar
+		ON ar.recruitmentId = apl.recruitId
+		WHERE apl.id = #{applicationId}
+	</select>
+	
+	<delete id="cancelLike">
+		DELETE FROM `like`
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND memberTypeCode = #{memberTypeCode}
+		AND memberId = #{memberId}
+	</delete>
+	
+	<select id="getApplicationById" resultType="Application">
+		SELECT * FROM application
+		WHERE delStatus != 1
+		AND id = #{id}
+	</select>
 </mapper>

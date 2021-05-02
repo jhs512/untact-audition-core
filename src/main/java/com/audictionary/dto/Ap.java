@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Ap {
+public class Ap extends EntityDto{
 	private int id;
 	private String regDate;
 	private String updateDate;

@@ -25,16 +25,38 @@ public class ApplicationService {
 		
 		List<Integer> applicationIds = applications.stream().map(application -> application.getId()).collect(Collectors.toList());
 		
-		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("application", applicationIds, "common", "attachment");
+		Map<Integer, Map<String, GenFile>> profileFilesMap = genFileService.getFilesMapKeyRelIdAndFileNo("application", applicationIds, "profile", "attachment");
 		
 		for (Application application : applications) {
-			Map<String, GenFile> mapByFileNo = filesMap.get(application.getId());
+			Map<String, GenFile> mapByFileNo = profileFilesMap.get(application.getId());
 
 			if (mapByFileNo != null) {
-				application.getExtraNotNull().put("file__common__attachment", mapByFileNo);
+				application.getExtraNotNull().put("file__profile__attachment", mapByFileNo);
 			}
 			
 		}
+		
+		Map<Integer, Map<String, GenFile>> photoFilesMap = genFileService.getFilesMapKeyRelIdAndFileNo("application", applicationIds, "photo", "attachment");
+		
+		for (Application application : applications) {
+			Map<String, GenFile> mapByFileNo = photoFilesMap.get(application.getId());
+
+			if (mapByFileNo != null) {
+				application.getExtraNotNull().put("file__photo__attachment", mapByFileNo);
+			}
+			
+		}
+		
+		Map<Integer, Map<String, GenFile>> videoFilesMap = genFileService.getFilesMapKeyRelIdAndFileNo("application", applicationIds, "video", "attachment");
+		
+		for (Application application : applications) {
+			Map<String, GenFile> mapByFileNo = videoFilesMap.get(application.getId());
+
+			if (mapByFileNo != null) {
+				application.getExtraNotNull().put("file__video__attachment", mapByFileNo);
+			}
+			
+		}		
 		
 		return applications;
 	}
@@ -74,7 +96,30 @@ public class ApplicationService {
 	}
 
 	public void doLike(Map<String, Object> param) {
-		param.put("relTypeCode", "application");
 		applicationDao.doLike(param);
+	}
+
+	public Application getApplicationByMemberId(int memberId) {
+		return applicationDao.getApplicationByMemberId(memberId);
+	}
+
+	public Application getApplicationByRecruitId(int id) {
+		return applicationDao.getApplicationByRecruitId(id);
+	}
+
+	public Application getListForPdInfo(int applicationId) {
+		return applicationDao.getListForPdInfo(applicationId);
+	}
+
+	public int getLike(Map<String, Object> param) {
+		return applicationDao.getLike(param);
+	}
+
+	public void cancelLike(Map<String, Object> param) {
+		applicationDao.cancelLike(param);
+	}
+
+	public Application getApplicationById(Map<String, Object> param) {
+		return applicationDao.getApplicationById(param);
 	}
 }

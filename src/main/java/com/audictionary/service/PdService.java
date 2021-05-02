@@ -21,12 +21,12 @@ public class PdService {
 		return pdDao.doJoin(param);
 	}
 
-	public Pd getMemberById(int loginedMemberId) {
-		Pd pd = pdDao.getMemberById(loginedMemberId);
+	public Pd getMemberById(int memberId) {
+		Pd pd = pdDao.getMemberById(memberId);
 		
 		if ( pd != null ) {
 			
-			List<GenFile> genFiles = genFileService.getGenFiles("pd", loginedMemberId, "common", "attachment");
+			List<GenFile> genFiles = genFileService.getGenFiles("pd", memberId, "common", "attachment");
 			
 			if( !genFiles.isEmpty() ) {
 				pd.getExtraNotNull().put("file__common__attachment", genFiles);	
@@ -74,8 +74,8 @@ public class PdService {
 		return pdDao.getMemberByAuthKey(authKey);
 	}
 
-	public void doDeleteMemberById(int id) {
-		pdDao.doDeleteMemberById(id);
+	public void doDeleteMemberById(Map<String, Object> param) {
+		pdDao.doDeleteMemberById(param);
 	}
 
 	public Pd doFindLoginId(Map<String, Object> param) {

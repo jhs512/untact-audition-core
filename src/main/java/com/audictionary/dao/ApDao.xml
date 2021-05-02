@@ -99,4 +99,24 @@
 		</set>
 		WHERE authKey = #{authKey}
 	</update>
+	
+	<select id="getListByLikedApplication" resultType="int">
+		SELECT memberId FROM `like`
+		WHERE relTypeCode = 'recruit'
+		AND relId = #{id}
+		AND memberTypeCode = 'ap'
+	</select>
+	
+	<select id="getListByLikedAp" resultType="int">
+		SELECT relId FROM `like`
+		WHERE relTypeCode = 'application'
+		AND memberTypeCode = 'pd'
+	</select>
+	
+	<select id="getListByMemberIds" resultType="ap">
+		SELECT * FROM ap
+		WHERE id = #{memberId}
+	</select>
+	
+	
 </mapper>

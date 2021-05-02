@@ -12,7 +12,7 @@ public interface PdDao {
 
 	int doJoin(Map<String, Object> param);
 
-	Pd getMemberById(int loginedMemberId);
+	Pd getMemberById(int id);
 
 	Pd isAdmin(int loginedMemberId);
 
@@ -22,7 +22,7 @@ public interface PdDao {
 
 	Pd getMemberByAuthKey(@Param("authKey") String authKey);
 
-	void doDeleteMemberById(int id);
+	void doDeleteMemberById(Map<String,Object> param);
 
 	Pd doFindLoginId(Map<String, Object> param);
 

@@ -163,10 +163,8 @@ public class RecruitService {
 						param.put("notExpired", "notExpired");
 						isFiltered = true;
 					}
-					
 				}
 			}
-			
 		}
 		
 		param.put("isFiltered", isFiltered);
@@ -252,7 +250,6 @@ public class RecruitService {
 			
 			param.put("limit", limit);	
 		}
-		
 		
 		List<Recruit> recruits =  recruitDao.getListForPrintByMemberId(param);
 		

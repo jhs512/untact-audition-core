@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.audictionary.dto.Ap;
 import com.audictionary.dto.Application;
 import com.audictionary.dto.ResultData;
+import com.audictionary.service.ApService;
 import com.audictionary.service.ApplicationService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.RecruitService;
@@ -23,6 +25,8 @@ public class UsrApplicationController {
 	private GenFileService genFileService;
 	@Autowired
 	private ApplicationService applicationService;
+	@Autowired
+	private ApService apService;
 	
 	@RequestMapping("/usr/application/list")
 	@ResponseBody
@@ -54,10 +58,42 @@ public class UsrApplicationController {
 	@RequestMapping("/usr/application/like")
 	@ResponseBody
 	public ResultData doLike(@RequestParam Map<String,Object> param) {
+		param.put("relTypeCode", "application");
+		param.put("memberTypeCode", "pd");
 		
-		applicationService.doLike(param);
+		int likeCount = applicationService.getLike(param);
+		
+		if( likeCount == 0 ) {
+			applicationService.doLike(param);
+		}
 		
 		return new ResultData("S-1", "지원자선정");
 	}
 	
+	@RequestMapping("/usr/application/cancelLike")
+	@ResponseBody
+	public ResultData cancelLike(@RequestParam Map<String,Object> param) {
+		
+		int relId = Integer.parseInt((String)param.get("applicationId"));
+		param.put("relId", relId);
+		param.put("relTypeCode", "application");
+		param.put("memberTypeCode", "pd");
+		
+		applicationService.cancelLike(param);
+		
+		List<Application> aps = apService.getListByLikedAp(param);
+		
+		return new ResultData("S-1","좋아요 취소 성공", "applications", aps);
+	}
+	
+	@RequestMapping("/usr/application/detail")
+	@ResponseBody
+	public ResultData showDetail(@RequestParam Map<String, Object> param) {
+		
+		Application application = applicationService.getApplicationById(param);
+		
+		Ap ap = apService.getApById(application.getMemberId());
+		
+		return new ResultData("S-1", "공고 지원서 불러오기 성공", "application", application, "ap", ap);
+	}
 }
