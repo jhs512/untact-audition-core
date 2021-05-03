@@ -11,7 +11,7 @@ CREATE TABLE ap (
 	updateDate DATETIME NOT NULL,
     delDate DATETIME,
     delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-	loginId CHAR(20) NOT NULL,
+	loginId CHAR(100) NOT NULL,
 	loginPw VARCHAR(200) NOT NULL,
 	`name` CHAR(10) NOT NULL, # 이름
     engName CHAR(20) NOT NULL, # 영문이름
@@ -41,7 +41,7 @@ CREATE TABLE pd (
 	updateDate DATETIME NOT NULL,
     delDate DATETIME,
     delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-	loginId CHAR(20) NOT NULL,
+	loginId CHAR(100) NOT NULL,
 	loginPw VARCHAR(200) NOT NULL,
 	`name` CHAR(10) NOT NULL,
 	gender CHAR(2) NOT NULL, # 성별

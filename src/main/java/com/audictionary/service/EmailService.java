@@ -88,7 +88,7 @@ public class EmailService {
 		 attrService.setValue("pd", id, "emailCertKey", email, emailCertKey, null);
 		 
 		 StringBuilder str = new StringBuilder();
-		 str.append("<a href=\"http://" + domainUrl + ":5555/usr/pd/modifyPw?email="+email+"&key="+emailCertKey+"\">비밀번호 재설정하러 가</a>");
+		 str.append("<a href=\"http://" + domainUrl + ":5555/usr/pd/modifyPw?email="+email+"&key="+emailCertKey+"\">비밀번호 재설정하러 가기</a>");
 		 helper.setText(str.toString(),true);
 		 mailSender.send(msg);
 		

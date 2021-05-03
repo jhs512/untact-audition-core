@@ -41,4 +41,6 @@ public interface ApDao {
 
 	List<Integer> likeListsByMemberId(int memberId);
 
+	void doDeleteMemberById(int memberId);
+
 }

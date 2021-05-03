@@ -13,6 +13,8 @@ public class Ap extends EntityDto{
 	private int id;
 	private String regDate;
 	private String updateDate;
+	private String delDate;
+	private int delStatus;
 	private String loginId;
 	@JsonIgnore
 	private String loginPw;
