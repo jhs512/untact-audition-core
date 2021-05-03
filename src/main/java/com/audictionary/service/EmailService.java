@@ -85,6 +85,8 @@ public class EmailService {
 		 
 		 String emailCertKey = Util.getTempPassword(50);
 		 
+		 
+		 
 		 attrService.setValue("pd", id, "emailCertKey", email, emailCertKey, null);
 		 
 		 StringBuilder str = new StringBuilder();
