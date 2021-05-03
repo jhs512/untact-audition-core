@@ -226,6 +226,15 @@ public class ApService {
 		apDao.doDeleteMemberById(memberId);
 		
 	}
+
+	public Ap findLoginId(Map<String, Object> param) {
+		return apDao.findLoginId(param);
+	}
+
+	public void doModifyPw(Map<String, Object> param) {
+		apDao.doModifyPw(param);
+		
+	}
 	
 
 }

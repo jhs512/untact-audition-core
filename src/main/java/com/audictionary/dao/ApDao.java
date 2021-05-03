@@ -43,4 +43,8 @@ public interface ApDao {
 
 	void doDeleteMemberById(int memberId);
 
+	Ap findLoginId(Map<String, Object> param);
+
+	void doModifyPw(Map<String, Object> param);
+
 }

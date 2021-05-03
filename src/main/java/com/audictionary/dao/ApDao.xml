@@ -65,6 +65,16 @@
 			AND delStatus != 1
 	</update>
 	
+	<update id="doModifyPw">
+		UPDATE ap
+			<set>
+				updateDate = NOW(),
+				loginPw = #{loginPw}
+			</set>
+			WHERE loginId = #{loginId}
+			AND delStatus != 1
+	</update>
+	
 	<select id="getApByAuthKey" resultType="Ap">
 		SELECT * FROM ap
 		WHERE authKey = #{authKey}
@@ -111,7 +121,7 @@
 		AND memberTypeCode = 'pd'
 	</select>
 	
-	<select id="getListByMemberIds" resultType="ap">
+	<select id="getListByMemberIds" resultType="Ap">
 		SELECT * FROM ap
 		WHERE id = #{memberId}
 	</select>
@@ -151,5 +161,12 @@
 		</set>
 		WHERE id = #{memberId}
 	</update>
+	
+	<select id="findLoginId" resultType="Ap">
+		SELECT * FROM ap
+		WHERE name = #{name}
+		AND regNumber = #{regNumber}
+		AND delStatus != 1
+	</select>
 	
 </mapper>
