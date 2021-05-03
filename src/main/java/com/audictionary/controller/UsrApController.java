@@ -20,6 +20,8 @@ import com.audictionary.dto.Pd;
 import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
 import com.audictionary.service.ApService;
+import com.audictionary.service.AttrService;
+import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.RecruitService;
 
@@ -30,6 +32,12 @@ public class UsrApController {
 	
 	@Autowired
 	private GenFileService genFileService;
+	
+	@Autowired
+	private EmailService emailService;
+	
+	@Autowired
+	private AttrService atterService;
 
 	@PostMapping("/usr/ap/doJoin")
 	@ResponseBody
@@ -257,6 +265,80 @@ public class UsrApController {
 		
 		return new ResultData("S-1", "회원탈퇴성공");
 	}
+	
+	@GetMapping("/usr/ap/findLoginId")
+	@ResponseBody
+	public ResultData findLoginId(@RequestParam Map<String,Object> param) {
+		
+		if (param.get("name") == null) {
+			return new ResultData("F-1", "이름을 입력해 주세요.");
+		}
+		if (param.get("regNumber") == null) {
+			return new ResultData("F-1", "주민등록번호를 입력해 주세요.");
+		}
+		
+		Ap ap = apService.findLoginId(param);
+		
+		if ( ap == null ) {
+			return new ResultData("F-2", "입력된 정보로 가입된 회원이 존재하지 않습니다.");
+		}
+		
+		return new ResultData("S-1", "아이디 찾기 성공", "loginId", ap.getLoginId());
+	}
+	
+	@PostMapping("/usr/ap/findLoginPw")
+	@ResponseBody
+	public ResultData findLoginPw(@RequestParam Map<String,Object> param) {
+		if (param.get("loginId") == null) {
+			return new ResultData("F-1", "이메일(아이디)을 입력해 주세요.");
+		}
+		if (param.get("regNumber") == null) {
+			return new ResultData("F-1", "주민등록번호를 입력해 주세요.");
+		}
+		String email = (String)param.get("loginId");
+		Ap ap = apService.getApByLoginId(email);
+		
+		if ( ap == null ) {
+			return new ResultData("F-2" , "일치하는 회원이 존재하지 않습니다.");
+		}
+		if( !ap.getRegNumber().equals(param.get("regNumber"))){
+			return new ResultData("F-2" , "주민등록번호가 일치하지 않습니다.");
+		}
+		int id = ap.getId();
+		try {
+			emailService.sendMailForFindLoginPwByAp(email,id);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return new ResultData("S-1", "임시 비밀번호 발송", "ap", ap);
+	}
+	
+	@PostMapping("usr/ap/modifyPw")
+	@ResponseBody
+	public ResultData doModifyPw(@RequestParam Map<String,Object> param) {
+		Ap ap = apService.getApByLoginId((String)param.get("loginId"));
+		
+		int id = ap.getId();
+		
+		String key = atterService.getValue("ap", id, "emailCertKey", ap.getLoginId());
+		
+		if( key == null ) {
+			return new ResultData("F-1","비정상적인 접근입니다.", "key", key);
+		}
+		
+		if( !key.equals(param.get("key"))) {
+			return new ResultData("F-1","비정상적인 접근입니다.", "key", key);
+		}
+		
+		apService.doModifyPw(param);
+		atterService.remove("ap", id, "emailCertKey", ap.getLoginId());
+		
+		return new ResultData("S-1", "비밀번호 변경 완료");
+	}
+	
 	
 	
 	
