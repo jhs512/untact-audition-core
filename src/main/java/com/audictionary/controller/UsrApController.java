@@ -240,6 +240,24 @@ public class UsrApController {
 		return new ResultData("S-1", "불러오기 성공", "likedRecruits", likedRecruits);
 	}
 	
+	@PostMapping("/usr/ap/doDelete")
+	@ResponseBody
+	public ResultData doDelete(@RequestParam Map<String,Object> param) {
+
+		String loginedMemberId = (String)param.get("memberId");
+		int memberId = Integer.parseInt(loginedMemberId);
+		
+		Ap ap = apService.getApById(memberId);
+		
+		if( ap.getDelStatus() == 1 ) {
+			return new ResultData("F-1", "이미 탈퇴한 회원입니다.");
+		}
+		
+		apService.doDeleteMemberById(memberId);
+		
+		return new ResultData("S-1", "회원탈퇴성공");
+	}
+	
 	
 	
 }

@@ -221,6 +221,11 @@ public class ApService {
 		return LikedRecruits;
 
 	}
+
+	public void doDeleteMemberById(int memberId) {
+		apDao.doDeleteMemberById(memberId);
+		
+	}
 	
 
 }
