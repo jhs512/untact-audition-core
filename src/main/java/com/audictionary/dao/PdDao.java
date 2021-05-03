@@ -27,4 +27,6 @@ public interface PdDao {
 	Pd doFindLoginId(Map<String, Object> param);
 
 	void setTempPw(String email, String tempPw);
+
+	void doModifyPw(Map<String, Object> param);
 }

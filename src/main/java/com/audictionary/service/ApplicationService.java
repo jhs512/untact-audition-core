@@ -25,7 +25,7 @@ public class ApplicationService {
 	@Autowired
 	GenFileService genFileService;
 	@Autowired
-	AttrService atterService;
+	AttrService attrService;
 	@Autowired
 	RecruitService recruitService;
 
@@ -161,7 +161,7 @@ public class ApplicationService {
 		for( int i = 0 ; i < profileImgIdsStrs.size(); i++ ) {
 			Map<String, Object> idsStr = profileImgIdsStrs.get(i);
 			
-			atterService.setValue("application", applicationId, "genFile", "profile",(String)idsStr.get("profileImgIdsStr") , "");
+			attrService.setValue("application", applicationId, "genFile", "profile",(String)idsStr.get("profileImgIdsStr") , "");
 		}
 		
 	}

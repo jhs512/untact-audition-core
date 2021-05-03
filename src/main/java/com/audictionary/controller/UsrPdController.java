@@ -286,7 +286,7 @@ public class UsrPdController {
 			return new ResultData("F-1","비정상적인 접근입니다.", "key", key);
 		}
 		
-		pdService.doModify(param);
+		pdService.doModifyPw(param);
 		attrService.remove("pd", id, "emailCertKey", pd.getEmail());
 		
 		return new ResultData("S-1", "비밀번호 재설정 성공");

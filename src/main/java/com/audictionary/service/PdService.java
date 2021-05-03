@@ -86,4 +86,8 @@ public class PdService {
 	public void setTempPw(String email, String tempPw) {
 		pdDao.setTempPw(email,tempPw);	
 	}
+
+	public void doModifyPw(Map<String, Object> param) {
+		pdDao.doModifyPw(param);
+	}
 }

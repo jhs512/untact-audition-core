@@ -37,7 +37,7 @@ public class UsrApController {
 	private EmailService emailService;
 	
 	@Autowired
-	private AttrService atterService;
+	private AttrService attrService;
 
 	@PostMapping("/usr/ap/doJoin")
 	@ResponseBody
@@ -323,7 +323,7 @@ public class UsrApController {
 		
 		int id = ap.getId();
 		
-		String key = atterService.getValue("ap", id, "emailCertKey", ap.getLoginId());
+		String key = attrService.getValue("ap", id, "emailCertKey", ap.getLoginId());
 		
 		if( key == null ) {
 			return new ResultData("F-1","비정상적인 접근입니다.", "key", key);
@@ -334,7 +334,7 @@ public class UsrApController {
 		}
 		
 		apService.doModifyPw(param);
-		atterService.remove("ap", id, "emailCertKey", ap.getLoginId());
+		attrService.remove("ap", id, "emailCertKey", ap.getLoginId());
 		
 		return new ResultData("S-1", "비밀번호 변경 완료");
 	}

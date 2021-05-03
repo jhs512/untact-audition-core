@@ -5,13 +5,13 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.audictionary.dto.Ap;
+import com.audictionary.dto.Attr;
 import com.audictionary.util.Util;
 
 
@@ -85,7 +85,11 @@ public class EmailService {
 		 
 		 String emailCertKey = Util.getTempPassword(50);
 		 
+		 String value = attrService.getValue("pd", id, "emailCertKey", email);
 		 
+		 if(value != null) {
+			 attrService.remove("pd", id, "emailCertKey", email);
+		 }
 		 
 		 attrService.setValue("pd", id, "emailCertKey", email, emailCertKey, null);
 		 
@@ -107,6 +111,12 @@ public class EmailService {
 		 helper.setSubject("Audictionary 비밀번호 재설정 확인 메일");
 		 
 		 String emailCertKey = Util.getTempPassword(50);
+		 
+		 String value = attrService.getValue("ap", id, "emailCertKey", email);
+
+		 if(value != null) {
+			 attrService.remove("ap", id, "emailCertKey", email);
+		 }
 		 
 		 attrService.setValue("ap", id, "emailCertKey", email, emailCertKey, null);
 		 
