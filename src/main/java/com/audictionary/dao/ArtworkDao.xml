@@ -58,6 +58,9 @@
 		, producer = #{awProducer}
 		, castingManager = #{awManager}
 		, story = #{awStory}
+		<if test="awWriter != null and awWriter.length > 0">
+			, writer = #{awWriter}
+		</if>
 		<if test="awEtc != null and awEtc.length > 0">
 			, etc = #{awEtc}
 		</if>
@@ -96,6 +99,9 @@
 			</if>
 			<if test="awStory != null and awStory.length > 0">
 				, `story` = #{awStory}
+			</if>
+			<if test="awWriter != null and awWriter.length > 0">
+				, `writer` = #{awWriter}
 			</if>
 			<if test="awEtc != null and awEtc.length > 0">
 				, `etc` = #{awEtc}

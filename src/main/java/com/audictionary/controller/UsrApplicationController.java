@@ -76,7 +76,6 @@ public class UsrApplicationController {
 	public ResultData doLike(@RequestParam Map<String,Object> param) {
 		param.put("relTypeCode", "application");
 		param.put("memberTypeCode", "pd");
-		
 		int likeCount = applicationService.getLike(param);
 		
 		if( likeCount == 0 ) {

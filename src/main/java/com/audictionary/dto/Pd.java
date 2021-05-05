@@ -1,5 +1,7 @@
 package com.audictionary.dto;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;

@@ -46,7 +46,7 @@
 		regDate = NOW(), updateDate = NOW()
 		, relTypeCode = #{relTypeCode}
 		, relId = #{applicationId}
-		, memberTypeCode = 'pd'
+		, memberTypeCode = #{memberTypeCode}
 		, memberId = #{memberId}
 	</insert>
 

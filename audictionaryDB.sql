@@ -7,11 +7,13 @@ USE audictionary;
 # 지원자 테이블 생성
 CREATE TABLE ap (
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    loginProviderTypeCode char(10) not null, # (pd = audictionary회원 / kakao = kakao 회원)
+    onLoginProviderMemberId char(50) not null,  
 	regDate DATETIME NOT NULL,
 	updateDate DATETIME NOT NULL,
     delDate DATETIME,
     delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-	loginId CHAR(100) NOT NULL,
+	loginId CHAR(20) NOT NULL,
 	loginPw VARCHAR(200) NOT NULL,
 	`name` CHAR(10) NOT NULL, # 이름
     engName CHAR(20) NOT NULL, # 영문이름
@@ -37,19 +39,21 @@ CREATE TABLE ap (
 # 제작자 테이블 생성pd
 CREATE TABLE pd (
 	id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    loginProviderTypeCode char(10) not null, # (pd = audictionary회원 / kakao = kakao 회원)
+    onLoginProviderMemberId char(50) not null,  
 	regDate DATETIME NOT NULL,
 	updateDate DATETIME NOT NULL,
     delDate DATETIME,
     delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
-	loginId CHAR(100) NOT NULL,
+	loginId CHAR(20) NOT NULL,
 	loginPw VARCHAR(200) NOT NULL,
-	`name` CHAR(10) NOT NULL,
-	gender CHAR(2) NOT NULL, # 성별
-	regNumber CHAR(100) NOT NULL, # 주민등록번호
-	address CHAR(200) NOT NULL,	# 주소
+	`name` CHAR(10),
+	gender CHAR(2), # 성별
+	regNumber CHAR(100), # 주민등록번호
+	address CHAR(200),	# 주소
 	email CHAR(20) NOT NULL,  # 이메일
-	cellPhoneNo VARCHAR(15) NOT NULL,  # 전화번호
-    jobPosition CHAR(10) NOT NULL, # 직급
+	cellPhoneNo VARCHAR(15),  # 전화번호
+    jobPosition CHAR(10), # 직급
 	corpName CHAR(10), # 회사이름
     corpType CHAR(10), # 회사타입
     filmgraphy TEXT, # 커리어
@@ -102,13 +106,14 @@ regDate DATETIME NOT NULL,
 updateDate DATETIME NOT NULL,
 delDate DATETIME,
 delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+loginProviderTypeCode char(10) not null, # (pd = audictionary회원 / kakao = kakao 회원)
 memberId INT(10) UNSIGNED,
 title CHAR(100) NOT NULL, # 공고제목
 `body` LONGTEXT NOT NULL, # 공고내용
 roleType CHAR(100), # 배역타입
-pay CHAR(50) NOT NULL, # 출연료
-location CHAR(10), # 촬영장소
-`period` CHAR(10), # 촬영기간
+pay CHAR(100) NOT NULL, # 출연료
+location CHAR(50), # 촬영장소
+`period` CHAR(50), # 촬영기간
 deadline DATETIME, # 모집기한날짜
 media CHAR(50), # 매체
 gender char(20), # 지원요건 성별
@@ -125,16 +130,17 @@ CREATE TABLE artwork (
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
     relTypeCode CHAR(50) NOT NULL, # 타입코드
+    relType2Code CHAR(50) NOT NULL, # 타입코드
     relId INT(10) UNSIGNED NOT NULL, # 공고 번호
     `title` CHAR(50) NOT NULL, # 작품이름
     `subtitle` CHAR(50), # 작품부제
 	media CHAR(50), # 매체
-    genre CHAR(20), # 장르
+    genre CHAR(50), # 장르
 	corp CHAR(50), # 제작사
     director CHAR(50), # 감독
     producer CHAR(50), # 프로듀서
-    castingManager CHAR(20), # 캐스팅매니저
-    writer char(20), # 작가(원작)
+    castingManager CHAR(50), # 캐스팅매니저
+    writer char(50), # 작가(원작)
     story TEXT, # 줄거리
 	image CHAR(100), # 이미지url
     link CHAR(100), # 링크url
@@ -166,6 +172,7 @@ regDate DATETIME NOT NULL,
 updateDate DATETIME NOT NULL,
 delDate DATETIME,
 delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+loginProviderTypeCode char(10) not null, # (pd = audictionary회원 / kakao = kakao 회원)
 memberId INT(10) UNSIGNED NOT NULL,
 recruitId INT(10) UNSIGNED NOT NULL, # 공고번호
 passStatus int(5) not null default 0 # 합격여부 ( -1: 불합격 / 0: 디폴트 / 1: 1차합격 / 2: 2차합격 / 3: 최종합격 )
@@ -205,16 +212,4 @@ CREATE TABLE genFile (
   KEY relId (relId,relTypeCode,typeCode,type2Code,fileNo)
 ); 
 
-select * from application;
-select * from artwork;
-select * from actingRole;
 
-select * from `like`;
-
-select * from ap;
-
-select * from recruitment;
-
-select * from attr;
-
-select * from genFile;

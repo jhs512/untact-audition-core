@@ -71,7 +71,7 @@
 		ON ap.recruitId = r.id
 		WHERE r.delStatus != 1
 		<if test="genderMale != null">
-			AND r.gender LIKE CONCAT('%',#{genderMale},'%')
+			OR ( r.gender LIKE CONCAT('%',#{genderMale},'%') )
 		</if>
 		<if test="genderFemale != null">
 			AND r.gender LIKE CONCAT('%',#{genderFemale},'%')
@@ -194,6 +194,7 @@
 		aw.writer AS extra__aw_writer,
 		aw.castingManager AS extra__aw_castingManager, 
 		aw.story AS extra__aw_story,
+		aw.writer AS extra__aw_writer,
 		aw.corp AS extra__aw_corp, 
 		aw.etc AS extra__aw_etc, 
 		ar.realName AS extra__ar_realName,

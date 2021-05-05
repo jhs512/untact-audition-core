@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.audictionary.dto.Pd;
+import com.audictionary.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
 
 @Mapper
 public interface PdDao {
@@ -29,4 +30,7 @@ public interface PdDao {
 	void setTempPw(String email, String tempPw);
 
 	void doModifyPw(Map<String, Object> param);
+
+	Pd getMemberByOnLoginProviderMemberId(String loginProviderTypeCode,
+			int onLoginProviderMemberId);
 }

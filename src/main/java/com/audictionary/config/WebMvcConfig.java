@@ -61,6 +61,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/resource/**")
 			.excludePathPatterns("/usr/home/main")
 			.excludePathPatterns("/usr/pd/doLogin")
+			.excludePathPatterns("/usr/pd/kakaoLogin")
 			.excludePathPatterns("/usr/pd/doJoin")
 			.excludePathPatterns("/usr/pd/sendEmailForJoin")
 			.excludePathPatterns("/usr/pd/emailCertForJoin")

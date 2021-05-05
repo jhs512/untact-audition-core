@@ -6,22 +6,26 @@ import java.util.Map;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.audictionary.dto.Application;
 import com.audictionary.dto.Artwork;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.ResultData;
+import com.audictionary.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
 import com.audictionary.service.ApService;
 import com.audictionary.service.ArtworkService;
 import com.audictionary.service.AttrService;
 import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
+import com.audictionary.service.KakaoService;
 import com.audictionary.service.PdService;
 import com.audictionary.util.Util;
 
@@ -39,6 +43,8 @@ public class UsrPdController {
 	private ArtworkService artworkService;
 	@Autowired
 	private ApService apService;
+	@Autowired
+	private KakaoService kakaoService;
 
 	@PostMapping("usr/pd/doJoin")
 	@ResponseBody
@@ -348,6 +354,28 @@ public class UsrPdController {
 		genFileService.deleteGenFiles("pd", id);
 		
 		return new ResultData("S-1", "프로필 이미지 삭제 성공");
+	}
+	
+	@RequestMapping("/usr/pd/kakaoLogin")
+	@ResponseBody
+	public ResultData kakaoLogin(@RequestParam String code) {
+		
+		String token = kakaoService.getAccessTokenForKakaoLogin(code);
+		
+		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoService.getPdByKakaoAccessToken(token);
+		
+		Pd pd = pdService.getMemberByOnLoginProviderMemberId("kakao", kakaoUser.getId());
+		
+		if ( pd != null ) {
+			pdService.updateMember(pd, kakaoUser);
+		} 
+		else {
+			pdService.doJoinByKakao(kakaoUser);
+		}
+		
+		pd.getExtraNotNull().put("thumbnail_image_url", kakaoUser.getKakao_account().profile.thumbnail_image_url);
+		
+		return new ResultData("S-1", "카카오로 로그인 성공", "authKey", pd.getAuthKey(), "pd", pd);
 	}
 	
 }

@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,16 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,7 +56,7 @@ public class Util {
 
 		return sb.toString();
 	}
-	
+
 	public static Object sha256(String base) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -65,7 +76,7 @@ public class Util {
 			return "";
 		}
 	}
-	
+
 	public static String getNowDateStr() {
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date time = new Date();
@@ -209,13 +220,13 @@ public class Util {
 	}
 
 	public static <T> T ifEmpty(T data, T defaultValue) {
-		if ( isEmpty(data) ) {
+		if (isEmpty(data)) {
 			return defaultValue;
 		}
-		
+
 		return data;
 	}
-	
+
 	public static String getFileExtTypeCodeFromFileName(String fileName) {
 		String ext = getFileExtFromFileName(fileName).toLowerCase();
 
@@ -266,7 +277,7 @@ public class Util {
 
 		return ext;
 	}
-	
+
 	public static String getNowYearMonthDateStr() {
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy_MM");
 
@@ -276,7 +287,8 @@ public class Util {
 	}
 
 	public static List<Integer> getListDividedBy(String str, String divideBy) {
-		return Arrays.asList(str.split(divideBy)).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+		return Arrays.asList(str.split(divideBy)).stream().map(s -> Integer.parseInt(s.trim()))
+				.collect(Collectors.toList());
 	}
 
 	public static boolean delteFile(String filePath) {
@@ -284,102 +296,147 @@ public class Util {
 		if (ioFile.exists()) {
 			return ioFile.delete();
 		}
-		
+
 		return true;
 	}
-	
+
 	public static String numberFormat(int num) {
 		DecimalFormat df = new DecimalFormat("###,###,###");
-		
+
 		return df.format(num);
 	}
-	
+
 	public static String numberFormat(String numStr) {
 		return numberFormat(Integer.parseInt(numStr));
 	}
 
 	public static boolean allNumberString(String str) {
-		if ( str == null ) {
+		if (str == null) {
 			return false;
 		}
-		
-		if ( str.length() == 0 ) {
+
+		if (str.length() == 0) {
 			return true;
 		}
-		
-		for ( int i = 0; i < str.length(); i++ ) {
-			if ( Character.isDigit(str.charAt(i)) == false ) {
+
+		for (int i = 0; i < str.length(); i++) {
+			if (Character.isDigit(str.charAt(i)) == false) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
 	public static boolean startsWithNumberString(String str) {
-		if ( str == null ) {
+		if (str == null) {
 			return false;
 		}
-		
-		if ( str.length() == 0 ) {
+
+		if (str.length() == 0) {
 			return false;
 		}
-		
+
 		return Character.isDigit(str.charAt(0));
 	}
 
 	public static boolean isStandardLoginIdString(String str) {
-		if ( str == null ) {
+		if (str == null) {
 			return false;
 		}
-		
-		if ( str.length() == 0 ) {
+
+		if (str.length() == 0) {
 			return false;
 		}
-		
+
 		// 조건
 		// 5자 이상, 20자 이하로 구성
 		// 숫자로 시작 금지
 		// _, 알파벳, 숫자로만 구성
 		return Pattern.matches("^[a-zA-Z]{1}[a-zA-Z0-9_]{4,19}$", str);
 	}
-	
+
 	// sendMail
-		public static int sendMail(String smtpServerId, String smtpServerPw, String from, String fromName, String to,
-				String title, String body) {
-			Properties prop = System.getProperties();
-			prop.put("mail.smtp.starttls.enable", "true");
-			prop.put("mail.smtp.host", "smtp.gmail.com");
-			prop.put("mail.smtp.auth", "true");
-			prop.put("mail.smtp.port", "587");
+	public static int sendMail(String smtpServerId, String smtpServerPw, String from, String fromName, String to,
+			String title, String body) {
+		Properties prop = System.getProperties();
+		prop.put("mail.smtp.starttls.enable", "true");
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+		prop.put("mail.smtp.auth", "true");
+		prop.put("mail.smtp.port", "587");
 
-			Authenticator auth = new MailAuth(smtpServerId, smtpServerPw);
+		Authenticator auth = new MailAuth(smtpServerId, smtpServerPw);
 
-			Session session = Session.getDefaultInstance(prop, auth);
+		Session session = Session.getDefaultInstance(prop, auth);
 
-			MimeMessage msg = new MimeMessage(session);
+		MimeMessage msg = new MimeMessage(session);
 
-			try {
-				msg.setSentDate(new Date());
+		try {
+			msg.setSentDate(new Date());
 
-				msg.setFrom(new InternetAddress(from, fromName));
-				msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-				msg.setSubject(title, "UTF-8");
-				msg.setContent(body, "text/html; charset=UTF-8");
+			msg.setFrom(new InternetAddress(from, fromName));
+			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			msg.setSubject(title, "UTF-8");
+			msg.setContent(body, "text/html; charset=UTF-8");
 
-				Transport.send(msg);
+			Transport.send(msg);
 
-			} catch (AddressException ae) {
-				System.out.println("AddressException : " + ae.getMessage());
-				return -1;
-			} catch (MessagingException me) {
-				System.out.println("MessagingException : " + me.getMessage());
-				return -2;
-			} catch (UnsupportedEncodingException e) {
-				System.out.println("UnsupportedEncodingException : " + e.getMessage());
-				return -3;
-			}
-
-			return 1;
+		} catch (AddressException ae) {
+			System.out.println("AddressException : " + ae.getMessage());
+			return -1;
+		} catch (MessagingException me) {
+			System.out.println("MessagingException : " + me.getMessage());
+			return -2;
+		} catch (UnsupportedEncodingException e) {
+			System.out.println("UnsupportedEncodingException : " + e.getMessage());
+			return -3;
 		}
+
+		return 1;
+	}
+	
+	
+	public static <T> T getHttpPostResponseBody(ParameterizedTypeReference<T> responseType, RestTemplate restTemplate,
+			String url, Map<String, String> params, Map<String, String> headerParams) {
+
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+		if (headerParams != null) {
+			for (String key : headerParams.keySet()) {
+				String headerValue = headerParams.get(key);
+				httpHeaders.add(key, headerValue);
+			}
+		}
+
+		MultiValueMap<String, String> newParams = Util.hashMapToLinkedMultiValueMap(params);
+
+		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(newParams, httpHeaders);
+
+		ResponseEntity<T> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, responseType);
+		return responseEntity.getBody();
+	}
+	
+	private static MultiValueMap<String, String> hashMapToLinkedMultiValueMap(Map<String, String> origin) {
+		if (origin == null) {
+			return null;
+		}
+
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+
+		for (String key : origin.keySet()) {
+			String value = (String) origin.get(key);
+			map.add(key, value);
+		}
+		return map;
+	}
+	
+	public static Map<String, String> getNewMapStringString() {
+		return new LinkedHashMap<String, String>();
+	}
+
+	public static Object getUUIDStr() {
+		return UUID.randomUUID().toString();
+	}
+	
 }

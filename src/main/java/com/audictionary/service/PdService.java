@@ -1,5 +1,6 @@
 package com.audictionary.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.audictionary.dao.PdDao;
 import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
+import com.audictionary.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
+import com.audictionary.util.Util;
 
 @Service
 public class PdService {
@@ -18,6 +21,8 @@ public class PdService {
 	private GenFileService genFileService;
 
 	public int doJoin(Map<String, Object> param) {
+		param.put("loginProviderTypeCode", "pd");
+		
 		return pdDao.doJoin(param);
 	}
 
@@ -89,5 +94,36 @@ public class PdService {
 
 	public void doModifyPw(Map<String, Object> param) {
 		pdDao.doModifyPw(param);
+	}
+
+	public Pd getMemberByOnLoginProviderMemberId(String loginProviderTypeCode, int onLoginProviderMemberId) {
+		return pdDao.getMemberByOnLoginProviderMemberId(loginProviderTypeCode, onLoginProviderMemberId);
+	}
+
+	public void updateMember(Pd pd, KapiKakaoCom__v2_user_me__ResponseBody kakaoUser) {
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("id", pd.getId());
+		param.put("email", kakaoUser.getKakao_account().email);
+		param.put("gender", kakaoUser.getKakao_account().gender);
+		
+		pdDao.doModify(param);
+	}
+
+	public void doJoinByKakao(KapiKakaoCom__v2_user_me__ResponseBody kakaoUser) {
+		String loginProviderTypeCode = "kakao";
+		int onLoginProviderMemberId = kakaoUser.id;
+		
+		Map<String, Object> param = Util.mapOf("loginProviderTypeCode", loginProviderTypeCode);
+		param.put("onLoginProviderMemberId", onLoginProviderMemberId);
+
+		String loginId = loginProviderTypeCode + "___" + onLoginProviderMemberId;
+
+		param.put("loginId", loginId);
+		param.put("loginPw", Util.getUUIDStr());
+
+		param.put("email", kakaoUser.kakao_account.email);
+		
+		pdDao.doJoin(param);
 	}
 }

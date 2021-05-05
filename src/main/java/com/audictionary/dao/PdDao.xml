@@ -6,29 +6,47 @@
 <mapper namespace="com.audictionary.dao.PdDao">
 	<insert id="doJoin" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO pd SET
-		regDate = NOW(), updateDate = NOW(),
-		loginId = #{email},
-		loginPw = #{loginPw},
-		`name` = #{name},
-		gender = #{gender},
-		regNumber = #{regNumber},
-		address = #{address},
-		email = #{email},
-		cellPhoneNo = #{cellPhoneNo},
-		jobPosition = #{jobPosition},
+		regDate = NOW()
+		, updateDate = NOW()
+		, onLoginProviderMemberId = #{onLoginProviderMemberId}
+		, loginProviderTypeCode = #{loginProviderTypeCode}
+		, loginId = #{email}
+		, loginPw = #{loginPw}
+		<if test="name != null">
+			, `name` = #{name},
+		</if>
+		<if test="gender != null">
+			, gender = #{gender},
+		</if>
+		<if test="regNumber != null">
+			, regNumber = #{regNumber}
+		</if>
+		<if test="address != null">
+			, address = #{address}
+		</if>
+		<if test="email != null">
+			, email = #{email}
+		</if>
+		<if test="cellPhoneNo != null">
+			, cellPhoneNo = #{cellPhoneNo}
+		</if>
+		<if test="jobPosition != null">
+			, jobPosition = #{jobPosition}
+		</if>
 		<if test="corpName != null">
-		corpName = #{corpName},
+			, corpName = #{corpName}
 		</if>
 		<if test="corpType != null">
-		corpType = #{corpType},
+			, corpType = #{corpType}
 		</if>
-		authLevel = 2,
-		authKey = CONCAT("pd__authKey1__", UUID(), "__", RAND())
+		, authLevel = 2
+		, authKey = CONCAT("pd__authKey1__", UUID(), "__", RAND())
 	</insert>
 	
 	<select id="getMemberById" resultType="Pd">
 		SELECT * FROM pd
 		WHERE id = #{id}
+		AND memberTypeCode = #{memberTypeCode}
 	</select>
 	
 	<select id="isAdmin" resultType="Pd">
@@ -56,25 +74,28 @@
 		UPDATE pd
 			<set>
 				<if test="isNeedToModify">
-					updateDate = NOW(),
+					updateDate = NOW()
+				</if>
+				<if test="email != null">
+					, email = #{email}
 				</if>
 				<if test="name != null and name.length > 0">
-					name = #{name},
+					, name = #{name}
 				</if>
 				<if test="loginPw != null and loginPw.length > 0">
-					loginPw = #{loginPw},
+					, loginPw = #{loginPw}
 				</if>
 				<if test="address != null and address.length > 0">
-					address = #{address},
+					, address = #{address}
 				</if>
 				<if test="cellPhoneNo != null and cellPhoneNo.length > 0">
-					cellPhoneNo = #{cellPhoneNo},
+					, cellPhoneNo = #{cellPhoneNo}
 				</if>
 				<if test="jobPosition != null and jobPosition.length > 0">
-					jobPosition = #{jobPosition},
+					, jobPosition = #{jobPosition}
 				</if>
 				<if test="corpName != null and corpName.length > 0">
-					corpName = #{corpName},
+					, corpName = #{corpName}
 				</if>
 			</set>
 			WHERE id = #{id}
@@ -107,4 +128,10 @@
 		</set>
 		WHERE loginId = #{email}		
 	</update>
+	
+	<select id="getMemberByOnLoginProviderMemberId" resultType="pd">
+		SELECT * FROM pd
+		WHERE loginProviderTypeCode = #{loginProviderTypeCode}
+		AND onLoginProviderMemberId = #{onLoginProviderMemberId}
+	</select>
 </mapper>

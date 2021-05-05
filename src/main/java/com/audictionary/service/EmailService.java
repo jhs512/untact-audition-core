@@ -18,8 +18,8 @@ import com.audictionary.util.Util;
 
 @Service
 public class EmailService {
-	@Value("${server.address}")
-	private String domainUrl;
+	
+	private String domainUrl = "pd.audictionary.com";
 	
 	@Autowired
 	private JavaMailSender mailSender;
@@ -69,7 +69,7 @@ public class EmailService {
 		 String emailCertKey = ap.getAuthKey();
 		 
 		 StringBuilder str = new StringBuilder();
-		 str.append("<a href=\"http://" + domainUrl + ":8100/member/emailCert?email="+email+"&emailCertKey="+emailCertKey+"\">인증</a>");
+		 str.append("<a href=\"http://ap.audictionary.com/member/emailCert?email="+email+"&emailCertKey="+emailCertKey+"\">인증</a>");
 		 helper.setText(str.toString(),true);
 		 mailSender.send(msg);
 	}
@@ -121,7 +121,7 @@ public class EmailService {
 		 attrService.setValue("ap", id, "emailCertKey", email, emailCertKey, null);
 		 
 		 StringBuilder str = new StringBuilder();
-		 str.append("<a href=\"http://" + domainUrl + ":8100/member/modifyPw?email="+email+"&emailCertKey="+emailCertKey+"\">비밀번호 재설정하러 가기</a>");
+		 str.append("<a href=\"http://ap.audictionary.com/member/modifyPw?email="+email+"&emailCertKey="+emailCertKey+"\">비밀번호 재설정하러 가기</a>");
 
 		 helper.setText(str.toString(),true);
 		 mailSender.send(msg);
