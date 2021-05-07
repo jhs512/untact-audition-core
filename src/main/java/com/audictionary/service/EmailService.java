@@ -4,7 +4,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.Attr;
+import com.audictionary.dto.ResultData;
 import com.audictionary.util.Util;
 
 
@@ -29,7 +29,7 @@ public class EmailService {
 	private ApService apService;
 	
 	@Async
-	public void sendMailForCert(String email) throws MessagingException {
+	public ResultData sendMailForCert(String email) throws MessagingException {
 		/* 간단한 텍스트로만 메일 보내기
 		SimpleMailMessage simpleMessage = new SimpleMailMessage();
 		simpleMessage.setFrom("cdbitmana@gmail.com"); // NAVER, DAUM, NATE일 경우 넣어줘야 함
@@ -48,12 +48,22 @@ public class EmailService {
 		 
 		 String emailCertKey = Util.getTempPassword(50);
 		 
-		 attrService.setValue("pd", 0, "emailCertKey", email, emailCertKey, null);
-		 
 		 StringBuilder str = new StringBuilder();
 		 str.append("<a href=\"http://" + domainUrl + ":5555/usr/pd/emailCert?email="+email+"&key="+emailCertKey+"\">인증</a>");
 		 helper.setText(str.toString(),true);
-		 mailSender.send(msg);
+		 
+		 try {
+			 mailSender.send(msg);
+			 Attr attr = attrService.get("pd", 0, "emailCertKey", email);
+			 if( attr != null ) {
+				 attrService.remove("pd", 0, "emailCertKey", email);
+			 }
+			 attrService.setValue("pd", 0, "emailCertKey", email, emailCertKey, null);
+			 return new ResultData("S-1", "인증 메일이 발송되었습니다.");
+		 } catch (Exception e) {
+			 return new ResultData("F-1", "인증 메일 발송이 실패했습니다.");
+		 }
+		 
 	}
 	
 	@Async
@@ -75,7 +85,7 @@ public class EmailService {
 	}
 
 	@Async
-	public void sendMailForFindLoginPw(String email, int id) throws MessagingException {
+	public ResultData sendMailForFindLoginPw(String email, int id) throws MessagingException {
 		 MimeMessage msg = mailSender.createMimeMessage();
 		 MimeMessageHelper helper = new MimeMessageHelper(msg,true);
 		 
@@ -97,7 +107,19 @@ public class EmailService {
 		 str.append("<a href=\"http://" + domainUrl + ":5555/usr/pd/modifyPw?email="+email+"&key="+emailCertKey+"\">비밀번호 재설정하러 가기</a>");
 
 		 helper.setText(str.toString(),true);
-		 mailSender.send(msg);
+		 
+		 try {
+			 mailSender.send(msg);
+			 Attr attr = attrService.get("pd", id, "emailCertKey", email);
+			 if( attr != null ) {
+				 attrService.remove("pd", id, "emailCertKey", email);
+			 }
+			 attrService.setValue("pd", id, "emailCertKey", email, emailCertKey, null);
+			 return new ResultData("S-1", "이메일이 발송되었습니다.");
+		 } catch (Exception e) {
+			 return new ResultData("F-1", "이메일 발송에 실패했습니다.");
+		 }
+		 
 		
 	}
 	

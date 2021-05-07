@@ -1,6 +1,7 @@
 package com.audictionary.service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.audictionary.dto.Pd;
 import com.audictionary.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
 import com.audictionary.dto.api.KauthKakaoCom__oauth_token__ResponseBody;
 import com.audictionary.util.Util;

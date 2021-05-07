@@ -58,6 +58,7 @@
 	<select id="getMemberByEmail" resultType="Pd">
 		SELECT * FROM pd
 		WHERE loginId = #{email}
+		AND loginProviderTypeCode = 'pd'
 	</select>
 	
 	<update id="doModifyPw">

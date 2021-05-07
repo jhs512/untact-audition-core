@@ -35,7 +35,6 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		Pd loginedPd = null;
 		Ap loginedAp = null;
 		
-		
 		String authKey = request.getParameter("authKey");
 		
 		if ( authKey != null && authKey.length() > 0 ) {
@@ -105,8 +104,6 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 		} else if ( loginedAp != null ) {
 			request.setAttribute("loginedMember", loginedAp);
 		}
-		
-		
 		
 
 		return HandlerInterceptor.super.preHandle(request, response, handler);

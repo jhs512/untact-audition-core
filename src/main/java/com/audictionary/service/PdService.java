@@ -68,7 +68,6 @@ public class PdService {
 
 	public Pd getMemberByEmail(String email) {
 		return pdDao.getMemberByEmail(email);
-		
 	}
 
 	public void doModify(Map<String, Object> param) {
