@@ -125,4 +125,39 @@ public class PdService {
 		
 		pdDao.doJoin(param);
 	}
+
+	public boolean isNeedToModify(Pd pd, Map<String,Object> param) {
+		if( pd.getName() != null) {
+			if (pd.getName().equals(param.get("name"))) {
+				return true;
+			}
+		}
+		if( pd.getName() != null) {
+			if (pd.getAddress().equals(param.get("address"))) {
+				return true;
+			}
+		}
+		if( pd.getName() != null) {
+			if (pd.getLoginPw().equals(param.get("loginPw"))) {
+				return true;
+			}
+		}
+		if( pd.getName() != null) {
+			if (pd.getCellPhoneNo().equals(param.get("cellPhoneNo"))) {
+				return true;
+			}
+		}
+		if( pd.getName() != null) {
+			if (pd.getJobPosition().equals(param.get("jobPosition"))) {
+				return true;
+			}
+		}
+		if( pd.getName() != null) {
+			if (pd.getCorpName().equals(param.get("corpName"))) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

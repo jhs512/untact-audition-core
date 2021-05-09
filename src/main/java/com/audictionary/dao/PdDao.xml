@@ -46,7 +46,6 @@
 	<select id="getMemberById" resultType="Pd">
 		SELECT * FROM pd
 		WHERE id = #{id}
-		AND memberTypeCode = #{memberTypeCode}
 	</select>
 	
 	<select id="isAdmin" resultType="Pd">

@@ -28,6 +28,7 @@ import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
 import com.audictionary.service.KakaoService;
 import com.audictionary.service.PdService;
+import com.audictionary.service.SmsService;
 import com.audictionary.util.Util;
 
 @Controller
@@ -46,6 +47,8 @@ public class UsrPdController {
 	private ApService apService;
 	@Autowired
 	private KakaoService kakaoService;
+	@Autowired
+	private SmsService smsService;
 
 	@PostMapping("usr/pd/doJoin")
 	@ResponseBody
@@ -82,6 +85,7 @@ public class UsrPdController {
 		if (isEmailCert == null) {
 			return new ResultData("F-1", "이메일 인증을 진행해주세요.");
 		}
+		
 		pdService.doJoin(param);
 
 		int id = Util.getAsInt(param.get("id"), 0);
@@ -190,8 +194,13 @@ public class UsrPdController {
 	
 	@GetMapping("/usr/sms/doSendSms")
 	@ResponseBody
-	public ResultData doSendSms(String from, String to, String msg) {
-		Aligo__send__ResponseBody rb = Util.sendSms(from, to, msg);
+	public ResultData doSendSms(@RequestParam Map<String, Object> param) {
+		
+		Aligo__send__ResponseBody rb = smsService.sendSms(param);
+		
+		String from = (String)param.get("from");
+		String to = (String)param.get("to");
+		String msg = (String)param.get("msg");
 
 		return new ResultData("S-1", "발송되었습니다.", "from", from, "to", to, "msg", msg, "rb", rb);
 	}
@@ -209,26 +218,23 @@ public class UsrPdController {
 
 		Pd pd = pdService.getMemberById(id);
 
-		boolean isNeedToModify = false;
-
-		if (!pd.getName().equals(param.get("name")) || !pd.getAddress().equals(param.get("address"))
-				|| !pd.getLoginPw().equals(param.get("loginPw"))
-				|| !pd.getCellPhoneNo().equals(param.get("cellPhoneNo"))
-				|| !pd.getJobPosition().equals(param.get("jobPosition"))
-				|| !pd.getCorpName().equals(param.get("corpName"))) {
-			isNeedToModify = true;
-		}
-
+		boolean isNeedToModify = pdService.isNeedToModify(pd, param);
+		
 		param.put("isNeedToModify", isNeedToModify);
 		param.put("id", loginedMemberId);
 
 		pdService.doModify(param);
 
 		pd = pdService.getMemberById(id);
-
-		artworkService.deleteByPdId(Integer.parseInt((String) param.get("loginedMemberId")));
-
-		artworkService.doWriteArtWorkForPdProfile(param);
+		
+		String artworksParam = (String)param.get("artwork");
+		
+		List<String> artworks = Util.getObjectFromJsonString(artworksParam, List.class);
+		
+		if(artworks != null && artworks.size() > 0) {
+			artworkService.deleteByPdId(Integer.parseInt((String) param.get("loginedMemberId")));
+			artworkService.doWriteArtWorkForPdProfile(param);
+		}
 
 		return new ResultData("S-1", "회원정보수정", "authKey", pd.getAuthKey(), "pd", pd);
 	}
@@ -393,7 +399,7 @@ public class UsrPdController {
 
 		pd.getExtraNotNull().put("thumbnail_image_url", kakaoUser.getKakao_account().profile.thumbnail_image_url);
 
-		return new ResultData("S-1", "카카오로 로그인 성공", "authKey", pd.getAuthKey(), "pd", pd);
+		return new ResultData("S-1", "카카오로 로그인 되었습니다.", "authKey", pd.getAuthKey(), "pd", pd);
 	}
 
 }
