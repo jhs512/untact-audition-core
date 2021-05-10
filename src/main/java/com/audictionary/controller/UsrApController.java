@@ -19,10 +19,12 @@ import com.audictionary.dto.GenFile;
 import com.audictionary.dto.Pd;
 import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
+import com.audictionary.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
 import com.audictionary.service.ApService;
 import com.audictionary.service.AttrService;
 import com.audictionary.service.EmailService;
 import com.audictionary.service.GenFileService;
+import com.audictionary.service.KakaoService;
 import com.audictionary.service.RecruitService;
 
 @Controller
@@ -38,6 +40,9 @@ public class UsrApController {
 	
 	@Autowired
 	private AttrService attrService;
+	
+	@Autowired
+	private KakaoService kakaoService;
 
 	@PostMapping("/usr/ap/doJoin")
 	@ResponseBody
@@ -339,7 +344,25 @@ public class UsrApController {
 		return new ResultData("S-1", "비밀번호 변경 완료");
 	}
 	
-	
+	@RequestMapping("/usr/ap/kakaoLogin")
+	@ResponseBody
+	public ResultData kakaoLogin(@RequestParam String code) {
+
+		String token = kakaoService.getAccessTokenForKakaoLogin(code);
+
+		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoService.getPdByKakaoAccessToken(token);
+
+		Ap ap = apService.getMemberByOnLoginProviderMemberId("kakao", kakaoUser.getId());
+
+		if (ap == null) {
+			apService.doJoinByKakao(kakaoUser);
+		}
+		
+
+		ap.getExtraNotNull().put("thumbnail_image_url", kakaoUser.getKakao_account().profile.thumbnail_image_url);
+
+		return new ResultData("S-1", "카카오로 로그인 되었습니다.", "authKey", ap.getAuthKey(), "member", ap);
+	}
 	
 	
 }

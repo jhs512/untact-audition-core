@@ -35,6 +35,8 @@ public class Ap extends EntityDto{
 	private int authStatus;
 	private String extra__thumbImg;
 	private String extra__fileType;
+	private String loginProviderTypeCode;
+	private String onLoginProviderMemberId;
 	@JsonIgnore
 	private String authKey;
 }

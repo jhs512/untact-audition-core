@@ -26,10 +26,61 @@
 		authKey = CONCAT("ap__authKey1__", UUID(), "__", RAND()) 
 	</insert>
 	
+	<insert id="doJoinForKakao" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO ap 
+		SET regDate = NOW(), 
+		updateDate = NOW(),
+		loginId = #{loginId},
+		loginPw = #{loginPw},
+		
+		<if test="name != null">
+			`name` = #{name},
+		</if>
+		<if test="engName != null">
+			engName = #{engName},
+		</if>
+		<if test="gender != null">
+			gender = #{gender},
+		</if>
+		<if test="regNumber != null">
+			regNumber = #{regNumber},
+		</if>
+		<if test="address != null">
+			address = #{address},
+		</if>
+		<if test="cellPhoneNo != null">
+			cellPhoneNo = #{cellPhoneNo},
+		</if>
+		<if test="nickName != null">
+			nickName = #{nickName}, 
+		</if>
+		<if test="feet != null">
+			feet = #{feet}, 
+		</if>
+		<if test="weight != null">
+			weight = #{weight}, 
+		</if>
+		<if test="feature != null">
+			feature = #{feature}, 
+		</if>
+		<if test="filmgraphy != null">
+			filmgraphy = #{filmgraphy}, 
+		</if>
+		<if test="jobArea != null">
+			jobArea = #{jobArea}, 
+		</if>
+		<if test="corp != null">
+			corp = #{corp},
+		</if>
+		authStatus = 1,
+		authKey = CONCAT("ap__authKey1__", UUID(), "__", RAND()) 
+	</insert>
+	
 	<select id="getApByLoginId" resultType="Ap">
 		SELECT *
 		FROM ap
 		WHERE loginId = #{loginId}
+		AND loginProviderTypeCode = 'ap'
 		AND delStatus != 1
 	</select>
 	
@@ -72,6 +123,7 @@
 				loginPw = #{loginPw}
 			</set>
 			WHERE loginId = #{loginId}
+			AND loginProviderTypeCode = 'ap'
 			AND delStatus != 1
 	</update>
 	
@@ -97,6 +149,7 @@
 	<select id="doIdDupCheck" resultType="Ap">
 		SELECT * FROM ap
 		WHERE loginId = #{loginId}
+		AND loginProviderTypeCode = 'ap'
 		AND delStatus != 1
 	</select>
 	
@@ -106,6 +159,7 @@
 			authStatus = 1,
 		</set>
 		WHERE authKey = #{authKey}
+		AND loginProviderTypeCode = 'ap'
 	</update>
 	
 	<select id="getListByLikedApplication" resultType="int">
@@ -166,7 +220,14 @@
 		SELECT * FROM ap
 		WHERE name = #{name}
 		AND regNumber = #{regNumber}
+		AND loginProviderTypeCode = 'ap'
 		AND delStatus != 1
+	</select>
+	
+	<select id="getMemberByOnLoginProviderMemberId" resultType="Ap">
+		SELECT * FROM ap
+		WHERE loginProviderTypeCode = #{loginProviderTypeCode}
+		AND onLoginProviderMemberId = #{onLoginProviderMemberId}
 	</select>
 	
 </mapper>

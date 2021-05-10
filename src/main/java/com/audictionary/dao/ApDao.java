@@ -47,4 +47,8 @@ public interface ApDao {
 
 	void doModifyPw(Map<String, Object> param);
 
+	Ap getMemberByOnLoginProviderMemberId(String loginProviderTypeCode, int onLoginProviderMemberId);
+
+	void doJoinForKakao(Map<String, Object> param);
+
 }

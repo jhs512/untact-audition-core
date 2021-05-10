@@ -15,8 +15,10 @@ import com.audictionary.dao.ApDao;
 import com.audictionary.dto.Ap;
 import com.audictionary.dto.Application;
 import com.audictionary.dto.GenFile;
+import com.audictionary.dto.Pd;
 import com.audictionary.dto.Recruit;
 import com.audictionary.dto.ResultData;
+import com.audictionary.dto.api.KapiKakaoCom__v2_user_me__ResponseBody;
 import com.audictionary.util.Util;
 
 @Service
@@ -235,6 +237,33 @@ public class ApService {
 		apDao.doModifyPw(param);
 		
 	}
-	
 
+	public Ap getMemberByOnLoginProviderMemberId(String loginProviderTypeCode, int onLoginProviderMemberId) {
+		return apDao.getMemberByOnLoginProviderMemberId(loginProviderTypeCode, onLoginProviderMemberId);
+	}
+
+	public void updateMember(Ap ap, KapiKakaoCom__v2_user_me__ResponseBody kakaoUser) {
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("id", ap.getId());
+		param.put("gender", kakaoUser.getKakao_account().gender);
+		
+		apDao.doModify(param);
+	}
+
+	public void doJoinByKakao(KapiKakaoCom__v2_user_me__ResponseBody kakaoUser) {
+		String loginProviderTypeCode = "kakao";
+		int onLoginProviderMemberId = kakaoUser.id;
+		
+		Map<String, Object> param = Util.mapOf("loginProviderTypeCode", loginProviderTypeCode);
+		param.put("onLoginProviderMemberId", onLoginProviderMemberId);
+
+		String loginId = loginProviderTypeCode + "___" + onLoginProviderMemberId;
+
+		param.put("loginId", loginId);
+		param.put("loginPw", Util.getUUIDStr());
+		
+		apDao.doJoinForKakao(param);
+		
+	}
 }
