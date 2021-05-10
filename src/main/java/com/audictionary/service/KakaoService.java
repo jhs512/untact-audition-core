@@ -25,7 +25,23 @@ public class KakaoService {
 		Map<String, String> params = Util.getNewMapStringString();
 		params.put("grant_type", "authorization_code");
 		params.put("client_id", "5b941d4fab193384e4d45ed6723fb973");
-		params.put("redirect_uri", "https://pd.audictionary.com/usr/pd/kakaoLogin");
+		params.put("redirect_uri", "http://172.30.1.15:5555/usr/pd/kakaoLogin");
+		params.put("code", code);
+		
+		KauthKakaoCom__oauth_token__ResponseBody respoonseBodyRs = Util
+				.getHttpPostResponseBody(new ParameterizedTypeReference<KauthKakaoCom__oauth_token__ResponseBody>() {
+				}, restTemplate, "https://kauth.kakao.com/oauth/token", params, null);
+
+		return respoonseBodyRs.access_token;
+	}
+	
+	public String getAccessTokenForKakaoLoginAp(String code) {
+		RestTemplate restTemplate = restTemplateBuilder.build();
+
+		Map<String, String> params = Util.getNewMapStringString();
+		params.put("grant_type", "authorization_code");
+		params.put("client_id", "a5ef56cf046727f91ab24680a98b0953");
+		params.put("redirect_uri", "http://ap.audictionary.com/member/kakaoLogin");
 		params.put("code", code);
 		
 		KauthKakaoCom__oauth_token__ResponseBody respoonseBodyRs = Util
