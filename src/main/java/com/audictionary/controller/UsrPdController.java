@@ -384,7 +384,7 @@ public class UsrPdController {
 	@RequestMapping("/usr/pd/kakaoLogin")
 	@ResponseBody
 	public ResultData kakaoLogin(@RequestParam String code) {
-
+		
 		String token = kakaoService.getAccessTokenForKakaoLogin(code);
 
 		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoService.getPdByKakaoAccessToken(token);
