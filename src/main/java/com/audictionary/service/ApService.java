@@ -246,7 +246,6 @@ public class ApService {
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("id", ap.getId());
-		param.put("gender", kakaoUser.getKakao_account().gender);
 		
 		apDao.doModify(param);
 	}

@@ -348,7 +348,7 @@ public class UsrApController {
 	@ResponseBody
 	public ResultData kakaoLogin(@RequestParam String code) {
 
-		String token = kakaoService.getAccessTokenForKakaoLogin(code);
+		String token = kakaoService.getAccessTokenForKakaoLoginAp(code);
 
 		KapiKakaoCom__v2_user_me__ResponseBody kakaoUser = kakaoService.getPdByKakaoAccessToken(token);
 
