@@ -347,13 +347,15 @@ public class UsrApController {
 		if (ap != null) {
 			ap.getExtraNotNull().put("existsMember", true);
 			ap.getExtraNotNull().put("thumbnail_image_url", kakaoUser.getKakao_account().profile.thumbnail_image_url);
+			
+			return new ResultData("S-1", "카카오로 로그인 되었습니다.", "authKey", ap.getAuthKey(), "member", ap);
 		} else {
 			apService.doJoinByKakao(kakaoUser);
+			ap = apService.getMemberByOnLoginProviderMemberId("kakao", kakaoUser.getId());
+			ap.getExtraNotNull().put("existsMember", false);
+			
+			return new ResultData("S-1", "카카오로 로그인 되었습니다.", "authKey", ap.getAuthKey(), "member", ap);
 		}
-		
-		ap = apService.getMemberByOnLoginProviderMemberId("kakao", kakaoUser.getId());
-
-		return new ResultData("S-1", "카카오로 로그인 되었습니다.", "authKey", ap.getAuthKey(), "member", ap);
 	}
 	
 	@PostMapping("/usr/ap/doModifyForKakao")
