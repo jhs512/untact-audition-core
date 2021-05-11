@@ -256,8 +256,14 @@ public class ApService {
 		
 		Map<String, Object> param = Util.mapOf("loginProviderTypeCode", loginProviderTypeCode);
 		param.put("onLoginProviderMemberId", onLoginProviderMemberId);
+		
+		String loginId = "";
 
-		String loginId = loginProviderTypeCode + "___" + onLoginProviderMemberId;
+		if ( kakaoUser.kakao_account.email != null ) {
+			loginId = kakaoUser.kakao_account.email;
+		} else {
+			loginId = loginProviderTypeCode + "___" + onLoginProviderMemberId;
+		} 
 
 		param.put("loginId", loginId);
 		param.put("loginPw", Util.getUUIDStr());

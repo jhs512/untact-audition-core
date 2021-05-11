@@ -350,6 +350,8 @@ public class UsrApController {
 		} else {
 			apService.doJoinByKakao(kakaoUser);
 		}
+		
+		ap = apService.getMemberByOnLoginProviderMemberId("kakao", kakaoUser.getId());
 
 		return new ResultData("S-1", "카카오로 로그인 되었습니다.", "authKey", ap.getAuthKey(), "member", ap);
 	}
