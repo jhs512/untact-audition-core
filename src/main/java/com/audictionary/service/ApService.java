@@ -265,4 +265,51 @@ public class ApService {
 		apDao.doJoinForKakao(param);
 		
 	}
+
+	public void doModifyForKakao(Map<String, Object> param) {
+		apDao.doModifyForKakao(param);
+	}
+
+	public boolean isNeedToModify(Ap ap, Map<String, Object> param) {
+		if ( ap.getNickName() != null) {
+			if ( ap.getNickName().equals(param.get("nickName"))) {
+				return true;
+			}
+		}		
+		
+		if ( ap.getFeet() > 0 ) {
+			if ( ap.getFeet() != Integer.parseInt((String)param.get("feet"))) {
+				return true;
+			}
+		}
+		
+		if ( ap.getWeight() > 0) {
+			if ( ap.getWeight() != Integer.parseInt((String)param.get("weight"))) {
+				return true;
+			}
+		}
+		if ( ap.getFeature() != null) {
+			if ( ap.getFeature().equals(param.get("feature"))) {
+				return true;
+			}
+		}
+		if ( ap.getFilmgraphy() != null) {
+			if ( ap.getFilmgraphy().equals(param.get("filmgraphy"))) {
+				return true;
+			}
+		}
+		if ( ap.getJobArea() != null) {
+			if ( ap.getJobArea().equals(param.get("jobArea"))) {
+				return true;
+			}
+		}
+
+		if ( ap.getCorp() != null) {
+			if ( ap.getCorp().equals(param.get("corp"))) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

@@ -41,7 +41,7 @@ public class KakaoService {
 		Map<String, String> params = Util.getNewMapStringString();
 		params.put("grant_type", "authorization_code");
 		params.put("client_id", "a5ef56cf046727f91ab24680a98b0953");
-		params.put("redirect_uri", "https://ap.audictionary.com/member/kakaoLogin");
+		params.put("redirect_uri", "http://localhost:8100/member/kakaoLogin");
 		params.put("code", code);
 		
 		KauthKakaoCom__oauth_token__ResponseBody respoonseBodyRs = Util

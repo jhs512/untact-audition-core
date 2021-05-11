@@ -122,19 +122,9 @@ public class UsrApController {
 		
 		Ap ap = apService.getApById(id);
 
-		boolean isNeedToModify = false;
-
-		if (!ap.getNickName().equals(param.get("nickName")) 
-				|| ap.getFeet() != Integer.parseInt((String)param.get("feet"))
-				|| ap.getWeight() != Integer.parseInt((String)param.get("weight"))
-				|| !ap.getFeature().equals(param.get("feature"))
-				|| !ap.getFilmgraphy().equals(param.get("filmgraphy"))
-				|| !ap.getJobArea().equals(param.get("jobArea"))
-				|| !ap.getCorp().equals(param.get("corp"))) {
-			isNeedToModify = true;
-		}
+		boolean NeedToModify = apService.isNeedToModify(ap, param);
 		
-		param.put("isNeedToModify", isNeedToModify);
+		param.put("isNeedToModify", NeedToModify);
 		param.put("id", loginedMemberId);
 		
 		apService.doModify(param);
@@ -354,14 +344,37 @@ public class UsrApController {
 
 		Ap ap = apService.getMemberByOnLoginProviderMemberId("kakao", kakaoUser.getId());
 
-		if (ap == null) {
+		if (ap != null) {
+			ap.getExtraNotNull().put("existsMember", true);
+			ap.getExtraNotNull().put("thumbnail_image_url", kakaoUser.getKakao_account().profile.thumbnail_image_url);
+		} else {
 			apService.doJoinByKakao(kakaoUser);
 		}
-		
-
-		ap.getExtraNotNull().put("thumbnail_image_url", kakaoUser.getKakao_account().profile.thumbnail_image_url);
 
 		return new ResultData("S-1", "카카오로 로그인 되었습니다.", "authKey", ap.getAuthKey(), "member", ap);
+	}
+	
+	@PostMapping("/usr/ap/doModifyForKakao")
+	@ResponseBody
+	public ResultData doModifyForKakao(@RequestParam Map<String, Object> param) {
+		String loginedMemberId = (String)param.get("loginedMemberId");
+		int id = Integer.parseInt(loginedMemberId);
+		
+		Ap ap = apService.getApById(id);
+
+		if ( ap != null ) {
+			boolean isNeedToModify = apService.isNeedToModify(ap, param);
+			
+			param.put("isNeedToModify", isNeedToModify);
+			param.put("id", loginedMemberId);
+			
+			apService.doModifyForKakao(param);
+			
+			ap = apService.getApById(id);
+		}
+		
+		
+		return new ResultData("S-1", "회원정보수정","authKey", ap.getAuthKey(), "ap", ap);
 	}
 	
 	

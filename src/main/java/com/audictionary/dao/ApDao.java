@@ -51,4 +51,6 @@ public interface ApDao {
 
 	void doJoinForKakao(Map<String, Object> param);
 
+	void doModifyForKakao(Map<String, Object> param);
+
 }

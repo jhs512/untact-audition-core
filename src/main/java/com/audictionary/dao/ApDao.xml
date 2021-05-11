@@ -119,6 +119,56 @@
 			AND delStatus != 1
 	</update>
 	
+	<update id="doModifyForKakao">
+		UPDATE ap
+			<set>
+				<if test="isNeedToModify">
+					updateDate = NOW(),
+				</if>
+				<if test="name != null and name.length > 0">
+					`name` = #{name},
+				</if>
+				<if test="engName != null and engName.length > 0">
+					engName = #{engName},
+				</if>
+				<if test="gender != null and gender.length > 0">
+					gender = #{gender},
+				</if>
+				<if test="regNumber != null and regNumber.length > 0">
+					regNumber = #{regNumber},
+				</if>
+				<if test="address != null and address.length > 0">
+					address = #{address},
+				</if>
+				<if test="cellPhoneNo != null and cellPhoneNo.length > 0">
+					cellPhoneNo = #{cellPhoneNo},
+				</if>
+				<if test="nickName != null and nickName.length > 0">
+					nickName = #{nickName},
+				</if>
+				<if test="feet != null and feet.length > 0">
+					feet = #{feet},
+				</if>
+				<if test="weight != null and weight.length > 0">
+					weight = #{weight},
+				</if>
+				<if test="feature != null and feature.length > 0">
+					feature = #{feature},
+				</if>
+				<if test="filmgraphy != null and filmgraphy.length > 0">
+					filmgraphy = #{filmgraphy},
+				</if>
+				<if test="jobArea != null and jobArea.length > 0">
+					jobArea = #{jobArea},
+				</if>
+				<if test="corp != null and corp.length > 0">
+					corp = #{corp},
+				</if>
+			</set>
+			WHERE id = #{id}
+			AND delStatus != 1
+	</update>
+	
 	<update id="doModifyPw">
 		UPDATE ap
 			<set>
