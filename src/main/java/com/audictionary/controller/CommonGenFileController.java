@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -150,7 +151,7 @@ public class CommonGenFileController {
 	@GetMapping("/common/genFile/deleteGenFile")
 	@ResponseBody
 	public ResultData deleteGenFile( int id ) {
-		GenFile genFile = genFileService.getGenFile("ap", id , "common", "attachment", 1);
+		GenFile genFile = genFileService.getGenFile("ap", id , "thumbnail", "attachment", 1);
 		
 		if ( genFile == null ) {
 			return new ResultData ("F-1", "파일이 존재하지 않습니다.");

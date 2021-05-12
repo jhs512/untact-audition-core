@@ -226,6 +226,7 @@
 		SELECT relId FROM `like`
 		WHERE relTypeCode = 'application'
 		AND memberTypeCode = 'pd'
+		AND memberId = #{id}
 	</select>
 	
 	<select id="getListByMemberIds" resultType="Ap">
@@ -253,11 +254,14 @@
 		DELETE FROM `like`
 		WHERE relId = #{relId}
 		AND memberId = #{memberId}
+		AND memberTypeCode = 'ap'
 	</delete>
 	
 	<select id="likeListsByMemberId" resultType="Integer">
 		SELECT relId FROM `like`
 		WHERE memberId = #{memberId}
+		AND relTypeCode = 'recruit'
+		AND memberTypeCode = 'ap'
 	</select>
 	
 	<update id="doDeleteMemberById">

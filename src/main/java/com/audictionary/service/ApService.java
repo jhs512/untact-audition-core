@@ -112,7 +112,7 @@ public class ApService {
 			
 			Map<String, GenFile> mapByFileNo = new HashMap<>();
 			
-			GenFile genFile = genFileService.getGenFile("application", application.getRecruitId(), "profile", "attachment", 1);
+			GenFile genFile = genFileService.getGenFile("ap", application.getMemberId(), "profile", "attachment", 1);
 			
 			mapByFileNo.put("1", genFile);
 					
@@ -123,7 +123,7 @@ public class ApService {
 			}
 			
 			apListAll.add(ap);			
-			
+				
 			if(application.getPassStatus() == 1) {
 				apList1Pass.add(ap);
 			}

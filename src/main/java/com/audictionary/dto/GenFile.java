@@ -42,7 +42,7 @@ public class GenFile {
 	}
 	
 	public String getForPrintUrl() {
-		return "/gen" + getBaseFileUri() + "?updateDate=" + updateDate;
+		return "https://backend.audictionary.com/gen" + getBaseFileUri() + "?updateDate=" + updateDate;
 	}
 	
 	public String getDownloadUrl() {

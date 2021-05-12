@@ -68,7 +68,7 @@ public class UsrApplicationController {
 		
 		applicationService.doFail(param);
 		
-		return new ResultData("S-1", "지원자선정");
+		return new ResultData("S-1", "지원자탈락");
 	}
 	
 	@RequestMapping("/usr/application/like")
@@ -81,8 +81,12 @@ public class UsrApplicationController {
 		if( likeCount == 0 ) {
 			applicationService.doLike(param);
 		}
+		if ( likeCount > 0) {
+			cancelLike(param);
+			return new ResultData("S-1","좋아요 취소");
+		}
 		
-		return new ResultData("S-1", "지원자선정");
+		return new ResultData("S-1", "좋아요 성공");
 	}
 	
 

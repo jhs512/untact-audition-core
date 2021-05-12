@@ -13,7 +13,26 @@
 		AND (expireDate >= NOW() OR expireDate IS NULL)
 	</select>
 	
+	<select id="getByValue" resultType="Attr">
+		SELECT * FROM attr
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND typeCode = #{typeCode}
+		AND type2Code = #{type2Code}
+		AND value = #{value}
+		AND (expireDate >= NOW() OR expireDate IS NULL)
+	</select>
+	
 	<select id="getValue" resultType="string">
+		SELECT `value` FROM attr
+		WHERE relTypeCode = #{relTypeCode}
+		AND relId = #{relId}
+		AND typeCode = #{typeCode}
+		AND type2Code = #{type2Code}
+		AND (expireDate >= NOW() OR expireDate IS NULL)
+	</select>
+	
+	<select id="getValues" resultType="string">
 		SELECT `value` FROM attr
 		WHERE relTypeCode = #{relTypeCode}
 		AND relId = #{relId}

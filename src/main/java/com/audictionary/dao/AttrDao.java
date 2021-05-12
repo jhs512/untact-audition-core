@@ -19,4 +19,8 @@ public interface AttrDao {
 
 	List<Attr> getAttrs(String relTypeCode, int relId, String typeCode, String type2Code);
 
+	Attr getByValue(String relTypeCode, int relId, String typeCode, String type2Code, String value);
+
+	List<String> getValues(String relTypeCode, int relId, String typeCode, String type2Code);
+
 }

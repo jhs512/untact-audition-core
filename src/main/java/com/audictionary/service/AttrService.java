@@ -27,6 +27,11 @@ public class AttrService {
 		return attrDao.get(relTypeCode, relId, typeCode, type2Code);
 	}
 
+	public Attr get(String relTypeCode, int relId, String typeCode, String type2Code, String value) {
+		return attrDao.getByValue(relTypeCode, relId, typeCode, type2Code, value);
+	}
+
+	
 	public int setValue(String name, String value, String expireDate) {
 		String[] nameBits = name.split("__");
 		String relTypeCode = nameBits[0];
@@ -73,8 +78,8 @@ public class AttrService {
 
 	public int setValue(String relTypeCode, int relId, String typeCode, String type2Code, String value, String expireDate) {
 		attrDao.setValue(relTypeCode, relId, typeCode, type2Code, value, expireDate);
-		Attr attr = get(relTypeCode, relId, typeCode, type2Code);
-
+		Attr attr = get(relTypeCode, relId, typeCode, type2Code, value);
+		
 		if (attr != null) {
 			return attr.getId();
 		}
@@ -96,6 +101,12 @@ public class AttrService {
 		List<Attr> attrs = attrDao.getAttrs(relTypeCode, relId, typeCode, type2Code);
 		
 		return attrs;
+	}
+
+	public List<String> getValues(String relTypeCode, int relId, String typeCode, String type2Code) {
+		List<String >values = attrDao.getValues(relTypeCode, relId, typeCode, type2Code);
+
+		return values;
 	}
 
 }
