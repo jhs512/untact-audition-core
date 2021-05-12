@@ -14,6 +14,7 @@
 		SELECT * FROM application
 		WHERE delStatus != 1
 		AND memberId = #{memberId}
+		ORDER BY id DESC
 	</select>
 	
 	<select id="getListByRecruitId" resultType="Application">
