@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,11 @@ import com.audictionary.util.Util;
 
 @Service
 public class KakaoService {
+	@Value("${custom.kakao.apiKeyForPd}")
+	private String kakaoApiKeyForPd;
+	@Value("${custom.kakao.apiKeyForAp}")
+	private String kakaoApiKeyForAp;
+
 	@Autowired
 	private RestTemplateBuilder restTemplateBuilder;
 
@@ -24,7 +30,7 @@ public class KakaoService {
 
 		Map<String, String> params = Util.getNewMapStringString();
 		params.put("grant_type", "authorization_code");
-		params.put("client_id", "5b941d4fab193384e4d45ed6723fb973");
+		params.put("client_id", kakaoApiKeyForPd);
 		params.put("redirect_uri", "https://pd.audictionary.com/usr/pd/kakaoLogin");
 		params.put("code", code);
 		
@@ -40,7 +46,7 @@ public class KakaoService {
 
 		Map<String, String> params = Util.getNewMapStringString();
 		params.put("grant_type", "authorization_code");
-		params.put("client_id", "a5ef56cf046727f91ab24680a98b0953");
+		params.put("client_id", kakaoApiKeyForAp);
 		params.put("redirect_uri", "https://ap.audictionary.com/member/kakaoLogin");
 		params.put("code", code);
 		

@@ -39,6 +39,18 @@ public class ApplicationService {
 
 		for (Application application : applications) {
 			
+			param.put("relTypeCode", "application");
+			param.put("applicationId", application.getId());
+			param.put("memberTypeCode", "pd");
+			
+			int likeCount = getLike(param);
+			
+			if(likeCount > 0) {
+				application.getExtraNotNull().put("isLiked", "solid");
+			} else {
+				application.getExtraNotNull().put("isLiked", "outline");
+			}
+			
 			List<GenFile> genFiles = new ArrayList<>();
 			List<String> values = new ArrayList<>();
 			
@@ -52,6 +64,7 @@ public class ApplicationService {
 			Map<Integer, Map<String, GenFile>> profileFilesMap = new LinkedHashMap<>();
 
 			for (GenFile genFile : genFiles) {
+				
 				if (profileFilesMap.containsKey(genFile.getRelId()) == false) {
 					profileFilesMap.put(genFile.getRelId(), new LinkedHashMap<>());
 				}
@@ -60,7 +73,6 @@ public class ApplicationService {
 			}
 			
 			Map<String, GenFile> mapByFileNo = profileFilesMap.get(application.getMemberId());
-
 			if (mapByFileNo != null) {
 				application.getExtraNotNull().put("file__profile__attachment", mapByFileNo);
 			}

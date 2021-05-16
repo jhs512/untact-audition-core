@@ -122,6 +122,7 @@
 	<select id="getRecruitById" resultType="Recruit">
 		SELECT * FROM recruitment
 		WHERE id = #{id}
+		AND delStatus != 1
 	</select>
 	
 	<update id="doModify">
@@ -169,6 +170,7 @@
 		</set>
 		WHERE id = #{recruitmentId} 
 		AND memberId = #{memberId}
+		AND delStatus != 1
 	</update>
 	
 	<select id="getRecruitsCount" resultType="int">
@@ -340,5 +342,15 @@
 		LIMIT #{limit}
 		</if>
 	</select>
+	
+	<update id="deleteById">
+		UPDATE recruitment
+		<set>
+			delDate = NOW()
+			, delStatus = 1
+		</set>
+		WHERE id = #{id}
+		AND delStatus != 1
+	</update>
 	
 </mapper>

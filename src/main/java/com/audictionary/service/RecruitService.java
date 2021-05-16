@@ -266,6 +266,10 @@ public class RecruitService {
 		
 		return recruits;
 	}
+
+	public void deleteById(int rmId) {
+		recruitDao.deleteById(rmId);
+	}
 	
 
 }

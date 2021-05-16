@@ -44,15 +44,28 @@ public class UsrRecruitController {
 		int rmId = Util.getAsInt(param.get("id"), 0);
 
 		param.put("rmId", rmId);
-
-		if (rmId != 0) {
-			artworkService.doWriteArtworkForRecruitment(param);
-			actingRoleService.doWriteActingRole(param);
+		if(rmId == 0) {
+			return new ResultData("F-1", "오류가 발생하여 공고를 등록하지 못했습니다.");
 		}
-
+		
+		int artworkId = 0;
+		if (rmId != 0) {
+			artworkId = artworkService.doWriteArtworkForRecruitment(param);
+		}
+		
+		int actingRoleId = 0;
+		if (artworkId != 0) {
+			actingRoleId = actingRoleService.doWriteActingRole(param);
+		}
+		
+		if ( artworkId == 0 || actingRoleId == 0) {
+			recruitService.deleteById(rmId);
+			return new ResultData("F-1", "오류가 발생하여 공고를 등록하지 못했습니다.");
+		}
+		
 		genFileService.changeInputFileRelIds(param, rmId);
 
-		return new ResultData("S-1", "공고 등록 성공", "id", rmId);
+		return new ResultData("S-1", "공고가 등록되었습니다.", "id", rmId);
 	}
 
 	@RequestMapping("/usr/recruit/list")
@@ -72,7 +85,7 @@ public class UsrRecruitController {
 			isAllLoaded = true;
 		}
 
-		return new ResultData("S-1", "공고 리스트 출력", "recruits", recruits, "isAllLoaded", isAllLoaded);
+		return new ResultData("S-1", "공고 리스트 받기", "recruits", recruits, "isAllLoaded", isAllLoaded);
 	}
 
 	@GetMapping("/usr/recruit/detail")
@@ -88,9 +101,9 @@ public class UsrRecruitController {
 	@ResponseBody
 	public ResultData modifyRecruitment(@RequestParam Map<String, Object> param) {
 		Recruit recruit = recruitService.getRecruitById(Integer.parseInt((String) param.get("recruitmentId")));
-
+		
 		if (recruit == null) {
-			return new ResultData("F-1", "해당 공고가 없습니다.");
+			return new ResultData("F-1", "존재하지 않는 공고입니다.");
 		}
 
 		if (param.get("isFileUploaded").equals("true")) {
@@ -117,13 +130,15 @@ public class UsrRecruitController {
 		recruitService.doModify(param);
 
 		modifyArtwork(param);
+		
 		modifyActingRole(param);
 
 		recruit = recruitService.getRecruitById(Integer.parseInt((String) param.get("recruitmentId")));
 
-		return new ResultData("S-1", "공고 수정", "recruit", recruit);
+		return new ResultData("S-1", "공고가 수정되었습니다.", "recruit", recruit);
 	}
 
+	/* 공고가 수정될 때 해당 공고의 작품도 수정하는 메소드 */
 	public void modifyArtwork(Map<String, Object> param) {
 
 		Artwork artwork = artworkService
@@ -150,6 +165,7 @@ public class UsrRecruitController {
 
 	}
 
+	/* 공고가 수정될 때 해당 공고의 배역도 수정하는 메소드 */
 	public void modifyActingRole(Map<String, Object> param) {
 
 		ActingRole actingRole = actingRoleService
@@ -178,6 +194,7 @@ public class UsrRecruitController {
 
 	}
 
+	/* 공고 검색 컨트롤러 (현재 검색 기능 제거로 쓰이지 않음) */
 	@RequestMapping("/usr/recruit/search")
 	@ResponseBody
 	public ResultData doSearchByKeyword(@RequestParam Map<String, Object> param) {
@@ -187,6 +204,7 @@ public class UsrRecruitController {
 		return new ResultData("S-1", "검색 성공", "recruits", recruits);
 	}
 
+	/* 회원이 작성한 공고 리스트만 가져오기 */
 	@RequestMapping("/usr/recruit/listByMemberId")
 	@ResponseBody
 	public ResultData showListByMemberId(@RequestParam Map<String, Object> param) {

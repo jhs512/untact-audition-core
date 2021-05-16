@@ -7,7 +7,6 @@ public class MailAuth extends Authenticator {
 	PasswordAuthentication pa;
 
 	public MailAuth(String mailId, String mailPw) {
-
 		pa = new PasswordAuthentication(mailId, mailPw);
 	}
 

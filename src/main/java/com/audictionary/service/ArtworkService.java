@@ -35,8 +35,8 @@ public class ArtworkService {
 		artworkDao.deleteByPdId(loginedMemberId);
 	}
 
-	public void doWriteArtworkForRecruitment(Map<String, Object> param) {
-		artworkDao.doWriteArtworkForRecruitment(param);
+	public int doWriteArtworkForRecruitment(Map<String, Object> param) {
+		return artworkDao.doWriteArtworkForRecruitment(param);
 		
 	}
 
@@ -116,6 +116,10 @@ public class ArtworkService {
 		
 		param.put("isFiltered", isFiltered);
 		return artworkDao.getArtworksForPrintByFilter(param);
+	}
+
+	public void deleteById(int id) {
+		artworkDao.deleteById(id);
 	}
 
 

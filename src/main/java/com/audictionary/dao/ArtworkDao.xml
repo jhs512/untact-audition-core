@@ -116,6 +116,11 @@
 		WHERE relTypeCode = 'pd'
 		AND relId = #{loginedMemberId}
 	</delete>
+		
+	<delete id="deleteById">
+		DELETE FROM artwork
+		WHERE id = #{id}
+	</delete>
 	
 	<insert id="doWriteArtWorkForPdProfile" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO artwork SET

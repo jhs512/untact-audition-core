@@ -19,7 +19,7 @@ public interface ArtworkDao {
 
 	void deleteByPdId(int loginedMemberId);
 
-	void doWriteArtworkForRecruitment(Map<String, Object> param);
+	int doWriteArtworkForRecruitment(Map<String, Object> param);
 
 	void doWriteArtWorkForPdProfile(Map<String, Object> param);
 
@@ -30,5 +30,7 @@ public interface ArtworkDao {
 	List<Artwork> getArtworksForPrintByKeyword(Map<String, Object> param);
 	
 	List<Artwork> getArtworksForPrintByFilter(Map<String, Object> param);
+
+	void deleteById(int id);
 
 }

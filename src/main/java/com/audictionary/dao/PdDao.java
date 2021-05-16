@@ -33,4 +33,6 @@ public interface PdDao {
 
 	Pd getMemberByOnLoginProviderMemberId(String loginProviderTypeCode,
 			int onLoginProviderMemberId);
+
+	int doJoinByKakao(Map<String, Object> param);
 }

@@ -31,7 +31,9 @@ public class UsrApplicationController {
 	@RequestMapping("/usr/application/list")
 	@ResponseBody
 	public ResultData showList(@RequestParam Map<String,Object> param) {
-		
+		int memberId = Integer.parseInt((String)param.get("loginedMemberId"));
+		param.put("memberId", memberId);
+		param.put("applicationId", Integer.parseInt((String)param.get("id")));
 		List<Application> applications = applicationService.getListForPrint(param);
 		
 		return new ResultData("S-1", "지원 목록 불러오기 성공", "applications", applications);
@@ -59,7 +61,7 @@ public class UsrApplicationController {
 		
 		applicationService.doSelect(param);
 		
-		return new ResultData("S-1", "지원자선정");
+		return new ResultData("S-1", "1차 합격 되었습니다.");
 	}
 	
 	@RequestMapping("/usr/application/fail")
@@ -68,7 +70,7 @@ public class UsrApplicationController {
 		
 		applicationService.doFail(param);
 		
-		return new ResultData("S-1", "지원자탈락");
+		return new ResultData("S-1", "불합격 되었습니다.");
 	}
 	
 	@RequestMapping("/usr/application/like")
@@ -83,10 +85,10 @@ public class UsrApplicationController {
 		}
 		if ( likeCount > 0) {
 			cancelLike(param);
-			return new ResultData("S-1","좋아요 취소");
+			return new ResultData("S-1","좋아요를 취소했습니다.", "isLike", false);
 		}
 		
-		return new ResultData("S-1", "좋아요 성공");
+		return new ResultData("S-1", "좋아요 성공", "isLike", true);
 	}
 	
 
@@ -103,7 +105,7 @@ public class UsrApplicationController {
 		
 		List<Application> aps = apService.getListByLikedAp(param);
 		
-		return new ResultData("S-1","좋아요 취소 성공", "applications", aps);
+		return new ResultData("S-1","좋아요를 취소했습니다.", "applications", aps);
 	}
 	
 	@RequestMapping("/usr/application/detail")
@@ -111,6 +113,18 @@ public class UsrApplicationController {
 	public ResultData showDetail(@RequestParam Map<String, Object> param) {
 		
 		Application application = applicationService.getApplicationById(param);
+		int memberId = Integer.parseInt((String)param.get("loginedMemberId"));
+		param.put("relTypeCode", "application");
+		param.put("applicationId", Integer.parseInt((String)param.get("id")));
+		param.put("memberTypeCode", "pd");
+		param.put("memberId", memberId);
+		int likeCount = applicationService.getLike(param);
+		
+		if(likeCount > 0) {
+			application.getExtraNotNull().put("isLiked", "solid");
+		}else {
+			application.getExtraNotNull().put("isLiked", "outline");
+		}
 		
 		Ap ap = apService.getApById(application.getMemberId());
 		

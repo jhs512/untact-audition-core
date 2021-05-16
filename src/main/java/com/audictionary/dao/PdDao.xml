@@ -9,8 +9,49 @@
 		regDate = NOW()
 		, updateDate = NOW()
 		, onLoginProviderMemberId = #{onLoginProviderMemberId}
-		, loginProviderTypeCode = #{loginProviderTypeCode}
+		<if test="loginProviderTypeCode != null">
+			, loginProviderTypeCode = #{loginProviderTypeCode}
+		</if>
 		, loginId = #{email}
+		, loginPw = #{loginPw}
+		<if test="name != null">
+			, `name` = #{name}
+		</if>
+		<if test="gender != null">
+			, gender = #{gender}
+		</if>
+		<if test="regNumber != null">
+			, regNumber = #{regNumber}
+		</if>
+		<if test="address != null">
+			, address = #{address}
+		</if>
+		<if test="email != null">
+			, email = #{email}
+		</if>
+		<if test="cellPhoneNo != null">
+			, cellPhoneNo = #{cellPhoneNo}
+		</if>
+		<if test="jobPosition != null">
+			, jobPosition = #{jobPosition}
+		</if>
+		<if test="corpName != null">
+			, corpName = #{corpName}
+		</if>
+		<if test="corpType != null">
+			, corpType = #{corpType}
+		</if>
+		, authLevel = 2
+		, authKey = CONCAT("pd__authKey1__", UUID(), "__", RAND())
+	</insert>
+	
+	<insert id="doJoinByKakao" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO pd SET
+		regDate = NOW()
+		, updateDate = NOW()
+		, onLoginProviderMemberId = #{onLoginProviderMemberId}
+		, loginProviderTypeCode = #{loginProviderTypeCode}
+		, loginId = #{loginId}
 		, loginPw = #{loginPw}
 		<if test="name != null">
 			, `name` = #{name},
@@ -46,6 +87,7 @@
 	<select id="getMemberById" resultType="Pd">
 		SELECT * FROM pd
 		WHERE id = #{id}
+		AND delStatus != 1
 	</select>
 	
 	<select id="isAdmin" resultType="Pd">
@@ -58,6 +100,7 @@
 		SELECT * FROM pd
 		WHERE loginId = #{email}
 		AND loginProviderTypeCode = 'pd'
+		AND delStatus != 1
 	</select>
 	
 	<update id="doModifyPw">
@@ -108,17 +151,20 @@
 			delStatus = 1
 		</set>
 		WHERE id = #{id}
+		AND loginProviderTypeCode = #{loginProviderTypeCode}
 	</update>
 	
 	<select id="getMemberByAuthKey" resultType="Pd">
 		SELECT * FROM pd
 		WHERE authKey = #{authKey}
+		AND delStatus != 1
 	</select>
 	
 	<select id="doFindLoginId" resultType="Pd">
 		SELECT * FROM pd
 		WHERE `name` = #{name}
 		AND regNumber = #{regNumber}
+		AND delStatus != 1
 	</select>
 	
 	<update id="setTempPw">
@@ -127,11 +173,13 @@
 		loginPw = #{tempPw}
 		</set>
 		WHERE loginId = #{email}		
+		AND delStatus != 1
 	</update>
 	
 	<select id="getMemberByOnLoginProviderMemberId" resultType="pd">
 		SELECT * FROM pd
 		WHERE loginProviderTypeCode = #{loginProviderTypeCode}
 		AND onLoginProviderMemberId = #{onLoginProviderMemberId}
+		AND delStatus != 1
 	</select>
 </mapper>

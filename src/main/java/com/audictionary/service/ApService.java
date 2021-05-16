@@ -185,7 +185,7 @@ public class ApService {
 		Map<Integer, Map<String, GenFile>> filesMap = genFileService.getFilesMapKeyRelIdAndFileNo("ap", applicationIds, "profile", "attachment");
 		
 		for (Application application : applications) {
-			Map<String, GenFile> mapByFileNo = filesMap.get(application.getId());
+			Map<String, GenFile> mapByFileNo = filesMap.get(application.getMemberId());
 
 			if (mapByFileNo != null) {
 				application.getExtraNotNull().put("file__profile__attachment", mapByFileNo);

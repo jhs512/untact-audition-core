@@ -33,6 +33,8 @@ public interface RecruitDao {
 
 	List<Recruit> getListForPrintByMemberId(Map<String, Object> param);
 
+	void deleteById(int rmId);
+
 	
 
 	

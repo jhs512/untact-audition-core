@@ -103,13 +103,17 @@ public class PdService {
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("id", pd.getId());
-		param.put("email", kakaoUser.getKakao_account().email);
-		param.put("gender", kakaoUser.getKakao_account().gender);
+		if(kakaoUser.getKakao_account().email != null && kakaoUser.getKakao_account().email.length() > 0) {
+			param.put("email", kakaoUser.getKakao_account().email);
+		}
+		if(kakaoUser.getKakao_account().gender != null && kakaoUser.getKakao_account().gender.length() > 0) {
+			param.put("gender", kakaoUser.getKakao_account().gender);
+		}
 		
 		pdDao.doModify(param);
 	}
 
-	public void doJoinByKakao(KapiKakaoCom__v2_user_me__ResponseBody kakaoUser) {
+	public int doJoinByKakao(KapiKakaoCom__v2_user_me__ResponseBody kakaoUser) {
 		String loginProviderTypeCode = "kakao";
 		int onLoginProviderMemberId = kakaoUser.id;
 		
@@ -120,10 +124,12 @@ public class PdService {
 
 		param.put("loginId", loginId);
 		param.put("loginPw", Util.getUUIDStr());
-
-		param.put("email", kakaoUser.kakao_account.email);
 		
-		pdDao.doJoin(param);
+		if(kakaoUser.kakao_account.email != null && kakaoUser.kakao_account.email.length() > 0) {
+			param.put("email", kakaoUser.kakao_account.email);
+		}		
+		
+		return pdDao.doJoinByKakao(param);
 	}
 
 	public boolean isNeedToModify(Pd pd, Map<String,Object> param) {
