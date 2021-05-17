@@ -12,6 +12,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,23 +20,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class NaverApiController {
-	 String clientId = "IXZPlFW1aSltq1g7sWdV"; //애플리케이션 클라이언트 아이디값"
-     String clientSecret = "ASiNG0Rgry"; //애플리케이션 클라이언트 시크릿값"
+	@Value("${custom.naver.clientId}")
+	private String clientId; //애플리케이션 클라이언트 아이디값"
+	@Value("${custom.naver.clientSecret}")
+	private String clientSecret; //애플리케이션 클라이언트 시크릿값"
 
      @RequestMapping("/usr/naver/movie")
      @ResponseBody
-     public String naverSearchMovieApi(@RequestParam String keyword) {
+     public String naverSearchMovieApi(@RequestParam Map<String, Object> param) {
+    	 
+    	 String keyword = (String)param.get("keyword");
+    	 String startIndex = (String)param.get("startIndex");
 
-         String text = null;
+    	 String keywordText = null;
+    	 String startIndextext = null;
          
          try {
-             text = URLEncoder.encode(keyword, "UTF-8");
+             keywordText = URLEncoder.encode(keyword, "UTF-8");
+             startIndextext = URLEncoder.encode(startIndex, "UTF-8");
          } catch (UnsupportedEncodingException e) {
              throw new RuntimeException("검색어 인코딩 실패",e);
          }
 
 
-         String apiURL = "https://openapi.naver.com/v1/search/movie.json?query=" + text;    // json 결과
+         String apiURL = "https://openapi.naver.com/v1/search/movie.json?query=" + keywordText + "&start=" + startIndextext;    // json 결과
          //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // xml 결과
 
 
@@ -44,8 +52,6 @@ public class NaverApiController {
          requestHeaders.put("X-Naver-Client-Secret", clientSecret);
          String responseBody = get(apiURL,requestHeaders);
 
-
-         System.out.println(responseBody);
          return responseBody;
      }
      
@@ -56,7 +62,6 @@ public class NaverApiController {
              for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
                  con.setRequestProperty(header.getKey(), header.getValue());
              }
-
 
              int responseCode = con.getResponseCode();
              if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
