@@ -353,4 +353,13 @@
 		AND delStatus != 1
 	</update>
 	
+	<update id="doFinishById">
+		UPDATE recruitment
+		<set>
+			deadline = null
+		</set>
+		WHERE id = #{id}
+		AND delStatus != 1
+	</update>
+	
 </mapper>

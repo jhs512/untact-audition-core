@@ -213,4 +213,20 @@ public class UsrRecruitController {
 
 		return new ResultData("S-1", "공고 리스트 불러오기 성공", "recruits", recruits);
 	}
+	
+	@RequestMapping("/usr/recruit/finish")
+	@ResponseBody
+	public ResultData doFinish(@RequestParam Map<String, Object> param) {
+		int id = Integer.parseInt((String)param.get("id"));
+		
+		Recruit recruit = recruitService.getRecruitById(id);
+		
+		if( recruit == null ) {
+			return new ResultData("F-1", "존재하지 않는 공고입니다.");
+		}
+		
+		recruitService.doFinishById(id);
+		
+		return new ResultData("S-1", "공고가 마감되었습니다.");
+	}
 }

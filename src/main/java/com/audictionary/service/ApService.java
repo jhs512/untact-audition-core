@@ -145,7 +145,7 @@ public class ApService {
 	}
 
 	public List<Ap> getListByLikedApplication(Map<String, Object> param) {
-		List<Integer> memberIds = apDao.getListByLikedApplication(param);
+		List<Integer> memberIds = apDao.getListByLikedAp(param);
 		
 		List<Ap> aps = new ArrayList<>();
 		

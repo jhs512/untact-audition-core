@@ -1,10 +1,9 @@
 package com.audictionary.service;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -269,6 +268,10 @@ public class RecruitService {
 
 	public void deleteById(int rmId) {
 		recruitDao.deleteById(rmId);
+	}
+
+	public void doFinishById(int id) {
+		recruitDao.doFinishById(id);
 	}
 	
 

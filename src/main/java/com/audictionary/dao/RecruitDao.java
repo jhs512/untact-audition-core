@@ -35,8 +35,7 @@ public interface RecruitDao {
 
 	void deleteById(int rmId);
 
-	
-
+	void doFinishById(int id);
 	
 
 }
